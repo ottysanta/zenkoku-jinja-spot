@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+backend/data/faiss_index.bin
+backend/data/items.db
+*.pyc
+*.pyo
+__pycache__/
+*.bin
+*.index

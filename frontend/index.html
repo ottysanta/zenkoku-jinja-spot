@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+  <title>🍍 Princess Pineapple Paws</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --pink: #f472b6; --pink-dark: #ec4899; --pink-pale: #fce7f3;
+      --gold: #f59e0b; --white: #fff9fc; --text: #6b2d5e; --text-light: #be185d;
+      --glass: rgba(255,255,255,0.90);
+      --peek: 80px;
+    }
+    html, body { height: 100%; font-family: 'Zen Maru Gothic', sans-serif; color: var(--text); overflow: hidden; }
+
+    /* MAP */
+    #map { position: fixed; inset: 0; z-index: 0; }
+    .leaflet-popup-content-wrapper { border-radius: 18px !important; border: 2px solid #f9a8d4 !important; box-shadow: 0 8px 32px rgba(236,72,153,.25) !important; font-family: 'Zen Maru Gothic', sans-serif !important; }
+    .leaflet-popup-tip { background: white !important; }
+    .leaflet-popup-content { margin: 14px 18px !important; }
+
+    /* HEADER */
+    #header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; height: 54px;
+      background: var(--glass); backdrop-filter: blur(12px);
+      border-bottom: 1.5px solid rgba(244,114,182,.25);
+      box-shadow: 0 2px 16px rgba(236,72,153,.12);
+    }
+    .logo { font-size: 1.5rem; animation: bounce 2.5s ease-in-out infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-4px) rotate(3deg)} }
+    #header h1 {
+      flex: 1; font-size: 1rem; font-weight: 700;
+      background: linear-gradient(135deg,#ec4899,#f59e0b,#f472b6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* NEAR ME FAB */
+    #near-me-btn {
+      position: fixed; right: 16px; z-index: 810;
+      bottom: calc(var(--peek) + 16px);
+      width: 54px; height: 54px; border-radius: 50%; border: none;
+      background: linear-gradient(135deg, #fde68a, #f59e0b);
+      font-size: 1.6rem; cursor: pointer;
+      box-shadow: 0 4px 18px rgba(245,158,11,.5), 0 0 0 3px rgba(253,230,138,.4);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .15s;
+    }
+    #near-me-btn:hover  { transform: scale(1.1); }
+    #near-me-btn:active { transform: scale(.93); }
+    #near-me-btn.loading { animation: pulse-gold .8s ease-in-out infinite; }
+    @keyframes pulse-gold {
+      0%,100%{ box-shadow:0 4px 18px rgba(245,158,11,.5),0 0 0 3px rgba(253,230,138,.4); }
+      50%    { box-shadow:0 4px 18px rgba(245,158,11,.8),0 0 0 14px rgba(253,230,138,.2); }
+    }
+
+    /* TOAST */
+    #toast {
+      position: fixed; bottom: calc(var(--peek) + 20px); left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      z-index: 1100; background: rgba(30,10,20,.84); color: #fff;
+      padding: 8px 20px; border-radius: 999px; font-size: .85rem;
+      opacity: 0; transition: opacity .3s, transform .3s;
+      pointer-events: none; white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ===== DRAWER ===== */
+    #drawer {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      height: 90vh; z-index: 800;
+      background: var(--white);
+      border-radius: 22px 22px 0 0;
+      border-top: 2px solid rgba(244,114,182,.3);
+      box-shadow: 0 -8px 40px rgba(236,72,153,.18);
+      transform: translateY(calc(90vh - var(--peek)));
+      transition: transform .38s cubic-bezier(.32,.72,0,1);
+      display: flex; flex-direction: column; overflow: hidden;
+      will-change: transform;
+    }
+    #drawer.dragging  { transition: none; }
+    #drawer.snap-peek { transform: translateY(calc(90vh - var(--peek))); }
+    #drawer.snap-half { transform: translateY(45vh); }
+    #drawer.snap-full { transform: translateY(0); }
+
+    /* Handle */
+    #drawer-handle {
+      flex-shrink: 0; padding: 10px 16px 12px;
+      cursor: grab; user-select: none; touch-action: none;
+    }
+    #drawer-handle:active { cursor: grabbing; }
+    .handle-bar {
+      width: 38px; height: 4px;
+      background: linear-gradient(90deg,#f9a8d4,#fde68a);
+      border-radius: 2px; margin: 0 auto 10px;
+    }
+    #drawer-peek-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+    #drawer-label { flex: 1; font-size: .9rem; font-weight: 700; color: var(--text); }
+    #drawer-count  {
+      font-size: .76rem; font-weight: 700; color: var(--text-light);
+      background: var(--pink-pale); padding: 3px 10px; border-radius: 999px;
+    }
+    #drawer-filter-btn {
+      padding: 5px 12px; border: none; border-radius: 999px;
+      background: linear-gradient(135deg, var(--pink), var(--gold));
+      color: #fff; font-family: 'Zen Maru Gothic',sans-serif;
+      font-size: .74rem; font-weight: 700; cursor: pointer;
+      box-shadow: 0 2px 8px rgba(236,72,153,.3); white-space: nowrap;
+    }
+
+    /* Search area */
+    #drawer-search {
+      flex-shrink: 0; padding: 0 14px 10px;
+      border-bottom: 1.5px solid rgba(244,114,182,.12);
+    }
+    .search-wrap { position: relative; margin-bottom: 10px; }
+    .search-wrap::before {
+      content:"🔍"; position:absolute; left:11px; top:50%;
+      transform:translateY(-50%); font-size:.88rem; pointer-events:none;
+    }
+    #search-input {
+      width: 100%; padding: 9px 12px 9px 34px;
+      border: 1.5px solid rgba(244,114,182,.35); border-radius: 12px;
+      font-family: 'Zen Maru Gothic',sans-serif; font-size: .86rem;
+      color: var(--text); background: rgba(255,255,255,.8); outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    #search-input:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(244,114,182,.15); }
+    #search-input::placeholder { color: #c4a0b8; }
+
+    /* Color chips (メンカラ) */
+    #color-row {
+      display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px;
+      scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+    }
+    #color-row::-webkit-scrollbar { display: none; }
+    .c-chip {
+      flex-shrink: 0; display: flex; flex-direction: column;
+      align-items: center; gap: 3px; padding: 4px 6px;
+      border-radius: 10px; cursor: pointer;
+      transition: background .15s, transform .15s;
+    }
+    .c-chip:hover  { background: rgba(244,114,182,.08); }
+    .c-chip.active { background: rgba(244,114,182,.15); transform: scale(1.06); }
+    .c-dot {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 2.5px solid rgba(255,255,255,.9);
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+      transition: box-shadow .15s, transform .15s;
+    }
+    .c-chip.active .c-dot { transform: scale(1.12); box-shadow: 0 0 0 2.5px white, 0 0 0 4.5px var(--dot-color), 0 4px 10px rgba(0,0,0,.2); }
+    .c-label {
+      font-size: .56rem; font-weight: 700; color: var(--text);
+      text-align: center; white-space: nowrap; max-width: 48px;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* Active filter bar */
+    #filter-active {
+      display: none; align-items: center; gap: 8px;
+      margin-top: 8px; padding: 5px 12px;
+      background: linear-gradient(135deg,rgba(244,114,182,.1),rgba(245,158,11,.1));
+      border-radius: 10px; border: 1.5px solid rgba(244,114,182,.2);
+    }
+    #filter-active.on { display: flex; }
+    #filter-active-text { flex:1; font-size:.76rem; font-weight:700; color:var(--text-light); }
+    #filter-clear {
+      font-size:.73rem; color:#c084a8; background:none; border:none;
+      cursor:pointer; font-family:'Zen Maru Gothic',sans-serif; padding:2px 6px;
+    }
+
+    /* ===== CARD LIST ===== */
+    #card-list {
+      flex: 1; overflow-y: auto; padding: 10px 14px 48px;
+      -webkit-overflow-scrolling: touch;
+    }
+    #card-list::-webkit-scrollbar { width: 3px; }
+    #card-list::-webkit-scrollbar-thumb { background: #f9a8d4; border-radius: 2px; }
+
+    .s-card {
+      display: flex; gap: 0;
+      background: white; border-radius: 14px;
+      border: 1.5px solid rgba(244,114,182,.13);
+      box-shadow: 0 2px 10px rgba(236,72,153,.07);
+      margin-bottom: 10px; overflow: hidden; cursor: pointer;
+      transition: transform .14s, box-shadow .14s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .s-card:active { transform: scale(.98); box-shadow: 0 1px 4px rgba(236,72,153,.08); }
+    .s-card-bar   { width: 5px; flex-shrink: 0; }
+    .s-card-thumb {
+      width: 76px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; align-self: stretch;
+    }
+    .s-card-body  { flex:1; padding: 10px 12px 10px 0; min-width:0; }
+    .s-card-top   { display:flex; align-items:flex-start; gap:6px; margin-bottom:4px; }
+    .s-card-name  { flex:1; font-size:.9rem; font-weight:700; color:var(--text); line-height:1.3; }
+    .s-card-dist  {
+      font-size:.7rem; font-weight:700; color:var(--gold); white-space:nowrap;
+      padding:2px 6px; background:rgba(245,158,11,.1); border-radius:999px; flex-shrink:0;
+    }
+    .s-card-tags  { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:5px; }
+    .s-tag        { display:inline-block; padding:2px 7px; border-radius:999px; font-size:.65rem; font-weight:700; }
+    .s-tag-tv     { background:#fce7f3; color:#ec4899; }
+    .s-tag-yt     { background:#fef3c7; color:#d97706; }
+    .s-tag-mag    { background:#ede9fe; color:#7c3aed; }
+    .s-tag-sns    { background:#ecfdf5; color:#059669; }
+    .s-card-talent { font-size:.73rem; color:#9d6080; margin-bottom:5px; }
+    .s-card-fresh  { display:flex; align-items:center; gap:6px; }
+    .s-fresh-txt   { font-size:.7rem; color:#b08090; white-space:nowrap; }
+    .f-hint        { font-size:.68rem; color:#b08090; margin:-4px 0 6px; line-height:1.4; }
+    .s-mini-bar    { flex:1; height:3px; background:rgba(244,114,182,.12); border-radius:2px; overflow:hidden; }
+    .s-mini-fill   { height:100%; border-radius:2px; }
+    .s-mini-fill.fresh { background:linear-gradient(90deg,#34d399,#6ee7b7); }
+    .s-mini-fill.ripe  { background:linear-gradient(90deg,#f59e0b,#fde68a); }
+    .s-mini-fill.dry   { background:linear-gradient(90deg,#92400e,#d97706); }
+
+    #card-empty {
+      display:none; flex-direction:column; align-items:center;
+      justify-content:center; padding:40px 20px;
+      color:#c4a0b8; font-size:.88rem; text-align:center; gap:10px;
+    }
+    #card-empty.on { display:flex; }
+    #card-empty .e-icon { font-size:2.8rem; }
+
+    /* ===== FILTER PANEL ===== */
+    #fp-overlay {
+      position:fixed; inset:0; z-index:1040;
+      background:rgba(0,0,0,.18); opacity:0; pointer-events:none; transition:opacity .3s;
+    }
+    #fp-overlay.on { opacity:1; pointer-events:all; }
+    #filter-panel {
+      position:fixed; bottom:0; left:0; right:0; z-index:1050;
+      background:var(--glass); backdrop-filter:blur(16px);
+      border-top:2px solid rgba(244,114,182,.3); border-radius:22px 22px 0 0;
+      padding:20px 20px 36px; max-height:72vh; overflow-y:auto;
+      box-shadow:0 -8px 32px rgba(236,72,153,.15);
+      transform:translateY(100%); transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    #filter-panel.on { transform:translateY(0); }
+    #filter-panel h2  { font-size:1rem; font-weight:700; color:var(--text); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    .f-section        { margin-bottom:14px; }
+    .f-label          { font-size:.76rem; font-weight:700; color:var(--text-light); letter-spacing:.08em; margin-bottom:8px; }
+    .chip-row         { display:flex; flex-wrap:wrap; gap:7px; }
+    .chip {
+      padding:5px 13px; border-radius:999px; border:2px solid #f9a8d4;
+      background:rgba(255,255,255,.6); color:var(--text-light);
+      font-family:'Zen Maru Gothic',sans-serif; font-size:.78rem; font-weight:600;
+      cursor:pointer; transition:all .15s;
+    }
+    .chip:hover  { border-color:var(--pink-dark); background:rgba(252,231,243,.8); }
+    .chip.active { background:linear-gradient(135deg,var(--pink),#f59e0b); border-color:transparent; color:#fff; box-shadow:0 3px 10px rgba(236,72,153,.35); }
+    .f-actions   { display:flex; gap:10px; margin-top:16px; }
+    .btn-apply {
+      flex:1; padding:12px; background:linear-gradient(135deg,var(--pink),#f59e0b);
+      color:#fff; border:none; border-radius:14px;
+      font-family:'Zen Maru Gothic',sans-serif; font-size:.93rem; font-weight:700;
+      cursor:pointer; box-shadow:0 4px 14px rgba(236,72,153,.35);
+      transition:opacity .15s, transform .12s;
+    }
+    .btn-apply:hover { opacity:.9; transform:scale(1.02); }
+    .btn-reset {
+      padding:12px 18px; background:rgba(255,255,255,.7); color:var(--text-light);
+      border:2px solid #f9a8d4; border-radius:14px;
+      font-family:'Zen Maru Gothic',sans-serif; font-size:.86rem; font-weight:700;
+      cursor:pointer; transition:all .15s;
+    }
+    .btn-reset:hover { background:var(--pink-pale); }
+
+    /* ===== MODAL ===== */
+    #modal-overlay {
+      position:fixed; inset:0; z-index:2000;
+      background:rgba(100,0,60,.35); backdrop-filter:blur(4px);
+      display:flex; align-items:flex-end;
+      opacity:0; pointer-events:none; transition:opacity .3s;
+    }
+    #modal-overlay.on { opacity:1; pointer-events:all; }
+    #modal {
+      width:100%; max-width:600px; margin:0 auto;
+      background:var(--white); border-radius:26px 26px 0 0;
+      border-top:2px solid rgba(244,114,182,.3);
+      padding:0 0 40px;
+      box-shadow:0 -12px 40px rgba(236,72,153,.2);
+      transform:translateY(100%); transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+      max-height:85vh; overflow-y:auto;
+    }
+    #modal-overlay.on #modal { transform:translateY(0); }
+    .m-header {
+      position:sticky; top:0; background:var(--white);
+      padding:14px 20px 12px; border-bottom:1.5px solid rgba(244,114,182,.15); z-index:1;
+    }
+    .m-drag { width:38px; height:4px; background:#f9a8d4; border-radius:2px; margin:0 auto 12px; }
+    .m-name { font-size:1.15rem; font-weight:700; color:var(--text); line-height:1.3; margin-bottom:5px; }
+    .m-addr { font-size:.78rem; color:#9d6080; }
+    .score-bar { display:flex; align-items:center; gap:10px; margin-top:10px; }
+    .score-icon { font-size:1.4rem; }
+    .score-icon.fresh{filter:none} .score-icon.ripe{filter:sepia(.3) saturate(1.5)} .score-icon.dry{filter:grayscale(.5) sepia(.4) brightness(.85)}
+    .score-track { flex:1; height:7px; background:rgba(244,114,182,.15); border-radius:4px; overflow:hidden; }
+    .score-fill  { height:100%; border-radius:4px; transition:width .6s; }
+    .score-fill.fresh{background:linear-gradient(90deg,#34d399,#6ee7b7)}
+    .score-fill.ripe {background:linear-gradient(90deg,#f59e0b,#fde68a)}
+    .score-fill.dry  {background:linear-gradient(90deg,#92400e,#d97706)}
+    .score-lbl { font-size:.76rem; font-weight:700; color:var(--text-light); white-space:nowrap; }
+    .m-tabs { display:flex; border-bottom:1.5px solid rgba(244,114,182,.2); margin:0 20px; }
+    .t-btn {
+      flex:1; padding:11px 4px; background:none; border:none;
+      border-bottom:3px solid transparent;
+      font-family:'Zen Maru Gothic',sans-serif; font-size:.76rem; font-weight:700; color:#b08090;
+      cursor:pointer; transition:all .15s;
+      display:flex; flex-direction:column; align-items:center; gap:3px;
+    }
+    .t-btn .ti { font-size:1.05rem; }
+    .t-btn.active { color:var(--pink-dark); border-bottom-color:var(--pink-dark); }
+    .t-pane { display:none; padding:16px 20px; }
+    .t-pane.active { display:block; }
+    .i-row { display:flex; gap:10px; margin-bottom:10px; align-items:flex-start; }
+    .i-icon { font-size:.98rem; flex-shrink:0; margin-top:2px; }
+    .i-body { flex:1; }
+    .i-lbl { font-size:.7rem; font-weight:700; color:var(--pink); letter-spacing:.08em; text-transform:uppercase; margin-bottom:2px; }
+    .i-val { font-size:.86rem; color:var(--text); line-height:1.55; }
+    .tag { display:inline-block; padding:3px 11px; border-radius:999px; font-size:.73rem; font-weight:700; margin:2px 3px 2px 0; }
+    .tag-tv    {background:#fce7f3;color:#ec4899} .tag-yt{background:#fef3c7;color:#d97706}
+    .tag-mag   {background:#ede9fe;color:#7c3aed} .tag-sns{background:#ecfdf5;color:#059669}
+    .tag-group {background:#fff1f2;color:#e11d48}
+    .m-item { display:flex; align-items:center; gap:8px; padding:8px 12px; background:var(--pink-pale); border-radius:11px; margin-bottom:7px; font-size:.86rem; color:var(--text); }
+    .m-item::before { content:"🍽️"; }
+    .go-btn {
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      width:100%; padding:14px; margin-top:14px;
+      background:linear-gradient(135deg,var(--pink),#f59e0b);
+      background-size:200% 200%; animation:gshift 4s ease infinite;
+      color:#fff; border:none; border-radius:15px;
+      font-family:'Zen Maru Gothic',sans-serif; font-size:.98rem; font-weight:700;
+      cursor:pointer; box-shadow:0 6px 20px rgba(236,72,153,.4); text-decoration:none;
+      transition:transform .12s, opacity .12s;
+    }
+    .go-btn:hover { transform:scale(1.02); opacity:.92; }
+    @keyframes gshift { 0%{background-position:0 50%} 50%{background-position:100% 50%} 100%{background-position:0 50%} }
+
+    /* MAP PINS */
+    .pin-wrap { display:flex; flex-direction:column; align-items:center; cursor:pointer; transition:transform .2s; filter:drop-shadow(0 3px 5px rgba(0,0,0,.25)); }
+    .pin-wrap:hover { transform:scale(1.25) translateY(-4px); }
+    .pin-e { font-size:28px; line-height:1; }
+    .pin-e.fresh{filter:none} .pin-e.ripe{filter:sepia(.4) saturate(1.5) brightness(1.05)} .pin-e.dry{filter:grayscale(.45) sepia(.3) brightness(.9)} .pin-e.visited{filter:hue-rotate(310deg) saturate(2)}
+    .pin-dot { width:8px; height:8px; border-radius:50%; margin-top:2px; }
+    .my-pin { font-size:30px; filter:drop-shadow(0 3px 6px rgba(236,72,153,.5)); animation:mypulse 2s ease-in-out infinite; }
+    @keyframes mypulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+    .p-name { font-weight:700; font-size:.93rem; color:var(--text); margin-bottom:4px; }
+    .p-sub  { font-size:.76rem; color:#9d6080; margin-bottom:8px; }
+    .p-btn  {
+      display:block; width:100%; padding:8px;
+      background:linear-gradient(135deg,var(--pink),#f59e0b);
+      color:#fff; border:none; border-radius:10px;
+      font-family:'Zen Maru Gothic',sans-serif; font-size:.8rem; font-weight:700; cursor:pointer; text-align:center;
+    }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div id="header">
+  <span class="logo">🍍</span>
+  <h1>Princess Pineapple Paws</h1>
+</div>
+
+<button id="near-me-btn" title="現在地から近い順に検索" onclick="searchNearMe()">🐾</button>
+<div id="toast"></div>
+
+<!-- ===== DRAWER ===== -->
+<div id="drawer" class="snap-peek">
+
+  <div id="drawer-handle">
+    <div class="handle-bar"></div>
+    <div id="drawer-peek-row">
+      <span id="drawer-label">近くの聖地をチェック 🗺️</span>
+      <span id="drawer-count">🍍 …</span>
+      <button id="drawer-filter-btn" onclick="openFP()">✦ 絞り込み</button>
+    </div>
+  </div>
+
+  <div id="drawer-search">
+    <div class="search-wrap">
+      <input id="search-input" type="search" placeholder="グループ名 / タレント名で検索..." autocomplete="off" oninput="onSearch(this.value)" />
+    </div>
+    <div id="color-row"></div>
+    <div id="filter-active">
+      <span id="filter-active-text"></span>
+      <button id="filter-clear" onclick="clearFilter()">✕ クリア</button>
+    </div>
+  </div>
+
+  <div id="card-list">
+    <div id="card-empty">
+      <span class="e-icon">🍍</span>
+      <span>条件に合う聖地が見つかりませんでした</span>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER PANEL -->
+<div id="fp-overlay" onclick="closeFP()"></div>
+<div id="filter-panel">
+  <h2>✦ 絞り込む 🍍</h2>
+  <div class="f-section">
+    <div class="f-label">🎤 グループ</div>
+    <div class="chip-row" id="group-chips"></div>
+  </div>
+  <div class="f-section">
+    <div class="f-label">📺 媒体</div>
+    <div class="chip-row">
+      <button class="chip active" data-f="media" data-v="">すべて</button>
+      <button class="chip" data-f="media" data-v="TV">TV</button>
+      <button class="chip" data-f="media" data-v="YouTube">YouTube</button>
+      <button class="chip" data-f="media" data-v="雑誌">雑誌</button>
+      <button class="chip" data-f="media" data-v="SNS">SNS</button>
+    </div>
+  </div>
+  <div class="f-section">
+    <div class="f-label">📡 放送の鮮度</div>
+    <div class="f-hint">放送・配信からどれくらい経っているかを示します。古いほど閉店リスクあり</div>
+    <div class="chip-row">
+      <button class="chip active" data-f="freshness" data-v="">すべて</button>
+      <button class="chip" data-f="freshness" data-v="fresh">🌿 フレッシュ（30日以内）</button>
+      <button class="chip" data-f="freshness" data-v="ripe">🍍 完熟（〜1年）</button>
+      <button class="chip" data-f="freshness" data-v="dry">🏵️ ドライパイン（1年以上）</button>
+    </div>
+  </div>
+  <div class="f-actions">
+    <button class="btn-apply" onclick="applyFilter()">💖 この条件で表示</button>
+    <button class="btn-reset" onclick="resetFilter()">リセット</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div id="modal">
+    <div class="m-header">
+      <div class="m-drag"></div>
+      <div class="m-name" id="m-name"></div>
+      <div class="m-addr" id="m-addr"></div>
+      <div class="score-bar">
+        <span class="score-icon" id="m-icon">🍍</span>
+        <div class="score-track"><div class="score-fill" id="m-fill" style="width:0%"></div></div>
+        <span class="score-lbl" id="m-score"></span>
+      </div>
+    </div>
+    <div class="m-tabs">
+      <button class="t-btn active" onclick="tab('who',this)"><span class="ti">🎤</span>いつ・誰が</button>
+      <button class="t-btn" onclick="tab('menu',this)"><span class="ti">🍽️</span>何を食べた</button>
+      <button class="t-btn" onclick="tab('access',this)"><span class="ti">🗺️</span>行き方</button>
+    </div>
+    <div class="t-pane active" id="t-who">
+      <div class="i-row"><span class="i-icon">📅</span><div class="i-body"><div class="i-lbl">放送・掲載日</div><div class="i-val" id="d-date"></div></div></div>
+      <div class="i-row"><span class="i-icon">⭐</span><div class="i-body"><div class="i-lbl">タレント</div><div class="i-val" id="d-talent"></div></div></div>
+      <div class="i-row"><span class="i-icon">📺</span><div class="i-body"><div class="i-lbl">媒体</div><div class="i-val" id="d-media"></div></div></div>
+    </div>
+    <div class="t-pane" id="t-menu"><div id="d-menu"></div></div>
+    <div class="t-pane" id="t-access">
+      <div class="i-row"><span class="i-icon">🚃</span><div class="i-body"><div class="i-lbl">アクセス</div><div class="i-val" id="d-access"></div></div></div>
+      <a class="go-btn" id="d-maps" href="#" target="_blank" rel="noopener">🍍 ここに行く！Google Mapsで開く ✨</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== GROUP COLORS & EMOJIS =====
+const GC = {
+  'SixTONES':'#4A1472','Snow Man':'#5BA4CF','なにわ男子':'#FF6B9D',
+  'King & Prince':'#C8972A','20th Century':'#1E90FF','NEWS':'#FF8C00',
+  'SUPER EIGHT':'#6B8E23','Hey! Say! JUMP':'#228B22','Kis-My-Ft2':'#00008B',
+  'timelesz':'#008B8B','A.B.C-Z':'#DC143C','WEST.':'#8B008B',
+  'Travis Japan':'#B22222','Aぇ! group':'#DAA520','嵐':'#C71585',
+  'DOMOTO':'#191970','ジュニア':'#8B4513','KinKi Kids':'#1565C0',
+  'ふぉ～ゆ～':'#00897B','STARTO':'#5C6BC0','よにのちゃんねる':'#FF7043',
+  '木村拓哉':'#607D8B','内博貴':'#2E8B57','上田竜也':'#FF4500','中島健人':'#E91E63',
+};
+const GE = {
+  '20th Century':'🦥','NEWS':'📰','SUPER EIGHT':'🐝','Hey! Say! JUMP':'🐺',
+  'Kis-My-Ft2':'🛼','timelesz':'🕰️','A.B.C-Z':'🦐','WEST.':'🌈',
+  'SixTONES':'💎','Snow Man':'⛄️','なにわ男子':'🐙','Travis Japan':'🐯',
+  'Aぇ! group':'🅰️','ジュニア':'⭐','DOMOTO':'👬','嵐':'🌀','King & Prince':'👑',
+  'KinKi Kids':'🌸','ふぉ～ゆ～':'🎭','STARTO':'🌟','よにのちゃんねる':'📺',
+  '木村拓哉':'🎬','内博貴':'🩷','上田竜也':'🦋','中島健人':'💫',
+};
+const gc = g => GC[g] || '#f472b6';
+const ge = g => GE[g] || '🍍';
+
+// ===== MAP =====
+const map = L.map('map',{center:[35.6762,139.6503],zoom:11,zoomControl:false});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+  attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19
+}).addTo(map);
+L.control.zoom({position:'topright'}).addTo(map);
+
+// ===== STATE =====
+let allSpots=[], shownSpots=[], markerMap=new Map(), myMarker=null;
+let filters={group:'',media:'',freshness:''};
+let drawerState='peek';
+let visited=new Set(JSON.parse(localStorage.getItem('v')||'[]'));
+
+// ===== TOAST =====
+let toastT;
+function toast(msg,ms=2500){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove('show'),ms);
+}
+
+// ===== DRAWER =====
+const drawer=document.getElementById('drawer');
+const nmBtn=document.getElementById('near-me-btn');
+
+function snap(state){
+  drawerState=state;
+  drawer.classList.remove('snap-peek','snap-half','snap-full');
+  drawer.classList.add('snap-'+state);
+  nmBtn.style.display = state==='peek' ? '' : 'none';
+}
+
+(function dragDrawer(){
+  const handle=document.getElementById('drawer-handle');
+  let sy=0, st=0, drag=false;
+
+  function getTY(){
+    return new DOMMatrix(getComputedStyle(drawer).transform).m42;
+  }
+  function start(y){ drag=true; sy=y; st=getTY(); drawer.classList.add('dragging'); }
+  function move(y){
+    if(!drag)return;
+    const t=Math.max(0,st+(y-sy));
+    drawer.style.transform=`translateY(${t}px)`;
+  }
+  function end(y){
+    if(!drag)return; drag=false;
+    drawer.classList.remove('dragging'); drawer.style.transform='';
+    const cur=getTY(), vh=window.innerHeight;
+    const pk=vh*.9-80, hf=vh*.45, fl=0;
+    let best=['peek','half','full'].reduce((a,b)=>{
+      const db={peek:Math.abs(cur-pk),half:Math.abs(cur-hf),full:Math.abs(cur-fl)};
+      return db[a]<db[b]?a:b;
+    });
+    const dy=y-sy;
+    if(dy<-70) best=cur<hf?'full':'half';
+    if(dy> 70) best=cur>hf?'peek':'half';
+    snap(best);
+  }
+  handle.addEventListener('touchstart',e=>start(e.touches[0].clientY),{passive:true});
+  handle.addEventListener('touchmove', e=>move(e.touches[0].clientY),{passive:true});
+  handle.addEventListener('touchend',  e=>end(e.changedTouches[0].clientY));
+  handle.addEventListener('mousedown', e=>{
+    start(e.clientY);
+    const mm=e2=>move(e2.clientY);
+    const mu=e2=>{end(e2.clientY);document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);};
+    document.addEventListener('mousemove',mm); document.addEventListener('mouseup',mu);
+  });
+  handle.addEventListener('click',()=>{
+    if(drawerState==='peek') snap('half');
+    else if(drawerState==='half') snap('peek');
+  });
+})();
+
+map.on('click',()=>{ if(drawerState!=='peek') snap('peek'); });
+
+// ===== PINS =====
+function pinIcon(s){
+  const v=visited.has(s.id), cls=v?'visited':(s.freshness_visual||'ripe');
+  const color=gc(s.group_name);
+  return L.divIcon({
+    html:`<div class="pin-wrap"><div class="pin-e ${cls}" style="filter:drop-shadow(0 2px 4px ${color}88)">🍍</div><div class="pin-dot" style="background:${color}"></div></div>`,
+    className:'',iconSize:[36,44],iconAnchor:[18,44],popupAnchor:[0,-44]
+  });
+}
+
+// ===== RENDER =====
+function render(spots){
+  markerMap.forEach(m=>m.remove()); markerMap.clear();
+  spots.forEach(s=>{
+    const m=L.marker([s.lat,s.lng],{icon:pinIcon(s)});
+    const mc={TV:'tag-tv',YouTube:'tag-yt','雑誌':'tag-mag',SNS:'tag-sns'}[s.media_type]||'tag-tv';
+    const dist=s.distance_meters!=null?(s.distance_meters<1000?s.distance_meters+'m':(s.distance_meters/1e3).toFixed(1)+'km'):'';
+    m.bindPopup(`
+      <div class="p-name">${esc(s.name)}${dist?` <span style="color:#f59e0b;font-size:.74rem">${dist}</span>`:''}
+      </div>
+      <div class="p-sub">
+        <span class="tag ${mc}">${esc(s.media_type||'')}</span>
+        <span class="tag" style="background:${gc(s.group_name)}22;color:${gc(s.group_name)}">${esc(s.group_name||s.talent_name||'')}</span>
+      </div>
+      <button class="p-btn" onclick="openModal(${s.id})">✦ 詳細を見る ✦</button>
+    `,{maxWidth:240,minWidth:200});
+    m.addTo(map); markerMap.set(s.id,m);
+  });
+  shownSpots=spots;
+  renderCards(spots);
+  document.getElementById('drawer-count').textContent=`🍍 ${spots.length}件`;
+}
+
+// ===== CARDS =====
+function renderCards(spots){
+  const list=document.getElementById('card-list');
+  const empty=document.getElementById('card-empty');
+  Array.from(list.children).forEach(c=>{if(c!==empty)c.remove();});
+  empty.classList.toggle('on',spots.length===0);
+  spots.forEach(s=>{
+    const color=gc(s.group_name), v=s.freshness_visual||'ripe';
+    const score=s.pineapple_score||50;
+    const fi=v==='fresh'?'🌿':v==='ripe'?'🍍':'🏵️';
+    const fl=v==='fresh'?'フレッシュ（30日以内）':v==='ripe'?'完熟（〜1年）':'ドライパイン（1年以上）';
+    const mc={TV:'s-tag-tv',YouTube:'s-tag-yt','雑誌':'s-tag-mag',SNS:'s-tag-sns'}[s.media_type]||'s-tag-tv';
+    const dist=s.distance_meters!=null?`<span class="s-card-dist">${s.distance_meters<1000?s.distance_meters+'m':(s.distance_meters/1e3).toFixed(1)+'km'}</span>`:'';
+    const card=document.createElement('div');
+    card.className='s-card';
+    card.innerHTML=`
+      <div class="s-card-bar" style="background:${color}"></div>
+      <div class="s-card-thumb" style="background:${color}18">${ge(s.group_name)}</div>
+      <div class="s-card-body">
+        <div class="s-card-top"><div class="s-card-name">${esc(s.name)}</div>${dist}</div>
+        <div class="s-card-tags">
+          <span class="s-tag" style="background:${color};color:#fff;opacity:.92">${esc(s.group_name||'')}</span>
+          <span class="s-tag ${mc}">${esc(s.media_type||'')}</span>
+        </div>
+        <div class="s-card-talent">⭐ ${esc(s.talent_name||'')}</div>
+        <div class="s-card-fresh">
+          <span class="s-fresh-txt">${fi} ${fl}</span>
+          <div class="s-mini-bar"><div class="s-mini-fill ${v}" style="width:${score}%"></div></div>
+        </div>
+      </div>`;
+    card.addEventListener('click',()=>flyTo(s));
+    list.insertBefore(card,empty);
+  });
+}
+
+// ===== FLY TO =====
+function flyTo(s){
+  map.flyTo([s.lat,s.lng],16,{duration:.8});
+  snap('peek');
+  setTimeout(()=>{ const m=markerMap.get(s.id); if(m) m.openPopup(); },900);
+}
+
+// ===== LOAD =====
+async function load(p={}){
+  try{
+    const res=await fetch(`/spots${Object.keys(p).length?'?'+new URLSearchParams(p):''}`);
+    allSpots=await res.json(); render(allSpots);
+  }catch{toast('⚠️ スポット読み込みエラー');}
+}
+
+// ===== NEAR ME =====
+async function searchNearMe(){
+  if(!navigator.geolocation){toast('⚠️ GPSに対応していません');return;}
+  nmBtn.classList.add('loading'); toast('📍 現在地を取得中…',5000);
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    const {latitude:lat,longitude:lng}=pos.coords;
+    if(myMarker) myMarker.remove();
+    myMarker=L.marker([lat,lng],{icon:L.divIcon({html:'<div class="my-pin">🐾</div>',className:'',iconSize:[36,36],iconAnchor:[18,36]})}).addTo(map);
+    map.setView([lat,lng],13);
+    try{
+      const res=await fetch(`/spots/nearby?${new URLSearchParams({lat,lng,radius:5000,...filterParams()})}`);
+      const spots=await res.json(); allSpots=spots; render(spots);
+      toast(spots.length?`🐾 ${spots.length}件見つかった！`:'🍍 半径5km以内にスポットはありません');
+      if(spots.length) snap('half');
+    }catch{toast('⚠️ 検索エラー');}
+    nmBtn.classList.remove('loading');
+  },()=>{ nmBtn.classList.remove('loading'); toast('⚠️ 現在地の取得に失敗しました'); },{timeout:10000});
+}
+
+// ===== SEARCH =====
+let searchT;
+function onSearch(v){
+  clearTimeout(searchT);
+  searchT=setTimeout(()=>{
+    const q=v.trim().toLowerCase();
+    if(q){
+      const f=allSpots.filter(s=>(s.group_name||'').toLowerCase().includes(q)||(s.talent_name||'').toLowerCase().includes(q)||(s.name||'').toLowerCase().includes(q));
+      render(f); showFA(`"${v}" で検索中`); snap('half');
+    }else{
+      render(allSpots); hideFA();
+    }
+  },280);
+}
+
+// ===== FILTER =====
+function filterParams(){
+  const p={};
+  if(filters.group)     p.group=filters.group;
+  if(filters.media)     p.media=filters.media;
+  if(filters.freshness) p.freshness=filters.freshness;
+  return p;
+}
+function openFP(){ document.getElementById('filter-panel').classList.add('on'); document.getElementById('fp-overlay').classList.add('on'); }
+function closeFP(){ document.getElementById('filter-panel').classList.remove('on'); document.getElementById('fp-overlay').classList.remove('on'); }
+async function applyFilter(){
+  closeFP(); await load(filterParams());
+  const pts=[];
+  if(filters.group) pts.push(filters.group);
+  if(filters.media) pts.push(filters.media);
+  if(filters.freshness) pts.push({fresh:'🌿フレッシュ',ripe:'🍍完熟',dry:'🏵️ドライパイン'}[filters.freshness]||filters.freshness);
+  if(pts.length){ showFA(pts.join(' / ')+' でフィルター中'); snap('half'); }
+}
+function resetFilter(){
+  filters={group:'',media:'',freshness:''};
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.chip[data-v=""]').forEach(c=>c.classList.add('active'));
+  document.querySelectorAll('.c-chip').forEach(c=>c.classList.remove('active'));
+  document.getElementById('search-input').value='';
+  hideFA(); load(); closeFP();
+}
+function clearFilter(){ resetFilter(); }
+function showFA(t){ document.getElementById('filter-active-text').textContent=t; document.getElementById('filter-active').classList.add('on'); }
+function hideFA(){ document.getElementById('filter-active').classList.remove('on'); }
+
+document.addEventListener('click',e=>{
+  const c=e.target.closest('.chip');
+  if(!c||!c.dataset.f) return;
+  filters[c.dataset.f]=c.dataset.v;
+  document.querySelectorAll(`.chip[data-f="${c.dataset.f}"]`).forEach(x=>x.classList.remove('active'));
+  c.classList.add('active');
+});
+
+// ===== DEBUT ORDER =====
+const DEBUT_ORDER = [
+  'DOMOTO','KinKi Kids','嵐','NEWS','20th Century','SUPER EIGHT','Hey! Say! JUMP',
+  'Kis-My-Ft2','ふぉ～ゆ～','A.B.C-Z','timelesz','WEST.','SixTONES','Snow Man',
+  'なにわ男子','Travis Japan','Aぇ! group','King & Prince','ジュニア',
+  'よにのちゃんねる','STARTO',
+  '木村拓哉','内博貴','上田竜也','中島健人',
+];
+function sortByDebut(groups){
+  return [...groups].sort((a,b)=>{
+    const ia=DEBUT_ORDER.indexOf(a), ib=DEBUT_ORDER.indexOf(b);
+    if(ia===-1 && ib===-1) return a.localeCompare(b,'ja');
+    if(ia===-1) return 1;
+    if(ib===-1) return -1;
+    return ia-ib;
+  });
+}
+
+// ===== LOAD GROUPS UI =====
+async function loadGroupsUI(){
+  try{
+    const data=await(await fetch('/talents')).json();
+    const groups=sortByDebut(data.groups);
+    // chips in filter panel
+    const cc=document.getElementById('group-chips');
+    const all=Object.assign(document.createElement('button'),{className:'chip active',textContent:'すべて'});
+    all.dataset.f='group'; all.dataset.v=''; cc.appendChild(all);
+    groups.forEach(g=>{
+      const b=Object.assign(document.createElement('button'),{className:'chip',textContent:g});
+      b.dataset.f='group'; b.dataset.v=g; cc.appendChild(b);
+    });
+    // color circles
+    const cr=document.getElementById('color-row');
+    groups.forEach(g=>{
+      const color=gc(g);
+      const div=document.createElement('div');
+      div.className='c-chip'; div.style.setProperty('--dot-color',color);
+      div.innerHTML=`<div class="c-dot" style="background:${color}"></div><span class="c-label">${g}</span>`;
+      div.addEventListener('click',()=>{
+        const on=div.classList.contains('active');
+        document.querySelectorAll('.c-chip').forEach(x=>x.classList.remove('active'));
+        document.getElementById('search-input').value='';
+        if(!on){
+          div.classList.add('active'); filters.group=g;
+          load(filterParams()).then(()=>{ showFA(`${ge(g)} ${g} の聖地`); snap('half'); });
+        }else{
+          filters.group=''; load(filterParams()); hideFA();
+        }
+      });
+      cr.appendChild(div);
+    });
+  }catch(_){}
+}
+
+// ===== MODAL =====
+function openModal(id){
+  const s=shownSpots.find(x=>x.id===id)||allSpots.find(x=>x.id===id);
+  if(!s) return;
+  map.closePopup();
+  document.getElementById('m-name').textContent=s.name;
+  document.getElementById('m-addr').textContent=s.address||'';
+  const v=s.freshness_visual||'ripe', sc=s.pineapple_score||50;
+  const ico=document.getElementById('m-icon');
+  ico.textContent=v==='fresh'?'🌿🍍':v==='ripe'?'🍍':'🏵️'; ico.className='score-icon '+v;
+  const fill=document.getElementById('m-fill');
+  fill.className='score-fill '+v; fill.style.width=sc+'%';
+  const freshnessLabels={fresh:'🌿 フレッシュ（放送から30日以内）',ripe:'🍍 完熟（〜1年前の放送）',dry:'🏵️ ドライパイン（1年以上前の放送）'};
+  document.getElementById('m-score').textContent=freshnessLabels[v]||'';
+  document.getElementById('d-date').textContent=fmtDate(s.broadcast_date);
+  const color=gc(s.group_name);
+  document.getElementById('d-talent').innerHTML=
+    `${s.talent_name?`<span class="tag tag-group">${esc(s.talent_name)}</span>`:''}
+     ${s.group_name?`<span class="tag" style="background:${color}22;color:${color}">${esc(s.group_name)}</span>`:''}`;
+  const mc={TV:'tag-tv',YouTube:'tag-yt','雑誌':'tag-mag',SNS:'tag-sns'}[s.media_type]||'tag-tv';
+  document.getElementById('d-media').innerHTML=`<span class="tag ${mc}">${esc(s.media_type||'')}</span>${s.media_title?` ${esc(s.media_title)}`:''}`;
+  const me=document.getElementById('d-menu');
+  me.innerHTML=s.menu_items
+    ?(s.menu_items.split(/[、,，\n]/).map(x=>x.trim()).filter(Boolean).map(x=>`<div class="m-item">${esc(x)}</div>`).join(''))
+    :'<p style="color:#b08090;font-size:.85rem">メニュー情報なし</p>';
+  document.getElementById('d-access').textContent=s.access_info||'情報なし';
+  document.getElementById('d-maps').href=`https://www.google.com/maps/search/${encodeURIComponent(s.name+' '+(s.address||''))}`;
+  visited.add(s.id); localStorage.setItem('v',JSON.stringify([...visited]));
+  render(shownSpots);
+  tab('who',document.querySelector('.t-btn'));
+  document.getElementById('modal-overlay').classList.add('on');
+}
+function closeModal(e){ if(e.target===document.getElementById('modal-overlay')) document.getElementById('modal-overlay').classList.remove('on'); }
+function tab(name,btn){
+  document.querySelectorAll('.t-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.t-pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('t-'+name).classList.add('active');
+}
+
+// ===== UTILS =====
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtDate(d){ if(!d)return'日付不明'; try{const x=new Date(d);return`${x.getFullYear()}年${x.getMonth()+1}月${x.getDate()}日`;}catch{return d;} }
+
+// ===== INIT =====
+loadGroupsUI();
+load();
+</script>
+</body>
+</html>
