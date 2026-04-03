@@ -10,6 +10,7 @@ class SpotOut(BaseModel):
     lng: float
     talent_name: Optional[str] = None
     group_name: Optional[str] = None
+    group_names: Optional[str] = None  # JSON配列文字列
     media_type: Optional[str] = None
     media_title: Optional[str] = None
     broadcast_date: Optional[str] = None

@@ -11,7 +11,8 @@ class Spot(Base):
     lat = Column(Float, nullable=False)             # 緯度
     lng = Column(Float, nullable=False)             # 経度
     talent_name = Column(String)                    # タレント名
-    group_name = Column(String)                     # グループ名
+    group_name = Column(String)                     # グループ名（主・表示用）
+    group_names = Column(Text)                      # グループ名リスト JSON配列 例: ["Snow Man","なにわ男子"]
     media_type = Column(String)                     # TV / YouTube / 雑誌 / SNS
     media_title = Column(String)                    # 番組名・メディアタイトル
     broadcast_date = Column(String)                 # 放送・掲載日 (YYYY-MM-DD)

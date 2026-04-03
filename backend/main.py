@@ -54,7 +54,10 @@ def nearby_spots(
     if talent:
         query = query.filter(Spot.talent_name.ilike(f"%{talent}%"))
     if group:
-        query = query.filter(Spot.group_name.ilike(f"%{group}%"))
+        query = query.filter(
+            Spot.group_name.ilike(f"%{group}%") |
+            Spot.group_names.ilike(f"%{group}%")
+        )
     if media:
         query = query.filter(Spot.media_type == media)
     if freshness:
@@ -84,7 +87,10 @@ def all_spots(
     if talent:
         query = query.filter(Spot.talent_name.ilike(f"%{talent}%"))
     if group:
-        query = query.filter(Spot.group_name.ilike(f"%{group}%"))
+        query = query.filter(
+            Spot.group_name.ilike(f"%{group}%") |
+            Spot.group_names.ilike(f"%{group}%")
+        )
     if media:
         query = query.filter(Spot.media_type == media)
     if freshness:
