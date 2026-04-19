@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-// @ts-expect-error experimental
+// @ts-ignore experimental
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
 import fs from "node:fs";

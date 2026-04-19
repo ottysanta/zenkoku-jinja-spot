@@ -4,7 +4,7 @@
  * - FastAPI の再起動に依存せず spots テーブルの新カラムを即時返せる
  * - 書き込みは trusted な admin ルートからのみ呼ぶ
  */
-// @ts-expect-error node:sqlite is experimental and not typed in older @types/node
+// @ts-ignore node:sqlite is experimental and not typed in older @types/node
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
 import fs from "node:fs";
@@ -104,7 +104,7 @@ function getDb() {
     // Phase 2d: 市区町村・ユーザー反応
     ["city", "TEXT"],
     ["reaction_count", "INTEGER"],
-    // Phase 2e: 志納受付対応フラグ (宗教法人登録・口座・同意確認済み神社のみ true)
+    // Phase 2e: 志納受付対応フラグ (宗教法亻登録・口座・同意確認済み神社のみ true)
     ["accepts_offerings", "INTEGER"],
   ];
   for (const [col, typ] of needed) {
