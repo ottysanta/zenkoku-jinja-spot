@@ -8,6 +8,11 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // DBファイルをサーバーレス関数バンドルに含める
+  outputFileTracingIncludes: {
+    '/**/*': ['../api/data/**/*', '../../api/data/**/*'],
+  },
+  outputFileTracingRoot: undefined,
   typescript: { ignoreBuildErrors: true },
   eslint: { ignoreDuringBuilds: true },
   experimental: {
