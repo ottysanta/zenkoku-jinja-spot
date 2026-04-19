@@ -186,6 +186,22 @@ export function listSpots(opts: {
   return db.prepare(sql).all(...params) as ShrineRow[];
 }
 
+// ============================== simple memoization ==============================
+// 検索ページで ~20 回呼ばれる facet count 関数を 5 分キャッシュ。
+// 各関数の第1引数 (opts object) を JSON.stringify してキーにする。
+type CacheVal<T> = { v: T; exp: number };
+const _memo = new Map<string, CacheVal<unknown>>();
+const MEMO_TTL = 5 * 60 * 1000;
+function memoize<T>(prefix: string, keyObj: unknown, fn: () => T): T {
+  const k = prefix + ":" + JSON.stringify(keyObj || {});
+  const now = Date.now();
+  const hit = _memo.get(k);
+  if (hit && hit.exp > now) return hit.v as T;
+  const v = fn();
+  _memo.set(k, { v, exp: now + MEMO_TTL });
+  return v;
+}
+
 // ======================================================================
 // 検索（Comfy 参考の「条件(N) | 件数」を返すのに十分な関数群）
 // ======================================================================
@@ -316,18 +332,20 @@ export function facetCountsForBenefits(
   opts: { q?: string; deity?: string; prefecture?: string; shrine_type?: string },
   keys: string[],
 ): Record<string, number> {
-  const out: Record<string, number> = {};
-  for (const b of keys) {
-    const { rows: _rows, total } = searchSpots({
-      ...opts,
-      benefit: b,
-      limit: 1,
-      offset: 0,
-    });
-    void _rows;
-    out[b] = total;
-  }
-  return out;
+  return memoize("benefit", { opts, keys }, () => {
+    const out: Record<string, number> = {};
+    for (const b of keys) {
+      const { rows: _rows, total } = searchSpots({
+        ...opts,
+        benefit: b,
+        limit: 1,
+        offset: 0,
+      });
+      void _rows;
+      out[b] = total;
+    }
+    return out;
+  });
 }
 
 export function facetCountsForShrineType(opts: {
@@ -336,15 +354,17 @@ export function facetCountsForShrineType(opts: {
   deity?: string;
   prefecture?: string;
 }): Array<{ value: string; count: number }> {
-  const db = getDb();
-  const { sql: whereSql, params } = buildSearchWhere(opts);
-  const rows = db
-    .prepare(
-      `SELECT COALESCE(shrine_type,'') AS v, COUNT(*) AS n FROM spots ${whereSql}
-       GROUP BY v ORDER BY n DESC LIMIT 50`,
-    )
-    .all(...params) as { v: string; n: number }[];
-  return rows.filter((r) => r.v).map((r) => ({ value: r.v, count: r.n }));
+  return memoize("shrine_type", opts, () => {
+    const db = getDb();
+    const { sql: whereSql, params } = buildSearchWhere(opts);
+    const rows = db
+      .prepare(
+        `SELECT COALESCE(shrine_type,'') AS v, COUNT(*) AS n FROM spots ${whereSql}
+         GROUP BY v ORDER BY n DESC LIMIT 50`,
+      )
+      .all(...params) as { v: string; n: number }[];
+    return rows.filter((r) => r.v).map((r) => ({ value: r.v, count: r.n }));
+  });
 }
 
 // =====================================================================
