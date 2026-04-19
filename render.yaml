@@ -1,84 +1,19 @@
-# Render デプロイ定義。
-#
-# 構成:
-#   - web 1 本 (FastAPI / uvicorn)
-#   - cron 3 本 (多ソース神社データの定期同期 + 鮮度マーキング)
-#
-# Cron は全て apps/api/scripts/sync_sources.py を呼び出す。引数で source_type と
-# 取得範囲 (bbox / file など) を切り替える。各ソースの詳細は MIGRATION.md の
-# 「Phase 1d 追補: 多ソース神社データ基盤」を参照。
-
+# Render.com deployment config (Next.js + SQLite 対応)
+# 使い方: Render ダッシュボードで New > Blueprint > このリポジトリを選択
 services:
-  # --- Web API -------------------------------------------------------------
   - type: web
-    name: shrine-spots-jp
-    runtime: python
-    rootDir: apps/api
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    name: zenkoku-jinja-spot
+    env: node
+    region: singapore
+    plan: free
+    rootDir: apps/web
+    buildCommand: npm install && npm run build
+    startCommand: npm start
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.12.3
-      # DATABASE_URL は Render ダッシュボードで PostgreSQL インスタンスを
-      # リンクして注入する想定 (Environment Group 経由 or fromDatabase)。
-
-  # --- Cron: OSM 週次同期 --------------------------------------------------
-  # 日本全体の bbox で Overpass API を叩き神社 (shinto=yes + 神社名パターン) を
-  # 取り込む。Sunday 18:00 UTC = Mon 03:00 JST に実行。
-  - type: cron
-    name: shrine-sync-osm-weekly
-    runtime: python
-    rootDir: apps/api
-    schedule: "0 18 * * 0"
-    buildCommand: pip install -r requirements.txt
-    startCommand: >
-      python -m scripts.sync_sources
-      --source osm
-      --bbox 122.93,24.04,145.82,45.55
-      --triggered-by cron
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.12.3
-      # DATABASE_URL は web と同じ DB にリンクすること。
-
-  # --- Cron: Wikidata 週次同期 --------------------------------------------
-  # SPARQL で instance-of=Shinto shrine (Q845945) を取得。OSM と時間をずらす。
-  - type: cron
-    name: shrine-sync-wikidata-weekly
-    runtime: python
-    rootDir: apps/api
-    schedule: "0 19 * * 0"
-    buildCommand: pip install -r requirements.txt
-    startCommand: >
-      python -m scripts.sync_sources
-      --source wikidata
-      --triggered-by cron
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.12.3
-
-  # --- Cron: 鮮度マーキング (日次) ----------------------------------------
-  # last_synced_at が 14 日以上前のレコードを data_freshness_status=stale に昇格。
-  # 外部ソースを呼ばないので低コスト、毎日 15:00 UTC (JST 翌 00:00) に実行。
-  - type: cron
-    name: shrine-mark-stale-daily
-    runtime: python
-    rootDir: apps/api
-    schedule: "0 15 * * *"
-    buildCommand: pip install -r requirements.txt
-    startCommand: >
-      python -m scripts.sync_sources
-      --mark-stale 14
-      --triggered-by cron
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.12.3
-
-# 手動実行が必要なソース:
-#   - mlit : 国土数値情報 DL -> scripts/fetch_mlit.py で整形 -> --source mlit --file ...
-#   - gsi  : 基盤地図 DL -> 整形 -> --source gsi --file ...
-#   - jinjacho : 各都道府県神社庁から取得 -> scripts/fetch_jinjacho.py -> --source jinjacho --file ...
-#   - google_places : NON_PERSISTABLE。cron では走らせない (TOS 準拠、リアルタイム表示のみ)。
-#
-# 上記は bbox 自動取得ができないため、運用者が手動 or ワンショット Job として
-# 必要時に実行する。Render の「Manual Deploy」→ Shell からも叩ける。
+      - key: NODE_VERSION
+        value: "22"
+      - key: SHRINE_DB_URL
+        value: https://github.com/ottysanta/zenkoku-jinja-spot/releases/download/v1.0/shrine_spots.db
+      - key: PORT
+        value: "3030"
+    healthCheckPath: /
