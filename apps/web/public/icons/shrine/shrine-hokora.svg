@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+  <!-- 背景なし。木造社のシルエットで「鳥居とは別物」と一目で区別できるように -->
+  <!-- 屋根（大きな切妻） -->
+  <path d="M4 20 L20 6 L36 20 L32 22 L20 10 L8 22 Z" fill="#6b4423" stroke="#2e1a0a" stroke-width="1.5"/>
+  <!-- 棟 -->
+  <rect x="8" y="19" width="24" height="3" fill="#4a2c14" stroke="#2e1a0a" stroke-width="1"/>
+  <!-- 社殿本体 -->
+  <rect x="10" y="22" width="20" height="13" fill="#d9b382" stroke="#2e1a0a" stroke-width="1.2"/>
+  <!-- 朱の扉 -->
+  <rect x="16" y="25" width="8" height="10" fill="#c9302c" stroke="#2e1a0a" stroke-width="1"/>
+  <line x1="20" y1="25" x2="20" y2="35" stroke="#2e1a0a" stroke-width="1"/>
+  <!-- 石の土台 -->
+  <rect x="7" y="35" width="26" height="3" fill="#9a8a70" stroke="#2e1a0a" stroke-width="1"/>
+</svg>

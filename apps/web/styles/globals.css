@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top:    env(safe-area-inset-top, 0px);
+}
+
+/*
+ * 年配ユーザー向けアクセシビリティ: html の font-size を data-text-size で切替。
+ * rem ベースの Tailwind が全体で追従する。
+ */
+html { font-size: 16px; }
+html[data-text-size="small"]  { font-size: 14px; }
+html[data-text-size="normal"] { font-size: 16px; }
+html[data-text-size="large"]  { font-size: 18px; }
+html[data-text-size="xlarge"] { font-size: 20px; }
+
+/* 大きい文字サイズでは行間を広めに取って読みやすく */
+html[data-text-size="large"] p,
+html[data-text-size="xlarge"] p {
+  line-height: 1.85;
+}
+
+html, body {
+  background: theme('colors.washi');
+  color: theme('colors.ink');
+  font-family: theme('fontFamily.sans');
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 余白主義：和の呼吸を保つ */
+body {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+}
+
+/* 見出しは明朝で厳かに */
+h1, h2, h3, h4 {
+  font-family: theme('fontFamily.serif');
+  color: theme('colors.sumi');
+  letter-spacing: 0.04em;
+}

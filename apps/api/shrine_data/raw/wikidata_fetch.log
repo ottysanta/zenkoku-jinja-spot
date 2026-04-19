@@ -1,0 +1,3 @@
+[wikidata] querying https://query.wikidata.org/sparql...
+[wikidata] raw bindings=20000 elapsed=9s
+[DONE] wrote 10398 unique shrines -> C:\Users\yorido\Documents\Dev\03johnny\apps\api\shrine_data\raw\wikidata_shrines.jsonl

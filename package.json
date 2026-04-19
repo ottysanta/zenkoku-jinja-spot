@@ -1,0 +1,24 @@
+{
+  "name": "shrine-spots-jp",
+  "private": true,
+  "version": "0.2.0",
+  "description": "全国神社スポット — 神社発見・レビュー・奉納のプラットフォーム（モノレポ）",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm --workspace apps/web run dev",
+    "build:web": "npm --workspace apps/web run build",
+    "start:web": "npm --workspace apps/web run start",
+    "dev:api": "cd apps/api && uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f postgres",
+    "types:generate": "cd apps/api && py scripts/export_openapi.py && npm -w @shrine-spots/types run generate:file"
+  },
+  "engines": {
+    "node": ">=20",
+    "npm": ">=10"
+  }
+}

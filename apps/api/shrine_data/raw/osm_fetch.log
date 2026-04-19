@@ -1,0 +1,139 @@
+  [retry] 岩手県 religion attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+[  1%] 1/94 last=北海道(religion) new=925 total_unique=925 elapsed=9s
+  [retry] 岩手県 religion attempt=2 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 15s
+  [retry] 群馬県 religion attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 群馬県 religion attempt=2 err=ServerDisconnectedError: Server disconnected - sleeping 15s
+  [retry] 千葉県 religion attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 千葉県 religion attempt=2 err=ServerDisconnectedError: Server disconnected - sleeping 15s
+  [retry] 岩手県 religion attempt=3 err=RuntimeError: HTTP 504 from https://overpass.kumi.systems/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLI - sleeping 45s
+  [retry] 千葉県 religion attempt=3 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 45s
+  [retry] 新潟県 religion attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 富山県 religion attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [FAIL] 岩手県 religion: Failed after 3 retries: HTTP 504 from https://overpass.kumi.systems/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.
+[ 10%] 10/94 last=群馬県(religion) new=429 total_unique=7360 elapsed=109s
+  [FAIL] 千葉県 religion: Failed after 3 retries: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR
+  [retry] 山梨県 religion attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 山梨県 religion attempt=2 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 15s
+  [retry] 三重県 religion attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 三重県 religion attempt=2 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 15s
+  [retry] 山梨県 religion attempt=3 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 45s
+  [retry] 三重県 religion attempt=3 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 45s
+  [FAIL] 山梨県 religion: Failed after 3 retries: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR
+[ 20%] 19/94 last=山梨県(religion) new=0 total_unique=13698 elapsed=195s
+  [retry] 奈良県 religion attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [FAIL] 三重県 religion: Failed after 3 retries: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR
+[ 30%] 29/94 last=奈良県(religion) new=464 total_unique=21526 elapsed=211s
+  [retry] 岡山県 religion attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 広島県 religion attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 広島県 religion attempt=2 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 15s
+  [retry] 長崎県 religion attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 大分県 religion attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 大分県 religion attempt=2 err=ServerDisconnectedError: Server disconnected - sleeping 15s
+  [retry] 宮崎県 religion attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+[ 40%] 38/94 last=愛媛県(religion) new=554 total_unique=25366 elapsed=251s
+  [retry] 沖縄県 religion attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 大分県 religion attempt=3 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 45s
+  [retry] 北海道 broad attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 宮崎県 religion attempt=2 err=RuntimeError: HTTP 504 from https://overpass.kumi.systems/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLI - sleeping 15s
+  [retry] 宮崎県 religion attempt=3 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 45s
+  [FAIL] 大分県 religion: Failed after 3 retries: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR
+  [FAIL] 宮崎県 religion: Failed after 3 retries: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR
+[ 50%] 47/94 last=沖縄県(religion) new=59 total_unique=27328 elapsed=358s
+  [retry] 秋田県 broad attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 茨城県 broad attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 東京都 broad attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+[ 60%] 57/94 last=群馬県(broad) new=6 total_unique=27752 elapsed=529s
+  [retry] 富山県 broad attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 富山県 broad attempt=2 err=ServerDisconnectedError: Server disconnected - sleeping 15s
+[ 70%] 66/94 last=山梨県(broad) new=162 total_unique=29193 elapsed=689s
+  [retry] 三重県 broad attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 三重県 broad attempt=2 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 15s
+  [retry] 和歌山県 broad attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 奈良県 broad attempt=1 err=RuntimeError: HTTP 504 from https://overpass.kumi.systems/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLI - sleeping 5s
+  [retry] 奈良県 broad attempt=2 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 15s
+  [retry] 奈良県 broad attempt=3 err=RuntimeError: HTTP 504 from https://overpass.kumi.systems/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLI - sleeping 45s
+  [FAIL] 奈良県 broad: Failed after 3 retries: HTTP 504 from https://overpass.kumi.systems/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.
+[ 80%] 76/94 last=奈良県(broad) new=0 total_unique=29744 elapsed=919s
+  [retry] 山口県 broad attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 山口県 broad attempt=2 err=ServerDisconnectedError: Server disconnected - sleeping 15s
+  [retry] 香川県 broad attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 愛媛県 broad attempt=1 err=RuntimeError: HTTP 504 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+[ 90%] 85/94 last=愛媛県(broad) new=6 total_unique=29813 elapsed=1037s
+  [retry] 熊本県 broad attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 大分県 broad attempt=1 err=RuntimeError: HTTP 429 from https://overpass-api.de/api/interpreter: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-// - sleeping 5s
+  [retry] 長崎県 broad attempt=1 err=TimeoutError:  - sleeping 5s
+  [retry] 大分県 broad attempt=2 err=TimeoutError:  - sleeping 15s
+  [retry] 宮崎県 broad attempt=1 err=TimeoutError:  - sleeping 5s
+  [retry] 大分県 broad attempt=3 err=ClientConnectorDNSError: Cannot connect to host overpass.kumi.systems:443 ssl:default [getaddrinfo failed] - sleeping 45s
+  [retry] 長崎県 broad attempt=2 err=ClientConnectorDNSError: Cannot connect to host overpass.kumi.systems:443 ssl:default [getaddrinfo failed] - sleeping 15s
+  [retry] 宮崎県 broad attempt=2 err=ClientConnectorDNSError: Cannot connect to host overpass-api.de:443 ssl:default [getaddrinfo failed] - sleeping 15s
+  [retry] 長崎県 broad attempt=3 err=ClientConnectorDNSError: Cannot connect to host overpass-api.de:443 ssl:default [getaddrinfo failed] - sleeping 45s
+  [retry] 宮崎県 broad attempt=3 err=ClientConnectorDNSError: Cannot connect to host overpass.kumi.systems:443 ssl:default [getaddrinfo failed] - sleeping 45s
+  [FAIL] 大分県 broad: Failed after 3 retries: Cannot connect to host overpass.kumi.systems:443 ssl:default [getaddrinfo failed]
+  [retry] 鹿児島県 broad attempt=1 err=ClientConnectorDNSError: Cannot connect to host overpass-api.de:443 ssl:default [getaddrinfo failed] - sleeping 5s
+  [retry] 鹿児島県 broad attempt=2 err=ClientConnectorDNSError: Cannot connect to host overpass.kumi.systems:443 ssl:default [getaddrinfo failed] - sleeping 15s
+  [FAIL] 長崎県 broad: Failed after 3 retries: Cannot connect to host overpass-api.de:443 ssl:default [getaddrinfo failed]
+  [FAIL] 宮崎県 broad: Failed after 3 retries: Cannot connect to host overpass.kumi.systems:443 ssl:default [getaddrinfo failed]
+  [retry] 沖縄県 broad attempt=1 err=ClientConnectorDNSError: Cannot connect to host overpass-api.de:443 ssl:default [getaddrinfo failed] - sleeping 5s
+  [retry] 鹿児島県 broad attempt=3 err=ClientConnectorDNSError: Cannot connect to host overpass.kumi.systems:443 ssl:default [getaddrinfo failed] - sleeping 45s
+  [retry] 沖縄県 broad attempt=2 err=ClientConnectorDNSError: Cannot connect to host overpass-api.de:443 ssl:default [getaddrinfo failed] - sleeping 15s
+  [retry] 沖縄県 broad attempt=3 err=ClientConnectorDNSError: Cannot connect to host overpass.kumi.systems:443 ssl:default [getaddrinfo failed] - sleeping 45s
+  [FAIL] 鹿児島県 broad: Failed after 3 retries: Cannot connect to host overpass.kumi.systems:443 ssl:default [getaddrinfo failed]
+  [FAIL] 沖縄県 broad: Failed after 3 retries: Cannot connect to host overpass.kumi.systems:443 ssl:default [getaddrinfo failed]
+[100%] 94/94 last=沖縄県(broad) new=0 total_unique=29836 elapsed=1709s
+[DONE] wrote 29836 records -> C:\Users\yorido\Documents\Dev\03johnny\apps\api\shrine_data\raw\osm_full.jsonl (by type: {'node': 15858, 'way': 13899, 'relation': 79}) elapsed=1722s

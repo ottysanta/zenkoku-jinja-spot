@@ -1,0 +1,74 @@
+{
+  "common": {
+    "appName": "Shrine Map of Japan",
+    "home": "Home",
+    "search": "Search",
+    "save": "Save",
+    "back": "Back",
+    "close": "Close",
+    "loading": "Loading…",
+    "openMap": "Open map",
+    "clear": "Clear"
+  },
+  "nav": {
+    "map": "Map",
+    "learn": "Learn",
+    "mypage": "My Page",
+    "admin": "Admin"
+  },
+  "legend": {
+    "title": "Legend (icon size = shrine scale)",
+    "bigShrine": "Major shrine",
+    "normalShrine": "Standard shrine",
+    "smallShrine": "Small shrine (map data only)",
+    "hokora": "Hokora / auxiliary shrine",
+    "cluster": "Cluster (tap to expand)",
+    "open": "Open legend"
+  },
+  "map": {
+    "currentLocation": "My location",
+    "nearbyShrines": "Nearby shrines",
+    "registeredCount": "{count} shrines indexed",
+    "detailLoading": "Loading detail…",
+    "loadingCount": "Loading…",
+    "back": "← Home",
+    "moreSearch": "Advanced search",
+    "acquiring": "Locating…",
+    "permissionNeeded": "Location permission required",
+    "insecureOrigin": "Access via HTTPS to use location",
+    "unavailable": "Location unavailable",
+    "timeout": "Timed out",
+    "openLegend": "Open legend"
+  },
+  "shrine": {
+    "officialSite": "Official site",
+    "access": "Access",
+    "enshrinedDeity": "Enshrined deity",
+    "founded": "Founded",
+    "shrineRank": "Rank",
+    "goshuin": "Goshuin",
+    "bookmarkWant": "Want to visit",
+    "bookmarkSaved": "Saved",
+    "bookmarkVisited": "Visited"
+  },
+  "search": {
+    "title": "Find a shrine",
+    "placeholder": "Search by name, address, or benefit",
+    "submit": "Search",
+    "benefits": "Benefit",
+    "deity": "Deity",
+    "deityPlaceholder": "e.g. Amaterasu",
+    "prefecture": "Prefecture",
+    "applied": "Filters",
+    "any": "—",
+    "noResults": "No shrines matched your query.",
+    "emptyHint": "Enter a keyword, or pick a benefit / deity / prefecture.",
+    "resultCount": "{count} shrines found",
+    "noPhoto": "No photo",
+    "viewOnMap": "View on map"
+  },
+  "locale": {
+    "ja": "日本語",
+    "en": "English"
+  }
+}

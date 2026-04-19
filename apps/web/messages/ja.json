@@ -1,0 +1,74 @@
+{
+  "common": {
+    "appName": "全国神社スポット",
+    "home": "トップ",
+    "search": "検索",
+    "save": "保存",
+    "back": "戻る",
+    "close": "閉じる",
+    "loading": "読み込み中…",
+    "openMap": "地図を開く",
+    "clear": "クリア"
+  },
+  "nav": {
+    "map": "地図",
+    "learn": "学ぶ",
+    "mypage": "マイページ",
+    "admin": "管理"
+  },
+  "legend": {
+    "title": "凡例（アイコンの大きさ＝神社の規模）",
+    "bigShrine": "大きな神社（主要神社）",
+    "normalShrine": "普通の神社",
+    "smallShrine": "小さな神社（地図のみ）",
+    "hokora": "祠・末社（ほこら）",
+    "cluster": "近くの神社をまとめた印",
+    "open": "凡例を開く"
+  },
+  "map": {
+    "currentLocation": "現在地",
+    "nearbyShrines": "近くの神社",
+    "registeredCount": "登録 {count} 社",
+    "detailLoading": "詳細取得中…",
+    "loadingCount": "読み込み中…",
+    "back": "← トップ",
+    "moreSearch": "詳しく探す",
+    "acquiring": "取得中…",
+    "permissionNeeded": "位置情報の許可が必要",
+    "insecureOrigin": "HTTPS でアクセスしてください",
+    "unavailable": "位置情報が取得できません",
+    "timeout": "タイムアウト",
+    "openLegend": "凡例を開く"
+  },
+  "shrine": {
+    "officialSite": "公式サイト",
+    "access": "アクセス",
+    "enshrinedDeity": "御祭神",
+    "founded": "創建",
+    "shrineRank": "社格",
+    "goshuin": "御朱印",
+    "bookmarkWant": "行きたい",
+    "bookmarkSaved": "保存済み",
+    "bookmarkVisited": "参拝済み"
+  },
+  "search": {
+    "title": "神社を探す",
+    "placeholder": "神社名・住所・ご利益で探す",
+    "submit": "検索",
+    "benefits": "ご利益",
+    "deity": "御祭神",
+    "deityPlaceholder": "例: 天照大御神",
+    "prefecture": "都道府県",
+    "applied": "適用中",
+    "any": "—",
+    "noResults": "該当する神社が見つかりませんでした。",
+    "emptyHint": "検索語・ご利益・祭神・都道府県のいずれかを指定してください。",
+    "resultCount": "{count} 件の神社が見つかりました",
+    "noPhoto": "写真なし",
+    "viewOnMap": "地図で見る"
+  },
+  "locale": {
+    "ja": "日本語",
+    "en": "English"
+  }
+}

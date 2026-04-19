@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <!-- 放射状の金の光線（「主要神社」を一目で） -->
+  <g stroke="#d4a017" stroke-width="2.5" stroke-linecap="round" opacity="0.85">
+    <line x1="40" y1="3"  x2="40" y2="11"/>
+    <line x1="40" y1="69" x2="40" y2="77"/>
+    <line x1="3"  y1="40" x2="11" y2="40"/>
+    <line x1="69" y1="40" x2="77" y2="40"/>
+    <line x1="14" y1="14" x2="20" y2="20"/>
+    <line x1="60" y1="20" x2="66" y2="14"/>
+    <line x1="14" y1="66" x2="20" y2="60"/>
+    <line x1="60" y1="60" x2="66" y2="66"/>
+  </g>
+  <!-- 金色バッジ本体 -->
+  <circle cx="40" cy="40" r="28" fill="#f5d680" stroke="#b8860b" stroke-width="2"/>
+  <circle cx="40" cy="40" r="24" fill="#fbf3d4" stroke="#d4a017" stroke-width="1.5"/>
+  <!-- 朱鳥居：笠木（強い反り） -->
+  <path d="M14 26 Q40 16 66 26 L66 31 Q40 21 14 31 Z" fill="#c9302c" stroke="#5a1a16" stroke-width="1.4"/>
+  <!-- 島木 -->
+  <rect x="16" y="31" width="48" height="4.5" fill="#c9302c" stroke="#5a1a16" stroke-width="1.2"/>
+  <!-- 額束（金） -->
+  <rect x="36" y="35.5" width="8" height="7" fill="#d4a017" stroke="#5a1a16" stroke-width="1.2"/>
+  <!-- 貫 -->
+  <rect x="18" y="43" width="44" height="3.5" fill="#c9302c" stroke="#5a1a16" stroke-width="1"/>
+  <!-- 左柱 -->
+  <rect x="19" y="31" width="6" height="32" fill="#c9302c" stroke="#5a1a16" stroke-width="1.2"/>
+  <!-- 右柱 -->
+  <rect x="55" y="31" width="6" height="32" fill="#c9302c" stroke="#5a1a16" stroke-width="1.2"/>
+  <!-- 柱脚（石） -->
+  <rect x="17" y="63" width="10" height="3.5" fill="#3a2a1a"/>
+  <rect x="53" y="63" width="10" height="3.5" fill="#3a2a1a"/>
+</svg>

@@ -1,11 +1,61 @@
+# Env
 .env
+.env.local
+.env.*.local
+
+# Python
 __pycache__/
 *.pyc
 *.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+next-env.d.ts
+.turbo/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Project data
+apps/api/data/faiss_index.bin
+apps/api/data/items.db
 backend/data/faiss_index.bin
 backend/data/items.db
-*.pyc
-*.pyo
-__pycache__/
+apps/api/uploads/*
+!apps/api/uploads/.gitkeep
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Build artifacts
 *.bin
 *.index
+server.log
+web.log
+api.log
+
+# SQLite DB (運用データは Git 外で管理)
+apps/api/data/*.db
+apps/api/data/*.db-journal
+apps/api/data/*.db-wal
+apps/api/data/*.db-shm
+backend/data/*.db
+
+# 大きな GeoJSON 原本 (簡略化版は commit する)
+apps/web/public/japan-prefectures.geojson
+
+# デバッグ用一時ファイル
+_check_*.py
+_map_*.png
+_api_*.json
+MIGRATION.md
+
+# pnpm / npm lock の親は残す
+.npmrc

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- 背景なし、朱鳥居だけのシンプルなシルエット -->
+  <!-- 笠木 -->
+  <path d="M4 14 Q24 7 44 14 L44 18 Q24 11 4 18 Z" fill="#c9302c" stroke="#5a1a16" stroke-width="1.5"/>
+  <!-- 島木 -->
+  <rect x="6" y="18" width="36" height="3" fill="#c9302c" stroke="#5a1a16" stroke-width="1"/>
+  <!-- 貫 -->
+  <rect x="8" y="26" width="32" height="2.5" fill="#c9302c" stroke="#5a1a16" stroke-width="1"/>
+  <!-- 左柱 -->
+  <rect x="10" y="21" width="5" height="22" fill="#c9302c" stroke="#5a1a16" stroke-width="1"/>
+  <!-- 右柱 -->
+  <rect x="33" y="21" width="5" height="22" fill="#c9302c" stroke="#5a1a16" stroke-width="1"/>
+  <!-- 柱脚（石） -->
+  <rect x="8" y="43" width="9" height="3" fill="#3a2a1a"/>
+  <rect x="31" y="43" width="9" height="3" fill="#3a2a1a"/>
+</svg>

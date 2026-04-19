@@ -1,0 +1,49 @@
+# Phase 1a 以降で利用する Postgres。
+# 現状の SQLite (apps/api/data/shrine_spots.db) と並走可能で、
+# DATABASE_URL を切り替えるだけで移行できる。
+#
+#   docker compose up -d postgres
+#   # .env の DATABASE_URL=postgresql+psycopg://shrine:shrine@localhost:5432/shrine
+#
+# PostGIS は距離検索 (ST_DWithin) を将来使うために初手から採用。
+# pgAdmin は docker compose --profile admin up -d で起動。
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: shrine-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       ${POSTGRES_DB:-shrine}
+      POSTGRES_USER:     ${POSTGRES_USER:-shrine}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-shrine}
+      TZ: Asia/Tokyo
+    ports:
+      - "5432:5432"
+    volumes:
+      - shrine-postgres-data:/var/lib/postgresql/data
+      - ./ops/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  pgadmin:
+    profiles: ["admin"]
+    image: dpage/pgadmin4:8.12
+    container_name: shrine-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL:    ${PGADMIN_EMAIL:-admin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  shrine-postgres-data:
+    driver: local
