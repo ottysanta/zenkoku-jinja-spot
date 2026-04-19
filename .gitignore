@@ -51,6 +51,12 @@ backend/data/*.db
 # 大きな GeoJSON 原本 (簡略化版は commit する)
 apps/web/public/japan-prefectures.geojson
 
+# Release 用にコピーされた DB (一時的)。Release アセット経由で配布。
+apps/web/public/shrine_spots.db
+apps/web/public/shrine_spots.db-journal
+apps/web/public/shrine_spots.db-wal
+apps/web/public/shrine_spots.db-shm
+
 # デバッグ用一時ファイル
 _check_*.py
 _map_*.png
