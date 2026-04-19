@@ -72,16 +72,6 @@ function runSearchSSR(params: SearchParams & { accepts_offerings?: boolean; page
   rows: Spot[];
   total: number;
 } {
-  const hasAny = !!(
-    params.q ||
-    params.benefit ||
-    params.deity ||
-    params.prefecture ||
-    params.city ||
-    params.shrine_type ||
-    params.accepts_offerings
-  );
-  if (!hasAny) return { rows: [], total: 0 };
   try {
     const offset = Math.max(0, (params.page - 1) * PAGE_SIZE);
     const { rows, total } = searchSpots({
