@@ -9,7 +9,7 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   experimental: {
-    typedRoutes: true,
+    // typedRoutes: true, // Vercel build で dynamic href が弾かれるので一旦 OFF
   },
   // 開発中は FastAPI (port 8000) へプロキシし、同一オリジン感覚で /spots, /uploads を叩ける
   async rewrites() {
