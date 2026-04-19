@@ -91,6 +91,25 @@ export default function MapProvider({
   return (
     <div className={className ?? "relative h-full w-full"}>
       <div ref={containerRef} className="h-full w-full" />
+      {/* maplibre-gl.css が Next.js ビルドで剥がれた場合の保険 */}
+      <style>{`
+        .maplibregl-map { position: relative; overflow: hidden; }
+        .maplibregl-canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .maplibregl-canvas-container.maplibregl-interactive { cursor: grab; }
+        .maplibregl-canvas { position: absolute; top: 0; left: 0; }
+        .maplibregl-canvas:focus { outline: none; }
+        .maplibregl-control-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 2; }
+        .maplibregl-control-container > * { pointer-events: auto; }
+        .maplibregl-ctrl-top-right, .maplibregl-ctrl-bottom-right { position: absolute; right: 10px; }
+        .maplibregl-ctrl-top-right { top: 10px; }
+        .maplibregl-ctrl-bottom-right { bottom: 10px; }
+        .maplibregl-ctrl-top-left, .maplibregl-ctrl-bottom-left { position: absolute; left: 10px; }
+        .maplibregl-ctrl-top-left { top: 10px; }
+        .maplibregl-ctrl-bottom-left { bottom: 10px; }
+        .maplibregl-ctrl { background: rgba(255,255,255,0.95); border-radius: 4px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); }
+        .maplibregl-ctrl-group button { width: 30px; height: 30px; background: transparent; border: 0; cursor: pointer; display: block; }
+      `}</style>
+
       {/* 初期ロード中のスケルトン。タイル画像が載るまでに数秒かかることがあるので
           何も見えない真っ白な状態を避けるためのカバー */}
       {!ready ? (
