@@ -69,16 +69,36 @@ export function extractCity(
 let _db: InstanceType<typeof DatabaseSync> | null = null;
 
 function resolveDbPath(): string {
-  // apps/web から見た相対: ../api/data/shrine_spots.db
+  // apps/web から見た相対 + Vercel サーバーレスの可能性のあるパス + /tmp fallback
   const candidates = [
     process.env.SHRINE_DB_PATH,
     path.resolve(process.cwd(), "../api/data/shrine_spots.db"),
     path.resolve(process.cwd(), "apps/api/data/shrine_spots.db"),
+    "/var/task/apps/api/data/shrine_spots.db",
+    "/var/task/api/data/shrine_spots.db",
+    "/tmp/shrine_spots.db",
   ].filter(Boolean) as string[];
   for (const p of candidates) {
     if (fs.existsSync(p)) return p;
   }
-  throw new Error("shrine_spots.db not found. Set SHRINE_DB_PATH env.");
+  // Fallback: download from SHRINE_DB_URL to /tmp (Vercel serverless cold-start path)
+  const url = process.env.SHRINE_DB_URL;
+  if (url) {
+    const dest = "/tmp/shrine_spots.db";
+    try {
+      const { execSync } = require("node:child_process");
+      console.log(`[shrine-db] downloading ${url} -> ${dest}`);
+      execSync(`curl -sL --max-time 60 -o "${dest}" "${url}"`, { stdio: "ignore" });
+      if (fs.existsSync(dest)) {
+        const size = fs.statSync(dest).size;
+        console.log(`[shrine-db] downloaded ${(size/1024/1024).toFixed(1)}MB`);
+        return dest;
+      }
+    } catch (e) {
+      console.error("[shrine-db] fallback download failed:", e);
+    }
+  }
+  throw new Error("shrine_spots.db not found. Set SHRINE_DB_PATH or SHRINE_DB_URL env.");
 }
 
 function getDb() {
