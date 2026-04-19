@@ -8,6 +8,7 @@
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
 import fs from "node:fs";
+import { execSync } from "node:child_process";
 
 export type ShrineRow = {
   id: number;
@@ -86,7 +87,6 @@ function resolveDbPath(): string {
   if (url) {
     const dest = "/tmp/shrine_spots.db";
     try {
-      const { execSync } = require("node:child_process");
       console.log(`[shrine-db] downloading ${url} -> ${dest}`);
       execSync(`curl -sL --max-time 60 -o "${dest}" "${url}"`, { stdio: "ignore" });
       if (fs.existsSync(dest)) {
