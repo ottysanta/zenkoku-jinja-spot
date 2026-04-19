@@ -49,14 +49,14 @@ export default function MapProvider({
       zoom: initialZoom,
       attributionControl: { compact: true },
     });
-    m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+    m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
     m.addControl(
       new maplibregl.GeolocateControl({
         positionOptions: { enableHighAccuracy: true },
         trackUserLocation: true,
         showUserHeading: true,
       }),
-      "top-right",
+      "bottom-right",
     );
     const onLoad = () => setReady(true);
     m.once("load", onLoad);
