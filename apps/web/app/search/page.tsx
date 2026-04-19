@@ -570,11 +570,7 @@ export default async function SearchPage({
         </section>
       </aside>
 
-      {!hasQuery ? (
-        <section className="rounded-md border border-dashed border-border bg-washi/60 p-6 text-center text-sm text-sumi/70">
-          検索語・ご利益・祭神・都道府県のいずれかを指定してください。
-        </section>
-      ) : results.length === 0 ? (
+      {results.length === 0 ? (
         <section className="rounded-md border border-dashed border-border bg-washi/60 p-6 text-center text-sm text-sumi/70">
           {t("noResults")}
         </section>
