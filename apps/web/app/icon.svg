@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#F5EFE2"/>
+  <g fill="#C9302C">
+    <!-- 笠木 (top lintel, curved ends) -->
+    <path d="M6 14 L58 14 L54 10 L10 10 Z"/>
+    <!-- 島木 (second horizontal) -->
+    <rect x="10" y="16" width="44" height="4"/>
+    <!-- 貫 (middle horizontal) -->
+    <rect x="14" y="26" width="36" height="3.5"/>
+    <!-- 柱 (left pillar) -->
+    <path d="M17 20 L17 54 L15 58 L22 58 L22 20 Z"/>
+    <!-- 柱 (right pillar) -->
+    <path d="M47 20 L47 54 L49 58 L42 58 L42 20 Z"/>
+  </g>
+</svg>
