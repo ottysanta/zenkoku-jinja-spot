@@ -1,0 +1,41 @@
+神社プラットフォーム大規模刷新: 46,180社 / Comfy参考UI / 受付対応明示
+
+データ:
+- 全国 46,180 社を収録 (OSM 29,445 + Wikipedia 3,187 + Wikidata 16,750 + manual 31)
+- 写真付き 10,126 社 / 概要付き 16,595 社 / 市区町村 46,133 社 (99.8%)
+- 公式サイトURL 2,177 社 / 祭神・創建・文化財 8,314 社
+- 海外神社(台湾等)を bbox 判定で除去 (-46社)
+
+バックエンド:
+- Next.js Route Handler 化で FastAPI 非依存 (/api/spots, /api/search, /api/search-facets, /api/prefecture-counts)
+- SQLite 直読の lib/shrine-db.ts (node:sqlite)
+- 管理用エンドポイント: bulk-import / enrich-wikipedia / backfill-city / infer-city-knn / fix-prefectures-by-coords / cleanup-foreign / update-wikidata-props / update-websites / seed-offering-flags / simplify-geojson / download-japan-geojson
+- Spot モデルに photo_url / description / history / highlights / city / accepts_offerings / reaction_count 追加
+
+UI (Comfy 参考):
+- AppBar: 文字サイズ切替 (小/中/大/特大) + メニュー + 言語切替
+- 動的件数バッジ 条件(N) | XX,XXX 社
+- 削除可能フィルタチップ / すべて解除
+- 地図/一覧トグル
+- 件数付きファセット (ご利益/形式/都道府県/市区町村) + ヒストグラム風バー
+- 距離ヒストグラムレンジスライダー
+- 都道府県 GeoJSON ポリゴンヒートマップ
+- /shrines/[slug] をヒーロー写真 + スペックピル + サイドバー構成に刷新
+- Wikimedia Commons 名前検索フォールバック + 鳥居 SVG プレースホルダ + Street View 外部リンク
+- 画像フルスクリーンライトボックス
+- 検索ページネーション (48件/ページ)
+- FAQPage JSON-LD + PlaceOfWorship JSON-LD
+
+機能:
+- マイページ (/me): 閲覧履歴 / ブックマーク / 参拝履歴 (匿名 client_id ベース)
+- 注目ユーザー: いいね / 参考になった 累計ランキング
+- checkin_reactions テーブル新設
+- オンライン志納 受付対応/非対応バッジ + /offerings/shrines 一覧
+- /offerings 全面刷新: Stripe 文言削除、宗教法人要件・送金フロー・FAQ明示
+
+学習/SEO:
+- /learn/etiquette /learn/deities /learn/goshuin /learn/history 4記事新設
+- 神社詳細に FAQ・関連神社・近くの神社セクション
+- city SEO ランディング (都道府県+市区町村で絞り込み可能)
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
