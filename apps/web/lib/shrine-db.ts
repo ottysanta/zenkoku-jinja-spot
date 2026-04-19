@@ -131,13 +131,15 @@ function getDb() {
   try {
     const JP_BBOX = { minLat: 20, maxLat: 46, minLng: 122, maxLng: 154 };
     _db.exec(`DELETE FROM spots WHERE lat < ${JP_BBOX.minLat} OR lat > ${JP_BBOX.maxLat} OR lng < ${JP_BBOX.minLng} OR lng > ${JP_BBOX.maxLng}`);
-    // 朝鮮半島 (33-43N, 124-131E) から九州 (29-34N, 128-131E) を除外
-    _db.exec(`DELETE FROM spots WHERE lat BETWEEN 34.2 AND 43 AND lng BETWEEN 124 AND 129`);
-    _db.exec(`DELETE FROM spots WHERE lat BETWEEN 38 AND 43 AND lng BETWEEN 124 AND 131`);
-    // 台湾 (21-26N, 119-123E)
+    // 地理ルール: 緯度と経度から日本外を検出
+    // lat > 34 かつ lng < 128 → 朝鮮半島・満州・中国北部 (九州 lat < 34 なので誤削除なし)
+    _db.exec(`DELETE FROM spots WHERE lat > 34 AND lng < 128`);
+    // lat > 46 (稚内以北) or lat < 20 (沖ノ鳥島以南)
+    _db.exec(`DELETE FROM spots WHERE lat > 46 OR lat < 20`);
+    // 台湾 (20-27N, 119-123E)
     _db.exec(`DELETE FROM spots WHERE lat BETWEEN 20 AND 26.5 AND lng BETWEEN 119 AND 123.5`);
-    // 名前ベースの外国神社削除 (地名/固有名詞ヒント)
-    const foreignKeywords = ['平壌','京城','釜山','ソウル','朝鮮神宮','朝鮮総督','台湾神社','樺太','関東神宮','北京','上海','満洲','マニラ','南洋','パラオ','シンガポール','香港','花蓮','台北','高雄'];
+    // 名前ベースの外国神社削除 (植民地時代の地名含む)
+    const foreignKeywords = ['平壌','京城','釜山','ソウル','朝鮮神宮','朝鮮総督','台湾神社','樺太','関東神宮','北京','上海','満洲','満州','マニラ','南洋','パラオ','シンガポール','香港','花蓮','台北','高雄','奉天','新京','旅順','大連','哈爾浜','ハルビン','長春','承徳','フィリピン','ジャワ','ボルネオ','サイパン','ミクロネシア','マーシャル','グアム','スラバヤ','バンコク','クアラルンプール','ビルマ'];
     for (const kw of foreignKeywords) {
       try { _db.exec(`DELETE FROM spots WHERE name LIKE '%${kw}%'`); } catch {}
     }
