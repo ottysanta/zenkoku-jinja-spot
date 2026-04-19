@@ -66,8 +66,20 @@ export default function MapProvider({
     const fallbackTimer = setTimeout(() => setReady(true), 5000);
     mapRef.current = m;
 
+    // 初期ロード時に container のレイアウトが確定する前に map が作成されると
+    // MapLibre が viewport を h:0 と誤認識してタイルをロードしない。
+    // ResizeObserver で container のサイズ変化を監視し、都度 resize を呼ぶ。
+    const ro = new ResizeObserver(() => { try { m.resize(); } catch {} });
+    ro.observe(containerRef.current);
+    // さらに setTimeout で多段 resize (念のため)
+    const resizeTimers = [50, 250, 1000, 2500].map((ms) =>
+      setTimeout(() => { try { m.resize(); } catch {} }, ms)
+    );
+
     return () => {
       clearTimeout(fallbackTimer);
+      resizeTimers.forEach(clearTimeout);
+      ro.disconnect();
       setReady(false);
       mapRef.current = null;
       m.remove();
