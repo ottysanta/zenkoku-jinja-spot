@@ -67,7 +67,11 @@ export default function MapLeaflet() {
           return;
         }
         const L = window.L;
-        const map = L.map(containerRef.current, { preferCanvas: true }).setView([36.2, 137.0], 5);
+        const map = L.map(containerRef.current, {
+          preferCanvas: true,
+          zoomControl: false,
+        }).setView([36.2, 137.0], 5);
+        L.control.zoom({ position: "bottomright" }).addTo(map);
         L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
           maxZoom: 19,
