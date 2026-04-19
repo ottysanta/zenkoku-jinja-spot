@@ -77,7 +77,7 @@ export default function MapProvider({
   }, []);
 
   return (
-    <div className={className ?? "absolute inset-0"}>
+    <div className={className ?? "relative h-full w-full"}>
       <div ref={containerRef} className="h-full w-full" />
       {/* 初期ロード中のスケルトン。タイル画像が載るまでに数秒かかることがあるので
           何も見えない真っ白な状態を避けるためのカバー */}
