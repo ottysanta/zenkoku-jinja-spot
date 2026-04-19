@@ -79,10 +79,22 @@ export default function MapLeaflet() {
         mapRef.current = map;
         setStatus("ready");
 
-        // 神社データを取得してクラスタ表示
-        const res = await fetch("/api/spots/geojson");
-        if (!res.ok) return;
-        const geojson = await res.json();
+        // 神社データを取得してクラスタ表示 (失敗時は最大3回リトライ)
+        async function fetchGeoJson(): Promise<any> {
+          for (let i = 0; i < 3; i++) {
+            try {
+              const r = await fetch("/api/spots/geojson", { cache: "no-store" });
+              if (!r.ok) throw new Error("status " + r.status);
+              const text = await r.text();
+              return JSON.parse(text);
+            } catch (e) {
+              console.warn("[MapLeaflet] fetch retry " + (i + 1), e);
+              await new Promise((res) => setTimeout(res, 1500 * (i + 1)));
+            }
+          }
+          throw new Error("geojson fetch failed after retries");
+        }
+        const geojson = await fetchGeoJson();
         if (cancelled) return;
         const features = (geojson && geojson.features) || [];
         setTotal(features.length);
