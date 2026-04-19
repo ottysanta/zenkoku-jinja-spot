@@ -127,6 +127,13 @@ function getDb() {
     // Phase 2e: 志納受付対応フラグ (宗教法亻登録・口座・同意確認済み神社のみ true)
     ["accepts_offerings", "INTEGER"],
   ];
+  // 起動時に日本外の神社 (台湾の花蓮県など) を削除
+  try {
+    const JP_BBOX = { minLat: 20, maxLat: 46, minLng: 122, maxLng: 154 };
+    _db.exec(`DELETE FROM spots WHERE lat < ${JP_BBOX.minLat} OR lat > ${JP_BBOX.maxLat} OR lng < ${JP_BBOX.minLng} OR lng > ${JP_BBOX.maxLng}`);
+    _db.exec(`UPDATE spots SET prefecture = NULL WHERE prefecture = '花蓮県' OR prefecture LIKE '%県' AND prefecture NOT IN ('北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県')`);
+    _db.exec("DELETE FROM spots WHERE prefecture = '花蓮県'");
+  } catch {}
   for (const [col, typ] of needed) {
     if (!existing.has(col)) {
       try {
