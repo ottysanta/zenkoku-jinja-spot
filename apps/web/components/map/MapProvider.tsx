@@ -42,6 +42,11 @@ export default function MapProvider({
 
   useEffect(() => {
     if (!containerRef.current) return;
+    // Next.js 15 のバンドラで worker URL が壊れるのを回避するため CDN を指定
+    try {
+      // @ts-ignore maplibregl の workerUrl は types で公開されていないが存在する
+      maplibregl.workerUrl = "https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl-csp-worker.js";
+    } catch {}
     const m = new maplibregl.Map({
       container: containerRef.current,
       style: resolveMapStyle(),
