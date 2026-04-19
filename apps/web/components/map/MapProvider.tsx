@@ -58,10 +58,16 @@ export default function MapProvider({
       }),
       "top-right",
     );
-    m.once("load", () => setReady(true));
+    const onLoad = () => setReady(true);
+    m.once("load", onLoad);
+    m.once("idle", onLoad);  // load が発火しない場合の fallback
+    m.on("error", (e) => console.error("[maplibre] error:", e));
+    // さらに fallback: 5 秒後に強制的に ready 化
+    const fallbackTimer = setTimeout(() => setReady(true), 5000);
     mapRef.current = m;
 
     return () => {
+      clearTimeout(fallbackTimer);
       setReady(false);
       mapRef.current = null;
       m.remove();
