@@ -12,7 +12,9 @@ export const metadata: Metadata = {
   description:
     '自分に合う神社を見つけ、学び、訪れ、支える。レビュー・参拝チェックイン・奉納まで一貫した神社プラットフォーム。',
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
   },
   openGraph: {
     type: 'website',
