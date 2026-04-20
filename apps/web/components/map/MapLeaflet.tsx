@@ -49,7 +49,7 @@ function loadScript(src: string): Promise<void> {
 export default function MapLeaflet() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<any>(null);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "tiles" | "pins" | "ready" | "error">("loading");
   const [total, setTotal] = useState<number | null>(null);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function MapLeaflet() {
           maxZoom: 19,
         }).addTo(map);
         mapRef.current = map;
-        setStatus("ready");
+        setStatus("tiles");
 
         // 神社データを取得してクラスタ表示 (失敗時は最大3回リトライ)
         async function fetchGeoJson(): Promise<any> {
@@ -127,7 +127,11 @@ export default function MapLeaflet() {
           );
           cluster.addLayer(marker);
         }
+        setStatus("pins");
+        // 非同期で UI をブロックしない
+        await new Promise((res) => setTimeout(res, 0));
         map.addLayer(cluster);
+        setStatus("ready");
       } catch (e) {
         console.error("[MapLeaflet]", e);
         if (!cancelled) setStatus("error");
@@ -168,9 +172,24 @@ export default function MapLeaflet() {
         </div>
       </div>
 
-      {status === "loading" ? (
+      {status !== "ready" && status !== "error" ? (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-washi/60" style={{ zIndex: 999 }}>
-          <div className="rounded-md border border-border bg-white/90 px-4 py-3 text-xs text-sumi/70 shadow">地図を読み込んでいます…</div>
+          <div className="flex flex-col items-center gap-3 rounded-md border border-border bg-white/95 px-6 py-5 text-center shadow-lg">
+            <span
+              className="inline-block h-10 w-10 animate-spin rounded-full border-[3px] border-vermilion/20 border-t-vermilion-deep"
+              role="status"
+              aria-label="読み込み中"
+            />
+            <div>
+              <p className="font-serif text-sm font-semibold text-sumi">NOW LOADING...</p>
+              <p className="mt-1 text-xs text-sumi/70">
+                {status === "loading" ? "地図タイルを準備中…" : null}
+                {status === "tiles" ? "神社データを取得中… (約 46,000 社)" : null}
+                {status === "pins" ? "神社をマップに配置中…" : null}
+              </p>
+              <p className="mt-1 text-[10px] text-sumi/40">しばらくお待ちください</p>
+            </div>
+          </div>
         </div>
       ) : null}
       {status === "error" ? (
