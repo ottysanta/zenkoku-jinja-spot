@@ -2,15 +2,21 @@
 /**
  * マイページ（/me）
  *
- * - 認証導入前なので localStorage の client_id に紐付く「匿名の自分のデータ」を表示する。
- * - 閲覧履歴 (直近詳細表示) / ブックマーク / 参拝チェックイン履歴 の 3 タブ。
- * - ブックマーク・チェックインは FastAPI に寄せている既存エンドポイントがあるが、
- *   稼働状況に関係なく UI だけは崩れないよう全部 try/catch で握る。
+ * - Google でサインインしていれば providerKey ベースでブックマークが同期される
+ * - 未ログインでも client_id 単位で履歴・ブックマーク・参拝が閲覧できる
+ * - ブックマークと参拝履歴は Next.js の /api/me/* 経由で SQLite を直接読む
+ *   （FastAPI 停止中でも動作する）
  */
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { getClientId } from "@/lib/client-id";
-import { api, spotSlug, type Spot } from "@/lib/api";
+import { spotSlug } from "@/lib/api";
+
+type SessionUser = {
+  email: string;
+  name: string | null;
+  image: string | null;
+} | null;
 
 type RecentItem = {
   id: number;
@@ -22,9 +28,32 @@ type RecentItem = {
   visited_at: string;
 };
 
+type BookmarkRow = {
+  id: number;
+  name: string;
+  slug: string | null;
+  prefecture: string | null;
+  shrine_type: string | null;
+  photo_url: string | null;
+  bookmark_kind: "want" | "like";
+  bookmarked_at: string;
+};
+
+type CheckinRow = {
+  id: number;
+  spot_id: number;
+  spot_name: string | null;
+  prefecture: string | null;
+  slug: string | null;
+  photo_url: string | null;
+  comment: string | null;
+  wish_type: string | null;
+  created_at: string;
+};
+
 const RECENT_KEY = "ssp_recent_shrines";
 
-/** 閲覧履歴を LocalStorage に保持 */
+/** 閲覧履歴を LocalStorage に保持（既存の Export を維持する） */
 export function addRecent(spot: {
   id: number;
   name: string;
@@ -50,15 +79,15 @@ export function addRecent(spot: {
   } catch {}
 }
 
-export default function MyPageClient() {
-  const [tab, setTab] = useState<"recent" | "bookmarks" | "checkins">("recent");
+type Tab = "recent" | "want" | "like" | "checkins";
+
+export default function MyPageClient({ user }: { user?: SessionUser }) {
+  const [tab, setTab] = useState<Tab>("recent");
   const [clientId, setClientId] = useState<string>("");
   const [recent, setRecent] = useState<RecentItem[]>([]);
-  const [bookmarks, setBookmarks] = useState<Spot[] | null>(null);
-  const [checkins, setCheckins] = useState<
-    Array<{ spot_id: number; name: string | null; created_at: string; wish_type: string | null; comment: string | null }>
-    | null
-  >(null);
+  const [want, setWant] = useState<BookmarkRow[] | null>(null);
+  const [like, setLike] = useState<BookmarkRow[] | null>(null);
+  const [checkins, setCheckins] = useState<CheckinRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -69,68 +98,91 @@ export default function MyPageClient() {
     } catch {}
   }, []);
 
-  const loadBookmarks = useCallback(async () => {
-    try {
-      const rs = await api.listMyBookmarks({ client_id: clientId });
-      // Bookmark[] は spot_id を持つが Spot 型ではない。spot を別途取得して詰め直す。
-      const spots: Spot[] = [];
-      for (const b of rs ?? []) {
-        try {
-          const s = await api.getSpot(b.spot_id);
-          spots.push(s);
-        } catch {}
+  const loadBookmarks = useCallback(
+    async (kind: "want" | "like") => {
+      try {
+        const url = `/api/me/bookmarks?kind=${kind}&client_id=${encodeURIComponent(clientId)}`;
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const body = (await res.json()) as { rows: BookmarkRow[] };
+        if (kind === "want") setWant(body.rows ?? []);
+        else setLike(body.rows ?? []);
+      } catch (e) {
+        if (kind === "want") setWant([]);
+        else setLike([]);
+        setError(
+          `ブックマークの取得に失敗しました: ${(e as Error).message}`,
+        );
       }
-      setBookmarks(spots);
-    } catch {
-      setBookmarks([]);
-      setError("ブックマークの取得に失敗しました（サーバー停止中の可能性）");
-    }
-  }, [clientId]);
+    },
+    [clientId],
+  );
 
   const loadCheckins = useCallback(async () => {
     try {
-      const rs = await api.listMyCheckins(clientId);
-      setCheckins(
-        (rs ?? []).map((c) => ({
-          spot_id: c.spot_id,
-          name: c.name ?? null,
-          created_at: c.created_at,
-          wish_type: c.wish_type ?? null,
-          comment: c.comment ?? null,
-        })),
-      );
-    } catch {
+      const url = `/api/me/checkins?client_id=${encodeURIComponent(clientId)}`;
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const body = (await res.json()) as { rows: CheckinRow[] };
+      setCheckins(body.rows ?? []);
+    } catch (e) {
       setCheckins([]);
-      setError("参拝履歴の取得に失敗しました（サーバー停止中の可能性）");
+      setError(`参拝履歴の取得に失敗しました: ${(e as Error).message}`);
     }
   }, [clientId]);
 
   useEffect(() => {
     if (!clientId) return;
-    if (tab === "bookmarks" && bookmarks === null) void loadBookmarks();
+    if (tab === "want" && want === null) void loadBookmarks("want");
+    if (tab === "like" && like === null) void loadBookmarks("like");
     if (tab === "checkins" && checkins === null) void loadCheckins();
-  }, [tab, clientId, bookmarks, checkins, loadBookmarks, loadCheckins]);
+  }, [tab, clientId, want, like, checkins, loadBookmarks, loadCheckins]);
+
+  const loggedIn = Boolean(user?.email);
+  const displayName = user?.name || user?.email || null;
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-6 md:py-8">
-      <header className="mb-4">
-        <h1 className="font-serif text-2xl md:text-3xl">マイページ</h1>
-        <p className="mt-1 text-xs text-sumi/60">
-          閲覧履歴やブックマーク、参拝記録をまとめて確認できます。匿名アカウント (端末紐付け) として動作します。
-        </p>
-        {clientId ? (
-          <p className="mt-1 text-[10px] font-mono text-sumi/40">
-            client_id: {clientId.slice(0, 14)}…
+      <header className="mb-5 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="font-serif text-2xl md:text-3xl">マイページ</h1>
+          <p className="mt-1 text-xs text-sumi/60">
+            閲覧履歴・行きたい・いいね・参拝記録をまとめて確認できます。
           </p>
-        ) : null}
+          {loggedIn ? (
+            <p className="mt-1 text-[12px] text-moss">
+              ✓ <b>{displayName}</b> でサインイン中
+              <span className="ml-2 text-[10px] text-sumi/50">
+                （端末をまたいでデータが同期されます）
+              </span>
+            </p>
+          ) : (
+            <p className="mt-1 text-[12px] text-sumi/70">
+              端末紐付けの匿名アカウントで表示中。
+              <Link
+                href="/signin?callbackUrl=/me"
+                className="ml-1 text-vermilion-deep underline"
+              >
+                Google でサインインする
+              </Link>
+              とデータを引き継げます。
+            </p>
+          )}
+          {clientId && !loggedIn ? (
+            <p className="mt-1 text-[10px] font-mono text-sumi/40">
+              client_id: {clientId.slice(0, 14)}…
+            </p>
+          ) : null}
+        </div>
       </header>
 
       {/* タブ */}
-      <nav className="mb-4 flex gap-1 border-b border-border">
+      <nav className="mb-4 flex flex-wrap gap-1 border-b border-border">
         {(
           [
             { key: "recent", label: "閲覧履歴", icon: "🕘" },
-            { key: "bookmarks", label: "ブックマーク", icon: "🔖" },
+            { key: "want", label: "行きたい", icon: "📌" },
+            { key: "like", label: "いいね", icon: "❤" },
             { key: "checkins", label: "参拝履歴", icon: "⛩" },
           ] as const
         ).map((t) => (
@@ -177,20 +229,43 @@ export default function MyPageClient() {
         )
       ) : null}
 
-      {tab === "bookmarks" ? (
-        bookmarks === null ? (
+      {tab === "want" ? (
+        want === null ? (
           <LoadingState />
-        ) : bookmarks.length === 0 ? (
-          <EmptyState text="ブックマークした神社はまだありません。神社ページの「行きたい / 保存」でブックマークできます。" />
+        ) : want.length === 0 ? (
+          <EmptyState text="行きたい神社はまだありません。神社ページや地図の詳細パネルで「📍 行きたい」をタップして保存できます。" />
         ) : (
           <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {bookmarks.map((s) => (
-              <li key={s.id}>
+            {want.map((b) => (
+              <li key={b.id}>
                 <ShrineCard
-                  href={`/shrines/${spotSlug(s)}`}
-                  name={s.name}
-                  meta={[s.prefecture, s.shrine_type].filter(Boolean).join(" / ")}
-                  photoUrl={s.photo_url ?? null}
+                  href={`/shrines/${spotSlug({ id: b.id, slug: b.slug })}`}
+                  name={b.name}
+                  meta={[b.prefecture, b.shrine_type].filter(Boolean).join(" / ")}
+                  photoUrl={b.photo_url}
+                  subtle={`保存: ${formatRelative(b.bookmarked_at)}`}
+                />
+              </li>
+            ))}
+          </ul>
+        )
+      ) : null}
+
+      {tab === "like" ? (
+        like === null ? (
+          <LoadingState />
+        ) : like.length === 0 ? (
+          <EmptyState text="いいねした神社はまだありません。気になった神社に「♡ いいね」をタップして記録できます。" />
+        ) : (
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {like.map((b) => (
+              <li key={b.id}>
+                <ShrineCard
+                  href={`/shrines/${spotSlug({ id: b.id, slug: b.slug })}`}
+                  name={b.name}
+                  meta={[b.prefecture, b.shrine_type].filter(Boolean).join(" / ")}
+                  photoUrl={b.photo_url}
+                  subtle={`❤ ${formatRelative(b.bookmarked_at)}`}
                 />
               </li>
             ))}
@@ -205,18 +280,21 @@ export default function MyPageClient() {
           <EmptyState text="参拝記録はまだありません。地図ページで境内 300m 以内に入ると記録できます。" />
         ) : (
           <ul className="space-y-2">
-            {checkins.map((c, i) => (
+            {checkins.map((c) => (
               <li
-                key={c.spot_id + "-" + i}
+                key={c.id}
                 className="flex items-start justify-between gap-3 rounded-md border border-border bg-washi p-3 text-sm"
               >
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <Link
-                    href={`/shrines/spot-${c.spot_id}`}
+                    href={`/shrines/${spotSlug({ id: c.spot_id, slug: c.slug })}`}
                     className="font-semibold text-sumi hover:underline"
                   >
-                    {c.name || `神社 #${c.spot_id}`}
+                    {c.spot_name || `神社 #${c.spot_id}`}
                   </Link>
+                  {c.prefecture ? (
+                    <span className="ml-2 text-[11px] text-sumi/60">{c.prefecture}</span>
+                  ) : null}
                   {c.comment ? (
                     <p className="mt-1 whitespace-pre-wrap text-[12px] text-sumi/80">
                       {c.comment}
@@ -239,8 +317,8 @@ export default function MyPageClient() {
 
       <aside className="mt-10 rounded-md border border-dashed border-border bg-washi/60 p-4 text-xs text-sumi/70">
         <p>
-          ※ 現在は端末に紐づく匿名アカウントです。将来的には SSO（Google / Apple）で
-          端末をまたいでデータを引き継げるようにします。
+          ※ 現在はブックマーク・参拝は端末（またはサインインしたアカウント）単位で保存されます。
+          別端末で同じ Google アカウントにサインインすると、行きたい・いいねは同期されます。
         </p>
       </aside>
     </main>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { auth } from "@/auth";
 import MyPageClient from "./MyPageClient";
 
 export const metadata: Metadata = {
@@ -7,6 +8,17 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function MyPage() {
-  return <MyPageClient />;
+export const dynamic = "force-dynamic";
+
+export default async function MyPage() {
+  const session = await auth().catch(() => null);
+  const user =
+    session?.user?.email
+      ? {
+          email: session.user.email,
+          name: session.user.name ?? null,
+          image: session.user.image ?? null,
+        }
+      : null;
+  return <MyPageClient user={user} />;
 }

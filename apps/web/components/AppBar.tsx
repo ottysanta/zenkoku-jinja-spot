@@ -11,13 +11,14 @@ import { useRouter, usePathname } from "next/navigation";
 import { routing } from "../i18n/routing";
 import TextSizeSwitcher from "./TextSizeSwitcher";
 
-const NAV_ITEMS: Array<{ href: "/" | "/map" | "/search" | "/learn" | "/offerings" | "/me"; label: string; icon: string }> = [
+const NAV_ITEMS: Array<{ href: "/" | "/map" | "/search" | "/learn" | "/offerings" | "/me" | "/submit-shrine"; label: string; icon: string }> = [
   { href: "/", label: "ホーム", icon: "🏠" },
   { href: "/map", label: "地図", icon: "🗺" },
   { href: "/search", label: "一覧", icon: "≣" },
   { href: "/learn", label: "学ぶ", icon: "📖" },
   { href: "/offerings", label: "奉納", icon: "🙏" },
   { href: "/me", label: "マイページ", icon: "👤" },
+  { href: "/submit-shrine", label: "神社の掲載申請", icon: "📝" },
 ];
 
 export default function AppBar() {

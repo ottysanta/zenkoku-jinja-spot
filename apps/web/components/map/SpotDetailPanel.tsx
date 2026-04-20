@@ -18,6 +18,7 @@ import {
 } from "@/lib/api";
 import { getClientId } from "@/lib/client-id";
 import { formatDistance, haversineM } from "@/lib/geo";
+import BookmarkButtons from "@/components/shrines/BookmarkButtons";
 
 type Props = {
   spot: Spot;
@@ -227,6 +228,11 @@ export default function SpotDetailPanel({ spot, userLocation, onClose }: Props) 
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-3 text-sm leading-6">
+        {/* 行きたい / いいね（認証ありなら端末をまたいで同期） */}
+        <section className="mb-3">
+          <BookmarkButtons spotId={spot.id} />
+        </section>
+
         {/* 見どころバッジ（ご利益 + 社格）*/}
         {(benefits.length > 0 || spot.shrine_rank || spot.founded) ? (
           <section className="mb-3 flex flex-wrap gap-1.5">

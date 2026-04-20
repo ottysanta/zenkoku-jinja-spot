@@ -4,20 +4,40 @@ import { auth } from "@/auth";
 
 /**
  * 管理者レイアウト。
- * - session.user.role が admin / moderator 以外は拒否。
- * - サブメニュー: 神社 / 申請 / 通報。
+ *
+ * - 認可優先度:
+ *   1. ADMIN_EMAILS 環境変数 (カンマ区切り) に email が含まれていれば OK。
+ *      FastAPI 無しでも動くスタンドアロン管理用に用意。
+ *   2. session.role が admin / moderator (FastAPI ブリッジ経由) なら OK。
+ * - それ以外は権限なし。
  */
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
+  const email = session?.user?.email?.toLowerCase() ?? null;
+  const adminEmails = (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
   const role = session?.role;
-  if (!session?.apiToken) {
-    redirect("/signin?callbackUrl=/admin/shrines");
+  const isEnvAdmin = email && adminEmails.includes(email);
+  const isRoleAdmin = role === "admin" || role === "moderator";
+
+  if (!session) {
+    redirect("/signin?callbackUrl=/admin/submissions");
   }
-  if (role !== "admin" && role !== "moderator") {
+  if (!isEnvAdmin && !isRoleAdmin) {
     return (
       <main className="mx-auto max-w-xl px-4 py-16 text-center">
         <h1 className="font-serif text-2xl">権限がありません</h1>
-        <p className="mt-2 text-sm text-sumi/70">このページは管理者のみ利用できます。</p>
+        <p className="mt-2 text-sm text-sumi/70">
+          このページは管理者のみ利用できます。
+          {email ? (
+            <>
+              <br />
+              <span className="font-mono text-xs text-sumi/50">login: {email}</span>
+            </>
+          ) : null}
+        </p>
       </main>
     );
   }

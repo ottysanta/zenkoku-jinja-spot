@@ -235,6 +235,62 @@ const BENEFIT_HINTS: Record<string, string[]> = {
   防火: ["愛宕", "秋葉", "火産霊"],
 };
 
+/**
+ * 異体字（旧字体 → 新字体）マップ。
+ * ユーザーが「眞名井」と検索しても DB に「真名井」として入っているケースをカバーする。
+ * 双方向に展開して OR 検索する。
+ */
+const OLD_TO_NEW: Record<string, string> = {
+  眞: "真", 澤: "沢", 齋: "斎", 齊: "斉", 國: "国", 邉: "辺", 邊: "辺",
+  廣: "広", 會: "会", 圓: "円", 縣: "県", 學: "学", 壽: "寿",
+  來: "来", 實: "実", 禮: "礼", 豐: "豊", 惠: "恵", 假: "仮",
+  傳: "伝", 佛: "仏", 氣: "気", 嶋: "島", 靜: "静", 雜: "雑",
+  萬: "万", 舊: "旧", 藝: "芸", 辯: "弁", 驛: "駅", 龍: "竜",
+  櫻: "桜", 濱: "浜", 瀧: "滝", 龜: "亀", 繪: "絵", 黑: "黒",
+  戀: "恋", 劍: "剣", 聲: "声", 變: "変", 獸: "獣", 舉: "挙",
+  續: "続", 淨: "浄", 寶: "宝", 亂: "乱", 拂: "払", 舍: "舎",
+  齡: "齢", 觀: "観", 醫: "医", 彥: "彦", 拜: "拝", 祕: "秘",
+};
+const NEW_TO_OLD: Record<string, string[]> = (() => {
+  const m: Record<string, string[]> = {};
+  for (const [o, n] of Object.entries(OLD_TO_NEW)) {
+    (m[n] ||= []).push(o);
+  }
+  return m;
+})();
+
+function normalizeKanji(s: string): string {
+  let out = "";
+  for (const ch of s) out += OLD_TO_NEW[ch] ?? ch;
+  return out;
+}
+
+/**
+ * 1 つのクエリから SQL LIKE で照合すべき候補文字列を生成する。
+ * - 元のクエリ（旧字体そのまま）
+ * - 新字体に正規化したもの
+ * - 新字体クエリに対して既知の旧字体に戻したもの
+ * 組み合わせ爆発を防ぐため、上限 8 件にクランプ。
+ */
+function kanjiVariants(s: string): string[] {
+  const set = new Set<string>();
+  set.add(s);
+  const normalized = normalizeKanji(s);
+  set.add(normalized);
+  // 新字体 → 旧字体の単一置換（1 文字ずつ試す）
+  for (let i = 0; i < normalized.length; i++) {
+    const ch = normalized[i];
+    const olds = NEW_TO_OLD[ch];
+    if (!olds) continue;
+    for (const o of olds) {
+      set.add(normalized.slice(0, i) + o + normalized.slice(i + 1));
+      if (set.size >= 8) break;
+    }
+    if (set.size >= 8) break;
+  }
+  return Array.from(set);
+}
+
 function buildSearchWhere(opts: {
   q?: string;
   benefit?: string;
@@ -247,11 +303,17 @@ function buildSearchWhere(opts: {
   const where: string[] = [];
   const params: unknown[] = [];
   if (opts.q) {
-    const like = `%${opts.q}%`;
-    where.push(
-      "(COALESCE(name,'') LIKE ? OR COALESCE(address,'') LIKE ? OR COALESCE(deity,'') LIKE ?)",
-    );
-    params.push(like, like, like);
+    // 異体字（旧字体/新字体）を展開して OR 検索
+    const variants = kanjiVariants(opts.q);
+    const orParts: string[] = [];
+    for (const v of variants) {
+      const like = `%${v}%`;
+      orParts.push(
+        "(COALESCE(name,'') LIKE ? OR COALESCE(address,'') LIKE ? OR COALESCE(deity,'') LIKE ?)",
+      );
+      params.push(like, like, like);
+    }
+    where.push("(" + orParts.join(" OR ") + ")");
   }
   if (opts.benefit) {
     // benefits 直接マッチ + ヒント語(祭神/神社名)
@@ -801,6 +863,422 @@ export type BulkShrineIn = {
   wikipedia_title?: string | null;
   source_url?: string | null;
 };
+
+// =====================================================================
+// 神社自己申請（spot_submissions）
+// =====================================================================
+
+function ensureSubmissionTable() {
+  const db = getDb();
+  try {
+    db.exec(
+      `CREATE TABLE IF NOT EXISTS spot_submissions (
+         id INTEGER PRIMARY KEY AUTOINCREMENT,
+         name TEXT NOT NULL,
+         name_kana TEXT,
+         address TEXT,
+         prefecture TEXT,
+         city TEXT,
+         lat REAL,
+         lng REAL,
+         deity TEXT,
+         shrine_type TEXT,
+         website TEXT,
+         photo_url TEXT,
+         contact_name TEXT,
+         contact_email TEXT,
+         contact_phone TEXT,
+         contact_role TEXT,
+         evidence_url TEXT,
+         note TEXT,
+         client_id TEXT,
+         user_id INTEGER,
+         submitted_by_email TEXT,
+         status TEXT NOT NULL DEFAULT 'pending',
+         review_note TEXT,
+         reviewed_by TEXT,
+         reviewed_at TEXT,
+         created_spot_id INTEGER,
+         created_at TEXT NOT NULL,
+         updated_at TEXT NOT NULL
+       )`,
+    );
+    db.exec(
+      "CREATE INDEX IF NOT EXISTS idx_spot_submissions_status ON spot_submissions(status)",
+    );
+    db.exec(
+      "CREATE INDEX IF NOT EXISTS idx_spot_submissions_created_at ON spot_submissions(created_at DESC)",
+    );
+  } catch {}
+}
+
+export type SpotSubmissionIn = {
+  name: string;
+  name_kana?: string | null;
+  address?: string | null;
+  prefecture?: string | null;
+  city?: string | null;
+  lat?: number | null;
+  lng?: number | null;
+  deity?: string | null;
+  shrine_type?: string | null;
+  website?: string | null;
+  photo_url?: string | null;
+  contact_name?: string | null;
+  contact_email?: string | null;
+  contact_phone?: string | null;
+  contact_role?: string | null;
+  evidence_url?: string | null;
+  note?: string | null;
+  client_id?: string | null;
+  user_id?: number | null;
+  submitted_by_email?: string | null;
+};
+
+export type SpotSubmissionRow = SpotSubmissionIn & {
+  id: number;
+  status: "pending" | "approved" | "rejected" | "needs_more_info";
+  review_note: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  created_spot_id: number | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export function createSubmission(input: SpotSubmissionIn): SpotSubmissionRow {
+  ensureSubmissionTable();
+  const db = getDb();
+  const now = new Date().toISOString();
+  const info = db
+    .prepare(
+      `INSERT INTO spot_submissions (
+         name, name_kana, address, prefecture, city, lat, lng,
+         deity, shrine_type, website, photo_url,
+         contact_name, contact_email, contact_phone, contact_role,
+         evidence_url, note, client_id, user_id, submitted_by_email,
+         status, created_at, updated_at
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?)`,
+    )
+    .run(
+      input.name,
+      input.name_kana ?? null,
+      input.address ?? null,
+      input.prefecture ?? null,
+      input.city ?? null,
+      input.lat ?? null,
+      input.lng ?? null,
+      input.deity ?? null,
+      input.shrine_type ?? null,
+      input.website ?? null,
+      input.photo_url ?? null,
+      input.contact_name ?? null,
+      input.contact_email ?? null,
+      input.contact_phone ?? null,
+      input.contact_role ?? null,
+      input.evidence_url ?? null,
+      input.note ?? null,
+      input.client_id ?? null,
+      input.user_id ?? null,
+      input.submitted_by_email ?? null,
+      now,
+      now,
+    );
+  const id = Number(info.lastInsertRowid);
+  return db
+    .prepare("SELECT * FROM spot_submissions WHERE id = ?")
+    .get(id) as SpotSubmissionRow;
+}
+
+export function listSubmissions(opts: {
+  status?: "pending" | "approved" | "rejected" | "needs_more_info";
+  limit?: number;
+  offset?: number;
+}): { rows: SpotSubmissionRow[]; total: number } {
+  ensureSubmissionTable();
+  const db = getDb();
+  const where: string[] = [];
+  const params: unknown[] = [];
+  if (opts.status) {
+    where.push("status = ?");
+    params.push(opts.status);
+  }
+  const whereSql = where.length ? "WHERE " + where.join(" AND ") : "";
+  const total = (db
+    .prepare(`SELECT COUNT(*) AS n FROM spot_submissions ${whereSql}`)
+    .get(...params) as { n: number }).n;
+  const rows = db
+    .prepare(
+      `SELECT * FROM spot_submissions ${whereSql} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+    )
+    .all(...params, opts.limit ?? 50, opts.offset ?? 0) as SpotSubmissionRow[];
+  return { rows, total };
+}
+
+export function getSubmission(id: number): SpotSubmissionRow | null {
+  ensureSubmissionTable();
+  const db = getDb();
+  return (db
+    .prepare("SELECT * FROM spot_submissions WHERE id = ?")
+    .get(id) as SpotSubmissionRow | undefined) ?? null;
+}
+
+/**
+ * 申請を承認。spots に INSERT して status=approved に更新する。
+ * 既に同名 & 近接の神社があっても強制的に追加するのではなく、レビュアー判断に任せる。
+ */
+export function approveSubmission(
+  id: number,
+  reviewer: string,
+  reviewNote?: string | null,
+): { ok: boolean; spot_id?: number; reason?: string } {
+  ensureSubmissionTable();
+  const db = getDb();
+  const s = getSubmission(id);
+  if (!s) return { ok: false, reason: "not_found" };
+  if (s.status !== "pending" && s.status !== "needs_more_info") {
+    return { ok: false, reason: "already_reviewed" };
+  }
+  if (typeof s.lat !== "number" || typeof s.lng !== "number") {
+    return { ok: false, reason: "missing_coords" };
+  }
+  const now = new Date().toISOString();
+  db.exec("BEGIN");
+  try {
+    const info = db
+      .prepare(
+        `INSERT INTO spots (
+           name, address, lat, lng, prefecture, city,
+           shrine_type, deity, website, photo_url, source_layer, source_url
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'submission', ?)`,
+      )
+      .run(
+        s.name,
+        s.address ?? null,
+        s.lat,
+        s.lng,
+        s.prefecture ?? null,
+        s.city ?? null,
+        s.shrine_type ?? null,
+        s.deity ?? null,
+        s.website ?? null,
+        s.photo_url ?? null,
+        s.evidence_url ?? null,
+      );
+    const spotId = Number(info.lastInsertRowid);
+    db.prepare(
+      `UPDATE spot_submissions SET status = 'approved',
+         review_note = ?, reviewed_by = ?, reviewed_at = ?,
+         created_spot_id = ?, updated_at = ? WHERE id = ?`,
+    ).run(reviewNote ?? null, reviewer, now, spotId, now, id);
+    db.exec("COMMIT");
+    return { ok: true, spot_id: spotId };
+  } catch (e) {
+    db.exec("ROLLBACK");
+    return { ok: false, reason: (e as Error).message };
+  }
+}
+
+export function rejectSubmission(
+  id: number,
+  reviewer: string,
+  reviewNote: string,
+  nextStatus: "rejected" | "needs_more_info" = "rejected",
+): { ok: boolean; reason?: string } {
+  ensureSubmissionTable();
+  const db = getDb();
+  const s = getSubmission(id);
+  if (!s) return { ok: false, reason: "not_found" };
+  const now = new Date().toISOString();
+  db.prepare(
+    `UPDATE spot_submissions SET status = ?, review_note = ?, reviewed_by = ?, reviewed_at = ?, updated_at = ? WHERE id = ?`,
+  ).run(nextStatus, reviewNote, reviewer, now, now, id);
+  return { ok: true };
+}
+
+export function submissionCountsByStatus(): Record<string, number> {
+  ensureSubmissionTable();
+  const db = getDb();
+  try {
+    const rows = db
+      .prepare("SELECT status, COUNT(*) AS n FROM spot_submissions GROUP BY status")
+      .all() as { status: string; n: number }[];
+    const out: Record<string, number> = { pending: 0, approved: 0, rejected: 0, needs_more_info: 0 };
+    for (const r of rows) out[r.status] = r.n;
+    return out;
+  } catch {
+    return { pending: 0, approved: 0, rejected: 0, needs_more_info: 0 };
+  }
+}
+
+// =====================================================================
+// ブックマーク（行きたい / いいね）
+// =====================================================================
+
+function ensureBookmarkTable() {
+  const db = getDb();
+  try {
+    db.exec(
+      `CREATE TABLE IF NOT EXISTS bookmarks (
+         id INTEGER PRIMARY KEY AUTOINCREMENT,
+         spot_id INTEGER NOT NULL,
+         owner_key TEXT NOT NULL,           -- user_id:<n> か client:<uuid>
+         kind TEXT NOT NULL,                 -- 'want' (行きたい) / 'like' (いいね)
+         note TEXT,
+         created_at TEXT NOT NULL,
+         UNIQUE(spot_id, owner_key, kind)
+       )`,
+    );
+    db.exec("CREATE INDEX IF NOT EXISTS idx_bookmarks_owner ON bookmarks(owner_key)");
+    db.exec("CREATE INDEX IF NOT EXISTS idx_bookmarks_spot ON bookmarks(spot_id)");
+  } catch {}
+}
+
+export type BookmarkKind = "want" | "like";
+
+export function ownerKeyFor(input: {
+  userId?: number | null;
+  clientId?: string | null;
+}): string | null {
+  if (input.userId) return `user:${input.userId}`;
+  if (input.clientId && input.clientId.trim()) return `client:${input.clientId.trim()}`;
+  return null;
+}
+
+export function addBookmark(
+  spotId: number,
+  ownerKey: string,
+  kind: BookmarkKind,
+  note?: string | null,
+): { created: boolean } {
+  ensureBookmarkTable();
+  const db = getDb();
+  try {
+    const info = db
+      .prepare(
+        "INSERT OR IGNORE INTO bookmarks (spot_id, owner_key, kind, note, created_at) VALUES (?, ?, ?, ?, ?)",
+      )
+      .run(spotId, ownerKey, kind, note ?? null, new Date().toISOString());
+    return { created: (info.changes ?? 0) > 0 };
+  } catch {
+    return { created: false };
+  }
+}
+
+export function removeBookmark(
+  spotId: number,
+  ownerKey: string,
+  kind: BookmarkKind,
+): { removed: boolean } {
+  ensureBookmarkTable();
+  const db = getDb();
+  const info = db
+    .prepare("DELETE FROM bookmarks WHERE spot_id = ? AND owner_key = ? AND kind = ?")
+    .run(spotId, ownerKey, kind);
+  return { removed: (info.changes ?? 0) > 0 };
+}
+
+export function listBookmarksForOwner(
+  ownerKey: string,
+  kind?: BookmarkKind,
+): Array<ShrineRow & { bookmark_kind: BookmarkKind; bookmarked_at: string }> {
+  ensureBookmarkTable();
+  const db = getDb();
+  const params: unknown[] = [ownerKey];
+  let sql =
+    `SELECT s.*, b.kind AS bookmark_kind, b.created_at AS bookmarked_at
+       FROM bookmarks b JOIN spots s ON s.id = b.spot_id
+       WHERE b.owner_key = ?`;
+  if (kind) {
+    sql += " AND b.kind = ?";
+    params.push(kind);
+  }
+  sql += " ORDER BY b.created_at DESC LIMIT 500";
+  try {
+    return db.prepare(sql).all(...params) as Array<
+      ShrineRow & { bookmark_kind: BookmarkKind; bookmarked_at: string }
+    >;
+  } catch {
+    return [];
+  }
+}
+
+export function bookmarkStateFor(
+  spotId: number,
+  ownerKey: string,
+): { want: boolean; like: boolean } {
+  ensureBookmarkTable();
+  const db = getDb();
+  try {
+    const rows = db
+      .prepare(
+        "SELECT kind FROM bookmarks WHERE spot_id = ? AND owner_key = ?",
+      )
+      .all(spotId, ownerKey) as { kind: string }[];
+    const state = { want: false, like: false };
+    for (const r of rows) {
+      if (r.kind === "want") state.want = true;
+      else if (r.kind === "like") state.like = true;
+    }
+    return state;
+  } catch {
+    return { want: false, like: false };
+  }
+}
+
+export function bookmarkCountsFor(spotId: number): { want: number; like: number } {
+  ensureBookmarkTable();
+  const db = getDb();
+  try {
+    const rows = db
+      .prepare(
+        "SELECT kind, COUNT(*) AS n FROM bookmarks WHERE spot_id = ? GROUP BY kind",
+      )
+      .all(spotId) as { kind: string; n: number }[];
+    const out = { want: 0, like: 0 };
+    for (const r of rows) {
+      if (r.kind === "want") out.want = r.n;
+      else if (r.kind === "like") out.like = r.n;
+    }
+    return out;
+  } catch {
+    return { want: 0, like: 0 };
+  }
+}
+
+/** 指定 owner の直近のチェックイン履歴を spots 名前と一緒に返す。 */
+export type CheckinForOwner = {
+  id: number;
+  spot_id: number;
+  spot_name: string | null;
+  prefecture: string | null;
+  slug: string | null;
+  photo_url: string | null;
+  comment: string | null;
+  wish_type: string | null;
+  created_at: string;
+};
+
+export function listCheckinsForClient(
+  clientId: string,
+  limit: number = 100,
+): CheckinForOwner[] {
+  const db = getDb();
+  try {
+    return db
+      .prepare(
+        `SELECT c.id, c.spot_id, c.created_at, c.comment, c.wish_type,
+                s.name AS spot_name, s.prefecture, s.slug, s.photo_url
+           FROM checkins c LEFT JOIN spots s ON s.id = c.spot_id
+           WHERE c.client_id = ?
+           ORDER BY c.created_at DESC
+           LIMIT ?`,
+      )
+      .all(clientId, limit) as CheckinForOwner[];
+  } catch {
+    return [];
+  }
+}
 
 export function bulkImport(
   items: BulkShrineIn[],

@@ -13,6 +13,7 @@ const nextConfig = {
     '/**/*': ['../api/data/**/*', '../../api/data/**/*'],
   },
   outputFileTracingRoot: undefined,
+  // Vercel build で型/lint エラーで弾かれるので、まずデプロイを通して後で潰す
   typescript: { ignoreBuildErrors: true },
   eslint: { ignoreDuringBuilds: true },
   experimental: {

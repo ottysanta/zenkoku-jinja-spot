@@ -113,6 +113,21 @@ export const authConfig: NextAuthConfig = {
           token.userId = api.user.id;
           token.role = api.user.role;
         }
+        // FastAPI が無い/失敗した場合もメール単位のログインは成立させる。
+        // provider + providerAccountId から擬似的な userId を作り、ブックマーク等の
+        // owner_key として安定して使えるようにする（ユーザーDBは将来 SQLite に寄せる）。
+        if (!token.userId) {
+          token.providerKey = `${account.provider}:${account.providerAccountId}`;
+          const adminEmails = (process.env.ADMIN_EMAILS ?? "")
+            .split(",")
+            .map((s) => s.trim().toLowerCase())
+            .filter(Boolean);
+          const email =
+            ((profile as { email?: string } | null)?.email ?? token.email ?? "") + "";
+          if (email && adminEmails.includes(email.toLowerCase())) {
+            token.role = "admin";
+          }
+        }
       }
       return token;
     },
@@ -122,6 +137,7 @@ export const authConfig: NextAuthConfig = {
       if (token.apiExpiresAt) session.apiExpiresAt = token.apiExpiresAt as string;
       if (token.userId) session.userId = token.userId as number;
       if (token.role) session.role = token.role as string;
+      if (token.providerKey) session.providerKey = token.providerKey as string;
       return session;
     },
   },

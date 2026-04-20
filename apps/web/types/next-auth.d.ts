@@ -10,6 +10,7 @@ declare module "next-auth" {
     apiExpiresAt?: string;
     userId?: number;
     role?: string;
+    providerKey?: string;
   }
 }
 
@@ -19,5 +20,6 @@ declare module "next-auth/jwt" {
     apiExpiresAt?: string;
     userId?: number;
     role?: string;
+    providerKey?: string;
   }
 }
