@@ -30,18 +30,24 @@ export default function AppBar() {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!menuOpen) return; // メニューが閉じているときは outside-click ハンドラ不要
+    // 開いた直後の同じ tap が closer になるのを防ぐため 1 tick 遅らせる
+    let active = false;
+    const armTimer = setTimeout(() => { active = true; }, 0);
     const onDown = (e: Event) => {
+      if (!active) return;
       if (!menuRef.current) return;
       const target = e.target as Node | null;
       if (!target) return;
-      // メニュー内タップはそのまま通す
       if (menuRef.current.contains(target)) return;
       setMenuOpen(false);
     };
-    // pointerdown だとモバイルでも iOS でも確実に発火する
     document.addEventListener("pointerdown", onDown, { passive: true });
-    return () => document.removeEventListener("pointerdown", onDown);
-  }, []);
+    return () => {
+      clearTimeout(armTimer);
+      document.removeEventListener("pointerdown", onDown);
+    };
+  }, [menuOpen]);
 
   // パス変更時は閉じる
   useEffect(() => {
