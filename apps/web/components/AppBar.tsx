@@ -30,12 +30,17 @@ export default function AppBar() {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const onClick = (e: MouseEvent) => {
+    const onDown = (e: Event) => {
       if (!menuRef.current) return;
-      if (!menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+      const target = e.target as Node | null;
+      if (!target) return;
+      // メニュー内タップはそのまま通す
+      if (menuRef.current.contains(target)) return;
+      setMenuOpen(false);
     };
-    window.addEventListener("mousedown", onClick);
-    return () => window.removeEventListener("mousedown", onClick);
+    // pointerdown だとモバイルでも iOS でも確実に発火する
+    document.addEventListener("pointerdown", onDown, { passive: true });
+    return () => document.removeEventListener("pointerdown", onDown);
   }, []);
 
   // パス変更時は閉じる
@@ -69,7 +74,8 @@ export default function AppBar() {
           onClick={() => setMenuOpen((v) => !v)}
           aria-expanded={menuOpen}
           aria-haspopup="menu"
-          className="flex min-h-[30px] items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs text-sumi hover:bg-kinari"
+          className="flex min-h-[32px] items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1.5 text-xs text-sumi hover:bg-kinari active:bg-kinari"
+          style={{ touchAction: "manipulation" }}
         >
           <span aria-hidden="true">☰</span>
           <span>メニュー</span>
