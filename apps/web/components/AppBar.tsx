@@ -33,7 +33,7 @@ export default function AppBar() {
     if (!menuOpen) return; // メニューが閉じているときは outside-click ハンドラ不要
     // 開いた直後の同じ tap が closer になるのを防ぐため 1 tick 遅らせる
     let active = false;
-    const armTimer = setTimeout(() => { active = true; }, 0);
+    const armTimer = setTimeout(() => { active = true; }, 300);
     const onDown = (e: Event) => {
       if (!active) return;
       if (!menuRef.current) return;
