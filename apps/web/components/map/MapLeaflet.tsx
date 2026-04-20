@@ -355,7 +355,8 @@ export default function MapLeaflet() {
   }, [userCoords, allPoints, maxKm]);
 
   return (
-    <div className="relative h-full w-full">
+    <div className="flex h-full w-full flex-col md:flex-row">
+      <div className="relative flex-1">
       <div ref={containerRef} className="h-full w-full" style={{ background: "#F5EFE2" }} />
 
       {/* 左上: コントロール群 */}
@@ -497,7 +498,9 @@ export default function MapLeaflet() {
         </div>
       ) : null}
 
-      {/* 詳細パネル */}
+      </div>
+
+      {/* 詳細パネル (デスクトップはサイドペイン、モバイルはボトムドロワー) */}
       {selected ? (
         <SpotDetailPanel
           spot={selected}
