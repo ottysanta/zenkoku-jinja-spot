@@ -113,6 +113,8 @@ export default function MapLeaflet() {
   const [showLegend, setShowLegend] = useState(false);
   const [prefCounts, setPrefCounts] = useState<Array<{ prefecture: string; count: number }> | null>(null);
   const [maxKm, setMaxKm] = useState<number>(50);
+  // モバイル視認性向上: 検索 + ご利益フィルタは初期非表示
+  const [showSearchPanel, setShowSearchPanel] = useState(false);
 
   // 初期化: Leaflet + クラスタ
   useEffect(() => {
@@ -383,14 +385,23 @@ export default function MapLeaflet() {
             className={`inline-flex min-h-[36px] items-center rounded-md border px-3 py-1.5 text-xs font-medium shadow active:bg-kinari ${showHeatmap ? 'border-vermilion bg-vermilion text-white' : 'border-border bg-washi/95 text-sumi hover:bg-kinari'}`}
             style={{ touchAction: "manipulation" }}
           >🔥 密度</button>
+          <button
+            type="button"
+            onClick={() => setShowSearchPanel((v) => !v)}
+            className={`inline-flex min-h-[36px] items-center gap-1 rounded-md border px-3 py-1.5 text-xs font-medium shadow active:bg-kinari ${showSearchPanel ? 'border-vermilion bg-vermilion text-white' : 'border-border bg-washi/95 text-sumi hover:bg-kinari'}`}
+            style={{ touchAction: "manipulation" }}
+          >🔍 {benefitFilter ? `${benefitFilter}で絞込中` : '検索・絞込'}</button>
         </div>
 
-        {/* 検索バー */}
-        <div className="pointer-events-auto">
-          <SearchBar variant="compact" />
-        </div>
+        {/* 検索バー (トグル表示) */}
+        {showSearchPanel ? (
+          <div className="pointer-events-auto">
+            <SearchBar variant="compact" />
+          </div>
+        ) : null}
 
-        {/* ご利益フィルタチップ */}
+        {/* ご利益フィルタチップ (トグル表示) */}
+        {showSearchPanel ? (
         <div className="pointer-events-auto flex flex-wrap gap-1.5 rounded-md border border-border bg-washi/95 px-2 py-2 text-[11px] shadow">
           <span className="py-1 text-sumi/60">ご利益:</span>
           {Object.keys(BENEFIT_HINTS).map((b) => (
@@ -412,6 +423,7 @@ export default function MapLeaflet() {
             >× 解除</button>
           ) : null}
         </div>
+        ) : null}
 
         {locError ? (
           <div className="pointer-events-auto rounded-md border border-vermilion bg-white px-3 py-2 text-[11px] text-vermilion-deep shadow">
