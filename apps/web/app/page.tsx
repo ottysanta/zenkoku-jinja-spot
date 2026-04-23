@@ -547,6 +547,39 @@ export default async function HomePage() {
         </section>
       ) : null}
 
+      {/* 4.9) 守護神社診断バナー */}
+      <section className="mb-10">
+        <Link
+          href="/diagnose"
+          className="group relative block overflow-hidden rounded-2xl border-2 border-vermilion/30 bg-gradient-to-br from-vermilion/8 via-washi to-moss/8 p-6 shadow-sm transition hover:shadow-md hover:border-vermilion/50"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-vermilion/5 to-transparent pointer-events-none" />
+          <div className="relative flex flex-col md:flex-row items-center gap-5">
+            {/* 五行シンボル */}
+            <div className="flex-shrink-0 grid grid-cols-5 gap-1.5 text-center">
+              {(["木", "火", "土", "金", "水"] as const).map((el, i) => (
+                <div key={el} className={`w-10 h-10 rounded-full flex items-center justify-center text-lg font-serif font-bold text-white shadow ${
+                  ["bg-emerald-500", "bg-orange-500", "bg-amber-500", "bg-slate-500", "bg-blue-500"][i]
+                }`}>{el}</div>
+              ))}
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <p className="text-[10px] tracking-[0.28em] text-vermilion-deep font-semibold mb-1">⛩ SHRINE DIAGNOSIS</p>
+              <h2 className="font-serif text-xl text-sumi mb-1">守護神社診断</h2>
+              <p className="text-sm text-sumi/70 leading-relaxed">
+                生まれ年から干支・五行属性を導き出し、<br className="hidden md:block"/>
+                職場・家族・恋愛の悩みに縁深い守護神社をご紹介します。
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-vermilion px-5 py-2.5 text-sm font-semibold text-white shadow transition group-hover:bg-vermilion-deep">
+                無料で診断する →
+              </span>
+            </div>
+          </div>
+        </Link>
+      </section>
+
       {/* 5) 学ぶ / 気持ちを届ける */}
       <section className="mb-10 grid grid-cols-1 gap-3 md:grid-cols-2">
         <Link
