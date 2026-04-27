@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { api, spotSlug } from "@/lib/api";
+import { GUIDES } from "@/lib/guide-content";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3030";
 const SITEMAP_LIMIT = Number(process.env.SITEMAP_LIMIT || "2000");
@@ -17,6 +18,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/musubu`,             changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/learn`,              changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/offerings`,          changeFrequency: "weekly",  priority: 0.6 },
+    { url: `${BASE}/guide`,              changeFrequency: "weekly",  priority: 0.8 },
+    // ガイド記事（ライフパス・五行属性・特集）
+    ...GUIDES.map((g) => ({
+      url: `${BASE}/guide/${g.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+      lastModified: g.updated,
+    })),
   ];
 
   try {
