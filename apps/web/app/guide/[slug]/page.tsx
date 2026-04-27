@@ -1,11 +1,66 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import fs from "node:fs";
+import path from "node:path";
 import { GUIDES, getGuideBySlug } from "@/lib/guide-content";
 import { searchSpots } from "@/lib/shrine-db";
 import type { ShrineRow } from "@/lib/shrine-db";
+import { GuideImage, KeyPoint, CtaBox, ShrineSpotlight } from "@/components/guide";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://zenkokujinjyaspot.com";
+const CONTENT_DIR = path.join(process.cwd(), "content/guide");
+
+// MDX カスタムコンポーネント
+const components = {
+  GuideImage,
+  KeyPoint,
+  CtaBox,
+  ShrineSpotlight,
+  // Markdownのデフォルト要素をカスタムスタイルで上書き
+  h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <h2 className="text-xl md:text-2xl font-bold text-stone-800 mt-12 mb-4 pb-2 border-b border-stone-200" {...props} />
+  ),
+  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <h3 className="text-lg font-bold text-stone-700 mt-8 mb-3" {...props} />
+  ),
+  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
+    <p className="text-stone-700 leading-relaxed mb-4 text-[15px]" {...props} />
+  ),
+  ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
+    <ul className="my-4 space-y-1.5 pl-4" {...props} />
+  ),
+  li: (props: React.HTMLAttributes<HTMLLIElement>) => (
+    <li className="text-stone-700 text-[15px] leading-relaxed list-disc ml-2" {...props} />
+  ),
+  blockquote: (props: React.HTMLAttributes<HTMLQuoteElement>) => (
+    <blockquote className="my-6 border-l-4 border-moss/40 pl-5 py-1 italic text-stone-600 bg-moss/5 rounded-r-xl" {...props} />
+  ),
+  hr: () => (
+    <hr className="my-10 border-stone-200" />
+  ),
+  table: (props: React.HTMLAttributes<HTMLTableElement>) => (
+    <div className="my-6 overflow-x-auto rounded-xl border border-stone-200">
+      <table className="w-full text-sm text-stone-700" {...props} />
+    </div>
+  ),
+  th: (props: React.HTMLAttributes<HTMLTableCellElement>) => (
+    <th className="bg-stone-50 px-4 py-2 text-left font-bold text-stone-600 border-b border-stone-200" {...props} />
+  ),
+  td: (props: React.HTMLAttributes<HTMLTableCellElement>) => (
+    <td className="px-4 py-2 border-b border-stone-100 last:border-0" {...props} />
+  ),
+  strong: (props: React.HTMLAttributes<HTMLElement>) => (
+    <strong className="font-bold text-stone-800" {...props} />
+  ),
+  code: (props: React.HTMLAttributes<HTMLElement>) => (
+    <code className="bg-stone-100 text-stone-700 px-1.5 py-0.5 rounded text-sm font-mono" {...props} />
+  ),
+  pre: (props: React.HTMLAttributes<HTMLPreElement>) => (
+    <pre className="my-4 bg-stone-100 rounded-xl p-4 overflow-x-auto text-sm font-mono text-stone-700" {...props} />
+  ),
+};
 
 // ─── 静的パス生成 ─────────────────────────────────────────────────────────────
 export async function generateStaticParams() {
@@ -42,25 +97,19 @@ export async function generateMetadata(
   };
 }
 
-// ─── 関連神社取得（サーバーサイド） ──────────────────────────────────────────
+// ─── 関連神社取得 ─────────────────────────────────────────────────────────────
 function fetchRelatedShrines(guide: ReturnType<typeof getGuideBySlug>): ShrineRow[] {
   if (!guide) return [];
   const seen = new Set<number>();
   const results: ShrineRow[] = [];
-
   for (const key of guide.shrineSearchKeys) {
     if (results.length >= 6) break;
     try {
       const { rows } = searchSpots({ ...key, limit: 3 });
       for (const r of rows) {
-        if (!seen.has(r.id)) {
-          seen.add(r.id);
-          results.push(r);
-        }
+        if (!seen.has(r.id)) { seen.add(r.id); results.push(r); }
       }
-    } catch {
-      // DB 未接続（ビルド時など）は無視
-    }
+    } catch { /* DB未接続時はスキップ */ }
   }
   return results.slice(0, 6);
 }
@@ -78,16 +127,8 @@ function buildSchema(guide: NonNullable<ReturnType<typeof getGuideBySlug>>) {
         "datePublished": guide.published,
         "dateModified": guide.updated,
         "inLanguage": "ja",
-        "author": {
-          "@type": "Organization",
-          "name": "全国神社スポット",
-          "url": SITE_URL,
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "全国神社スポット",
-          "url": SITE_URL,
-        },
+        "author": { "@type": "Organization", "name": "全国神社スポット", "url": SITE_URL },
+        "publisher": { "@type": "Organization", "name": "全国神社スポット", "url": SITE_URL },
         "mainEntityOfPage": { "@id": `${SITE_URL}/guide/${guide.slug}` },
         "keywords": guide.keywords.join(", "),
       },
@@ -111,13 +152,9 @@ function buildSchema(guide: NonNullable<ReturnType<typeof getGuideBySlug>>) {
   };
 }
 
-// ─── カテゴリバッジ ───────────────────────────────────────────────────────────
 const CATEGORY_LABEL: Record<string, string> = {
-  lifepath: "ライフパス別",
-  element: "五行属性別",
-  zodiac: "干支別",
-  special: "特集",
-  worry: "悩み別",
+  lifepath: "ライフパス別", element: "五行属性別", zodiac: "干支別",
+  special: "特集", worry: "悩み別",
 };
 const CATEGORY_COLOR: Record<string, string> = {
   lifepath: "bg-violet-100 text-violet-700",
@@ -135,9 +172,13 @@ export default async function GuidePage(
   const guide = getGuideBySlug(slug);
   if (!guide) notFound();
 
+  // MDXファイルが存在するか確認
+  const mdxPath = path.join(CONTENT_DIR, `${slug}.mdx`);
+  const hasMdx = fs.existsSync(mdxPath);
+  const mdxSource = hasMdx ? fs.readFileSync(mdxPath, "utf-8") : null;
+
   const shrines = fetchRelatedShrines(guide);
   const related = GUIDES.filter((g) => guide.relatedSlugs.includes(g.slug));
-
   const schema = buildSchema(guide);
 
   return (
@@ -153,7 +194,7 @@ export default async function GuidePage(
         <span>/</span>
         <Link href="/guide" className="hover:text-stone-600">ガイド</Link>
         <span>/</span>
-        <span className="text-stone-600">{guide.title.slice(0, 20)}…</span>
+        <span className="text-stone-600 truncate max-w-[200px]">{guide.heading}</span>
       </nav>
 
       {/* ヘッダー */}
@@ -162,30 +203,56 @@ export default async function GuidePage(
           {CATEGORY_LABEL[guide.category] ?? guide.category}
         </span>
         <h1 className="text-2xl md:text-3xl font-bold text-stone-800 leading-snug mb-4">
-          {guide.heading}
+          {guide.title}
         </h1>
-        <p className="text-stone-600 leading-relaxed text-base">{guide.lead}</p>
-        <p className="mt-3 text-xs text-stone-400">
+        <p className="text-stone-500 text-sm">
           公開: {guide.published} / 更新: {guide.updated}
         </p>
       </header>
 
-      {/* 本文セクション */}
-      <article className="prose prose-stone max-w-none">
-        {guide.sections.map((sec, i) => (
-          <section key={i} className="mb-8">
-            <h2 className="text-xl font-bold text-stone-800 mb-3 pb-2 border-b border-stone-200">
-              {sec.heading}
-            </h2>
-            {sec.body.split("\n\n").map((para, j) => (
-              <p key={j} className="text-stone-700 leading-relaxed mb-3">{para}</p>
+      {/* 本文：MDXまたはTypeScriptセクションフォールバック */}
+      <article>
+        {mdxSource ? (
+          <MDXRemote source={mdxSource} components={components as never} />
+        ) : (
+          /* MDXなし：既存のTypeScriptセクションで表示 */
+          <>
+            <p className="text-stone-700 leading-relaxed mb-8 text-[15px]">{guide.lead}</p>
+            {guide.sections.map((sec, i) => (
+              <section key={i} className="mb-8">
+                <h2 className="text-xl font-bold text-stone-800 mb-3 pb-2 border-b border-stone-200">
+                  {sec.heading}
+                </h2>
+                {sec.body.split("\n\n").map((para, j) => (
+                  <p key={j} className="text-stone-700 leading-relaxed mb-3 text-[15px]">{para}</p>
+                ))}
+              </section>
             ))}
-          </section>
-        ))}
+            {/* FAQ */}
+            {guide.faqs.length > 0 && (
+              <section className="mt-10 mb-10">
+                <h2 className="text-lg font-bold text-stone-800 mb-4">よくある質問</h2>
+                <div className="space-y-4">
+                  {guide.faqs.map((faq, i) => (
+                    <details key={i} className="border border-stone-200 rounded-xl overflow-hidden group">
+                      <summary className="cursor-pointer px-4 py-3 font-medium text-stone-700 list-none flex items-center justify-between hover:bg-stone-50">
+                        <span>Q. {faq.q}</span>
+                        <span className="text-stone-400 ml-2 shrink-0 group-open:rotate-180 transition-transform">▼</span>
+                      </summary>
+                      <div className="px-4 py-3 text-stone-600 text-sm leading-relaxed border-t border-stone-100 bg-stone-50">
+                        {faq.a}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
+        )}
       </article>
 
-      {/* 関連神社カード */}
-      {shrines.length > 0 && (
+      {/* 関連神社カード（MDXにない場合のみ表示） */}
+      {!hasMdx && shrines.length > 0 && (
         <section className="mt-10 mb-10">
           <h2 className="text-lg font-bold text-stone-800 mb-4">縁深い神社を探す</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -196,21 +263,13 @@ export default async function GuidePage(
                 className="flex gap-3 items-center p-3 rounded-xl border border-stone-200 hover:border-vermilion/40 hover:bg-vermilion/5 transition-colors"
               >
                 {s.photo_url ? (
-                  <img
-                    src={s.photo_url}
-                    alt={s.name}
-                    className="w-14 h-14 rounded-lg object-cover shrink-0"
-                  />
+                  <img src={s.photo_url} alt={s.name} className="w-14 h-14 rounded-lg object-cover shrink-0" />
                 ) : (
-                  <div className="w-14 h-14 rounded-lg bg-stone-100 flex items-center justify-center text-2xl shrink-0">
-                    ⛩
-                  </div>
+                  <div className="w-14 h-14 rounded-lg bg-stone-100 flex items-center justify-center text-2xl shrink-0">⛩</div>
                 )}
                 <div className="min-w-0">
                   <p className="font-medium text-stone-800 text-sm truncate">{s.name}</p>
-                  {s.address && (
-                    <p className="text-xs text-stone-400 truncate">{s.prefecture ?? ""}{s.city ?? ""}</p>
-                  )}
+                  <p className="text-xs text-stone-400 truncate">{s.prefecture ?? ""}{s.city ?? ""}</p>
                   {s.benefits && (
                     <p className="text-xs text-moss mt-0.5 truncate">{s.benefits.split(/[,、]/)[0]}</p>
                   )}
@@ -218,66 +277,26 @@ export default async function GuidePage(
               </Link>
             ))}
           </div>
-          <p className="mt-3 text-sm text-stone-400 text-center">
-            <Link href={`/search?${guide.shrineSearchKeys[0]?.benefit ? `benefit=${encodeURIComponent(guide.shrineSearchKeys[0].benefit)}` : guide.shrineSearchKeys[0]?.deity ? `q=${encodeURIComponent(guide.shrineSearchKeys[0].deity)}` : ""}`} className="text-vermilion hover:underline">
-              もっと神社を探す →
-            </Link>
-          </p>
         </section>
       )}
 
-      {/* FAQ */}
-      {guide.faqs.length > 0 && (
-        <section className="mt-10 mb-10">
-          <h2 className="text-lg font-bold text-stone-800 mb-4">よくある質問</h2>
-          <div className="space-y-4">
-            {guide.faqs.map((faq, i) => (
-              <details key={i} className="border border-stone-200 rounded-xl overflow-hidden group">
-                <summary className="cursor-pointer px-4 py-3 font-medium text-stone-700 list-none flex items-center justify-between hover:bg-stone-50">
-                  <span>Q. {faq.q}</span>
-                  <span className="text-stone-400 ml-2 shrink-0 group-open:rotate-180 transition-transform">▼</span>
-                </summary>
-                <div className="px-4 py-3 text-stone-600 text-sm leading-relaxed border-t border-stone-100 bg-stone-50">
-                  {faq.a}
-                </div>
-              </details>
-            ))}
-          </div>
+      {/* 診断CTA（MDXにない記事のみ） */}
+      {!hasMdx && (
+        <section className="mt-10 mb-10 rounded-2xl bg-gradient-to-br from-vermilion/10 to-moss/10 border border-vermilion/20 p-6 text-center">
+          <p className="text-sm text-stone-500 mb-1">あなただけの守護神社を知りたい方へ</p>
+          <h3 className="text-xl font-bold text-stone-800 mb-3">{guide.ctaLabel}</h3>
+          <Link
+            href="/diagnose"
+            className="inline-block bg-vermilion text-white font-bold px-8 py-3 rounded-full hover:bg-vermilion/90 transition-colors text-sm shadow-md"
+          >
+            無料で守護神社診断を受ける
+          </Link>
         </section>
       )}
-
-      {/* 診断 CTA */}
-      <section className="mt-10 mb-10 rounded-2xl bg-gradient-to-br from-vermilion/10 to-moss/10 border border-vermilion/20 p-6 text-center">
-        <p className="text-sm text-stone-500 mb-1">あなただけの守護神社を知りたい方へ</p>
-        <h3 className="text-xl font-bold text-stone-800 mb-3">{guide.ctaLabel}</h3>
-        <p className="text-sm text-stone-600 mb-5">
-          生年月日・悩みを入力するだけで、五行属性×ライフパスナンバーから縁深い神社を診断します。
-        </p>
-        <Link
-          href="/diagnose"
-          className="inline-block bg-vermilion text-white font-bold px-8 py-3 rounded-full hover:bg-vermilion/90 transition-colors text-sm shadow-md"
-        >
-          無料で守護神社診断を受ける
-        </Link>
-      </section>
-
-      {/* LINE 誘導 */}
-      <section className="mb-10 rounded-2xl bg-[#06C755]/10 border border-[#06C755]/30 p-5 text-center">
-        <p className="text-sm font-medium text-stone-700 mb-1">毎月の参拝タイミングを LINE でお知らせ</p>
-        <p className="text-xs text-stone-500 mb-4">吉日・属性別の縁起情報・特集記事を LINE で配信中</p>
-        <a
-          href="https://lin.ee/YOUR_LINE_ID"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block bg-[#06C755] text-white font-bold px-6 py-2.5 rounded-full text-sm hover:bg-[#06C755]/90 transition-colors"
-        >
-          LINE 公式アカウントを友だち追加
-        </a>
-      </section>
 
       {/* 関連記事 */}
       {related.length > 0 && (
-        <section className="mt-4">
+        <section className="mt-8">
           <h2 className="text-lg font-bold text-stone-800 mb-4">関連ガイド</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {related.map((g) => (
