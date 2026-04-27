@@ -17,72 +17,144 @@ const FORTUNES: Record<FortuneKey, {
   bgFrom: string;
   bgTo: string;
   message: string;
+  deityVoice: string;   // 神様からの言葉（引用形式）
   advice: string;
+  doToday: string[];    // 今日すること3つ
+  luckyColor: string;
+  luckyNumber: string;
+  luckyDirection: string;
   luckyItem: string;
+  shrineAdvice: string; // 参拝するなら
 }> = {
   大吉: {
     emoji: "🌟",
     color: "#b45309",
     bgFrom: "#fffbeb",
     bgTo: "#fef3c7",
-    message: "大きな幸運があなたの前に開かれています。今日は積極的に動くことで、思いがけない縁と喜びが舞い込んでくるでしょう。神様があなたの背中を力強く押しています。",
-    advice: "今こそ迷わず一歩を踏み出すとき。長い間温めていた想いを行動に移してください。",
-    luckyItem: "朱色のもの・南向きの参拝",
+    message: "大きな幸運があなたの前に開かれています。今日は積極的に動くことで、思いがけない縁と喜びが舞い込んでくるでしょう。温めてきた想い、ずっと躊躇っていた一歩——今日こそそれを外に出す日です。神様があなたの背中を力強く押しています。",
+    deityVoice: "「今日のあなたには、失敗する余白すらない。迷わず動け。」",
+    advice: "今こそ迷わず一歩を踏み出すとき。長い間温めていた想いを行動に移してください。自信がなくても、今日の行動は必ず何かにつながります。誰かに感謝の言葉を直接伝えると、さらに縁が開きます。",
+    doToday: ["温めていた計画を一つ動かす", "気になっていた人に連絡する", "鏡の前で「今日もありがとう」と自分に言う"],
+    luckyColor: "朱色・金色",
+    luckyNumber: "1・8",
+    luckyDirection: "南",
+    luckyItem: "赤いもの・金のアクセサリー",
+    shrineAdvice: "天照大神・八幡系の神社へ。拝殿の前で「この縁に感謝します」と宣言するように伝えると吉。",
   },
   吉: {
     emoji: "✨",
     color: "#15803d",
     bgFrom: "#f0fdf4",
     bgTo: "#dcfce7",
-    message: "穏やかで確かな幸運が続いています。急がず焦らず、今日の縁を大切に積み重ねることで、望む未来が着実に近づいてきます。",
-    advice: "人との対話を大切に。今日出会う人があなたの転機のきっかけになるかもしれません。",
-    luckyItem: "緑色のもの・東向きの参拝",
+    message: "穏やかで確かな幸運が続いています。急がず焦らず、今日の縁を大切に積み重ねることで、望む未来が着実に近づいてきます。今日出会う人、今日交わす言葉——そのひとつひとつに丁寧でいてください。大きな花は、小さな水やりの積み重ねで咲くものです。",
+    deityVoice: "「急ぐことはない。あなたの歩みは確かに前へ進んでいる。」",
+    advice: "人との対話を大切に。今日出会う人があなたの転機のきっかけになるかもしれません。褒め言葉を素直に受け取ること、感謝を言葉にして伝えること——これが今日の最大の吉行動です。",
+    doToday: ["誰かに「ありがとう」を直接言う", "今進めていることを一歩前に進める", "自然の中を少し歩く"],
+    luckyColor: "緑・白",
+    luckyNumber: "3・6",
+    luckyDirection: "東",
+    luckyItem: "植物・木のもの",
+    shrineAdvice: "大国主命・春日大社系が縁が深い日。参拝後に境内をゆっくり歩く時間を取ること。",
   },
   中吉: {
     emoji: "🌸",
     color: "#0284c7",
     bgFrom: "#f0f9ff",
     bgTo: "#e0f2fe",
-    message: "今日は平穏な中に小さな喜びが散りばめられています。派手な出来事はないかもしれませんが、身近な幸せに気づく感性を大切にしてください。",
-    advice: "感謝の気持ちを言葉にして伝えることが吉。日常の中に宝物が隠れています。",
-    luckyItem: "水色のもの・水辺の参拝",
+    message: "今日は平穏な中に小さな喜びが散りばめられています。派手な出来事はないかもしれませんが、身近な幸せに気づく感性こそが今日の宝物。誰かの笑顔、温かい食事、ふと見た空の青さ——それらに心を向けることが、今日の幸運を最大に受け取るコツです。",
+    deityVoice: "「目の前にある小さなものを、見落とすなよ。そこに答えが宿っている。」",
+    advice: "感謝の気持ちを言葉にして伝えることが吉。日常の中に宝物が隠れています。無理に大きなことをしなくていい。今日は「受け取る日」です。",
+    doToday: ["今日出会ったものの中に「良かった」を3つ見つける", "好きな飲み物を丁寧に飲む", "近くの神社に立ち寄る"],
+    luckyColor: "水色・白",
+    luckyNumber: "5",
+    luckyDirection: "北東",
+    luckyItem: "水色のもの・透明なもの",
+    shrineAdvice: "水辺の神社・弁財天系が吉。「今日あった良いことへの感謝」を伝えるのが最良の参拝。",
   },
   小吉: {
     emoji: "🍀",
     color: "#7c3aed",
     bgFrom: "#faf5ff",
     bgTo: "#ede9fe",
-    message: "小さな幸運が静かに積み重なっています。目立たないけれど確実な前進の日。今日の一歩一歩が、明日の大きな喜びへの礎になります。",
-    advice: "焦りは禁物。丁寧に、誠実に、今の自分にできることをするのが一番の吉。",
-    luckyItem: "白いもの・朝の参拝",
+    message: "小さな幸運が静かに積み重なっています。目立たないけれど確実な前進の日。今日の一歩一歩が、明日の大きな喜びへの礎になります。「小さい」を侮らないでください。大木も最初は小さな種です。あなたが今日丁寧にやることが、やがて誰かの心を動かす大きな実になります。",
+    deityVoice: "「焦るな。小さな一歩を、ただ丁寧に踏め。それでいい。」",
+    advice: "焦りは禁物。丁寧に、誠実に、今の自分にできることをするのが一番の吉。誰かのために何か小さなことをすると、巡り巡ってあなたに返ってきます。",
+    doToday: ["今日やるべきことを紙に書いて一つずつ消す", "誰かのために小さなことをする", "就寝前に今日の良かったことを思い出す"],
+    luckyColor: "紫・白",
+    luckyNumber: "4・7",
+    luckyDirection: "西",
+    luckyItem: "白いもの・シンプルなもの",
+    shrineAdvice: "氏神様（産土神）への参拝が特に吉。「丁寧に生きます」という宣言が縁を整えます。",
   },
   末吉: {
     emoji: "🌿",
     color: "#64748b",
     bgFrom: "#f8fafc",
     bgTo: "#f1f5f9",
-    message: "今日は少し立ち止まり、内側に向き合う日かもしれません。表面に見えることより、心の奥にある本当の望みを確かめる時間を持ちましょう。",
-    advice: "無理な行動は避け、今日はゆっくりと英気を養うことが吉。神社でのお参りが心を整えてくれます。",
-    luckyItem: "落ち着いた色のもの・静かな参拝",
+    message: "今日は少し立ち止まり、内側に向き合う日かもしれません。表面に見えることより、心の奥にある本当の望みを確かめる時間を持ちましょう。「末吉」は「まだこれから」のサイン。種は土の中でじっと力を蓄えてから芽吹きます。今日の静けさは、明日の跳躍のための充電です。",
+    deityVoice: "「今日は動くより、聴く日だ。自分の内側の声に耳を澄ませよ。」",
+    advice: "無理な行動は避け、今日はゆっくりと英気を養うことが吉。神社でのお参りが心を整えてくれます。今日感じる「モヤモヤ」を紙に書き出すと、明日への道が見えてきます。",
+    doToday: ["今感じていることをノートに書き出す", "いつもより早めに休む", "神社に参拝してお気持ちを整える"],
+    luckyColor: "グレー・深緑",
+    luckyNumber: "2",
+    luckyDirection: "北",
+    luckyItem: "落ち着いた色のもの・お茶",
+    shrineAdvice: "静かな神社や森の中の神社が吉。「今日も守っていただいてありがとうございます」とだけ伝える参拝が心を軽くします。",
   },
   凶: {
     emoji: "🌑",
     color: "#991b1b",
     bgFrom: "#fff7ed",
     bgTo: "#fee2e2",
-    message: "今日は慎重さが必要な日。ただ「凶」は停滞や試練を知らせるもの。嵐の後に晴れ間が来るように、この時期を誠実に過ごすことで、大きな飛躍への地盤が整います。",
-    advice: "衝動的な判断や新しい挑戦は今日は控えめに。参拝してお祓いを受けることが最善の吉転策。",
-    luckyItem: "神社参拝・お祓い",
+    message: "今日は慎重さが必要な日。ただ「凶」は終わりではありません——「注意を促す神様のメッセージ」です。嵐の後に晴れ間が来るように、この時期を誠実に過ごすことで、大きな飛躍への地盤が整います。今日という日に何かを失うより、何かを学ぶつもりでいてください。",
+    deityVoice: "「立ち止まれ。今日は進む日ではなく、整える日だ。」",
+    advice: "衝動的な判断や新しい挑戦は今日は控えめに。参拝してお祓いを受けることが最善の吉転策。もし何か嫌なことがあっても「これは浄化だ」と受け取ると、エネルギーが変わります。",
+    doToday: ["新しいことは今日は一時停止", "神社に参拝してお祓いをお願いする", "今日の経験から学べることを一つ見つける"],
+    luckyColor: "白・黒",
+    luckyNumber: "9",
+    luckyDirection: "南西",
+    luckyItem: "お清めの塩・神社のお守り",
+    shrineAdvice: "祓戸大神・厄除けで有名な神社への参拝が最も吉。「今日の穢れを祓ってください」と真剣にお願いすることで、明日からの運気が好転します。",
   },
 };
 
-// 属性別補足メッセージ
-const ELEMENT_SUPPLEMENT: Record<ElementKey, string> = {
-  木: "縁を結ぶ力が高まっています。今日出会う人との繋がりを大切に。大国主命があなたの縁を守っています。",
-  火: "浄化のエネルギーが満ちています。不要なものを手放し、新しい光を迎え入れる日。天照大神が照らしています。",
-  土: "安定と豊かさのエネルギーが満ちています。地道な積み重ねが実を結ぶ予感。稲荷大神の加護を感じてください。",
-  金: "判断力と洞察力が鋭くなっています。迷っていることへの答えが見えてくる日。八幡大神の力を借りてください。",
-  水: "直感が冴えています。心の声を大切にし、流れに身を任せることで道が開けます。弁財天の清らかな水があなたを導きます。",
+// 属性別補足メッセージ（充実版）
+const ELEMENT_SUPPLEMENT: Record<ElementKey, {
+  message: string;
+  deity: string;
+  prayer: string;
+  todayFocus: string;
+}> = {
+  木: {
+    message: "木属性のあなたは「縁を結ぶ力」が本質。今日のおみくじの結果は、あなたの人間関係と縁の糸に特に作用します。今日出会う人、今日交わす言葉——そのひとつひとつが木の根のように、地中で深く繋がっています。大国主命と素戔嗚尊があなたを見守っています。",
+    deity: "大国主命・素戔嗚尊",
+    prayer: "「大国主命様、今日出会う縁をどうか豊かなものとしてください。」",
+    todayFocus: "人との繋がり・縁を大切にする",
+  },
+  火: {
+    message: "火属性のあなたは「浄化と変革のエネルギー」が本質。今日のおみくじは、あなたの情熱と行動力に特に強く作用します。不要なものを燃やし、新しい光を照らす——今日あなたが感じる「変えたい」という衝動は正しい直感です。天照大神と稲荷大神があなたを照らしています。",
+    deity: "天照大神・稲荷大神",
+    prayer: "「天照大神様、今日の私の一歩に光を与えてください。」",
+    todayFocus: "行動・変革・情熱を表に出す",
+  },
+  土: {
+    message: "土属性のあなたは「安定と豊かさを育む力」が本質。今日のおみくじは、あなたの積み重ねと継続力に特に深く響きます。地道に耕した土から豊かな実りが生まれるように、今日の丁寧な一歩が確かな未来を作ります。稲荷大神と大地の神々があなたを支えています。",
+    deity: "稲荷大神・豊受大御神",
+    prayer: "「今日も豊かな一日を与えてくださることへの感謝を申し上げます。」",
+    todayFocus: "地道な積み重ね・感謝・安定",
+  },
+  金: {
+    message: "金属性のあなたは「判断力と清廉さ」が本質。今日のおみくじは、あなたの決断力と洞察力に特に作用します。迷いが晴れる日、答えが見える瞬間——今日のあなたには鋭い直感が宿っています。八幡大神と天手力男命があなたの判断を後押ししています。",
+    deity: "八幡大神・天手力男命",
+    prayer: "「八幡大神様、今日正しい選択ができるよう、明晰な心をお授けください。」",
+    todayFocus: "決断・誠実さ・本質を見抜く",
+  },
+  水: {
+    message: "水属性のあなたは「深い感受性と直感」が本質。今日のおみくじは、あなたの心の流れと感情の動きに特に強く作用します。水が低いところに流れるように、今日感じる自然な「引き寄せ」に従ってください。弁財天と住吉大神があなたの感覚を澄み渡らせています。",
+    deity: "弁財天・住吉大神",
+    prayer: "「弁財天様、今日の私の直感を清らかに研ぎ澄ましてください。」",
+    todayFocus: "直感・感受性・心の声を聴く",
+  },
 };
 
 // シード付き乱数（日付 + 属性で決定論的）
@@ -263,26 +335,84 @@ export default function OmikujiClient() {
         </p>
       </section>
 
+      {/* 神様からの言葉 */}
+      <section className="rounded-xl border-l-4 border-vermilion bg-vermilion/5 px-5 py-4">
+        <p className="text-[10px] tracking-[0.3em] text-vermilion-deep font-bold mb-2">神様からの言葉</p>
+        <p className="font-serif text-base text-sumi/85 leading-relaxed italic">
+          {fortuneData.deityVoice}
+        </p>
+      </section>
+
       {/* アドバイス */}
       <section className="rounded-xl border border-vermilion/20 bg-vermilion/5 p-5">
         <p className="text-[10px] tracking-[0.3em] text-vermilion-deep font-bold mb-2">今日のアドバイス</p>
         <p className="text-sm text-sumi/80 leading-relaxed">{fortuneData.advice}</p>
-        <p className="text-xs text-sumi/55 mt-2">
-          <span className="font-semibold">ラッキーアイテム：</span>{fortuneData.luckyItem}
-        </p>
+      </section>
+
+      {/* 今日すること */}
+      <section className="rounded-xl border border-border bg-white p-5">
+        <p className="text-[10px] tracking-[0.3em] text-sumi/50 font-bold mb-3">今日すること</p>
+        <ul className="space-y-2">
+          {fortuneData.doToday.map((item, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-sumi/80">
+              <span className="shrink-0 w-5 h-5 rounded-full bg-vermilion/10 text-vermilion-deep text-[10px] font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* ラッキー情報 */}
+      <section className="rounded-xl border border-border bg-washi/60 p-5">
+        <p className="text-[10px] tracking-[0.3em] text-sumi/50 font-bold mb-3">今日のラッキー</p>
+        <div className="grid grid-cols-2 gap-2 text-sm">
+          <div className="rounded-lg bg-white p-2.5">
+            <p className="text-[10px] text-sumi/45 mb-0.5">色</p>
+            <p className="font-semibold text-sumi/80">{fortuneData.luckyColor}</p>
+          </div>
+          <div className="rounded-lg bg-white p-2.5">
+            <p className="text-[10px] text-sumi/45 mb-0.5">数字</p>
+            <p className="font-semibold text-sumi/80">{fortuneData.luckyNumber}</p>
+          </div>
+          <div className="rounded-lg bg-white p-2.5">
+            <p className="text-[10px] text-sumi/45 mb-0.5">方位</p>
+            <p className="font-semibold text-sumi/80">{fortuneData.luckyDirection}</p>
+          </div>
+          <div className="rounded-lg bg-white p-2.5">
+            <p className="text-[10px] text-sumi/45 mb-0.5">アイテム</p>
+            <p className="font-semibold text-sumi/80 text-xs">{fortuneData.luckyItem}</p>
+          </div>
+        </div>
       </section>
 
       {/* 属性別メッセージ */}
       {element && (
-        <section className="rounded-xl border border-border bg-washi/60 p-5">
-          <p className="text-[10px] tracking-[0.25em] text-sumi/50 mb-2">
-            {element}属性・守護神からのメッセージ
+        <section className="rounded-xl border border-border bg-washi/60 p-5 space-y-3">
+          <p className="text-[10px] tracking-[0.25em] text-sumi/50 font-bold">
+            {element}属性・{ELEMENT_SUPPLEMENT[element].deity}からのメッセージ
           </p>
           <p className="text-sm text-sumi/80 leading-relaxed">
-            {ELEMENT_SUPPLEMENT[element]}
+            {ELEMENT_SUPPLEMENT[element].message}
           </p>
+          <div className="rounded-lg bg-vermilion/5 border border-vermilion/15 p-3">
+            <p className="text-[10px] text-vermilion-deep font-bold mb-1">今日のフォーカス</p>
+            <p className="text-xs text-sumi/75">{ELEMENT_SUPPLEMENT[element].todayFocus}</p>
+          </div>
+          <div className="rounded-lg bg-stone-50 p-3">
+            <p className="text-[10px] text-sumi/50 mb-1">参拝時のおすすめの言葉</p>
+            <p className="text-xs text-sumi/70 italic">{ELEMENT_SUPPLEMENT[element].prayer}</p>
+          </div>
         </section>
       )}
+
+      {/* 参拝アドバイス */}
+      <section className="rounded-xl border border-border bg-white p-5">
+        <p className="text-[10px] tracking-[0.3em] text-sumi/50 font-bold mb-2">今日の参拝アドバイス</p>
+        <p className="text-sm text-sumi/75 leading-relaxed">{fortuneData.shrineAdvice}</p>
+        <div className="mt-3 text-center">
+          <Link href="/map" className="text-xs text-vermilion-deep underline">近くの神社を探す →</Link>
+        </div>
+      </section>
 
       {/* シェアボタン */}
       <section className="rounded-xl border border-border bg-white/60 p-4">

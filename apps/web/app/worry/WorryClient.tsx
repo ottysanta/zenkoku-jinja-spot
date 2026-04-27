@@ -156,14 +156,38 @@ export default function WorryClient() {
       {/* 結果 */}
       {!loading && result && (
         <div className="space-y-6">
-          {/* 神様からのメッセージ */}
-          <section className="rounded-2xl border border-vermilion/20 bg-vermilion/5 p-6">
-            <p className="text-[11px] tracking-[0.25em] text-vermilion-deep mb-3">
+          {/* 神様からの深いメッセージ */}
+          <section className="rounded-2xl border border-vermilion/20 bg-gradient-to-br from-vermilion/5 to-white p-6">
+            <p className="text-[11px] tracking-[0.25em] text-vermilion-deep font-bold mb-3">
               ✦ 神様からのメッセージ
             </p>
-            <p className="text-sm text-sumi/85 leading-relaxed">
-              {result.data.message}
+            <p className="font-serif text-base text-sumi/90 leading-loose mb-4">
+              {result.data.deityMessage ?? result.data.message}
             </p>
+            <div className="border-t border-vermilion/10 pt-3">
+              <p className="text-[10px] tracking-[0.2em] text-vermilion-deep/60 mb-1.5">祈る言葉</p>
+              <p className="text-sm text-sumi/80 italic">
+                「{result.data.praySentence ?? ""}」
+              </p>
+            </div>
+          </section>
+
+          {/* 参拝ガイド & タイミング */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <section className="rounded-xl border border-stone-200 bg-stone-50 p-4">
+              <p className="text-[10px] tracking-[0.2em] text-stone-500 font-bold mb-2">⛩ 参拝の心がまえ</p>
+              <p className="text-sm text-sumi/80 leading-relaxed">{result.data.prayerGuide ?? ""}</p>
+            </section>
+            <section className="rounded-xl border border-amber-200/60 bg-amber-50/60 p-4">
+              <p className="text-[10px] tracking-[0.2em] text-amber-700 font-bold mb-2">⏰ 参拝に適した時期</p>
+              <p className="text-sm text-sumi/80 leading-relaxed">{result.data.visitTime ?? ""}</p>
+            </section>
+          </div>
+
+          {/* どんな神社を選ぶか */}
+          <section className="rounded-xl border border-moss/20 bg-moss/5 p-4">
+            <p className="text-[10px] tracking-[0.2em] text-moss font-bold mb-2">🌿 どんな神社を選ぶべきか</p>
+            <p className="text-sm text-sumi/80 leading-relaxed">{result.data.shrineTip ?? ""}</p>
           </section>
 
           {/* 神社リスト */}
