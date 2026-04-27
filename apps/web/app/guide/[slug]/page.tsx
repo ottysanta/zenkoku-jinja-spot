@@ -1,66 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import fs from "node:fs";
-import path from "node:path";
 import { GUIDES, getGuideBySlug } from "@/lib/guide-content";
+import { GUIDE_COMPONENTS } from "@/content/guide";
 import { searchSpots } from "@/lib/shrine-db";
 import type { ShrineRow } from "@/lib/shrine-db";
-import { GuideImage, KeyPoint, CtaBox, ShrineSpotlight } from "@/components/guide";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://zenkokujinjyaspot.com";
-const CONTENT_DIR = path.join(process.cwd(), "content/guide");
-
-// MDX カスタムコンポーネント
-const components = {
-  GuideImage,
-  KeyPoint,
-  CtaBox,
-  ShrineSpotlight,
-  // Markdownのデフォルト要素をカスタムスタイルで上書き
-  h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h2 className="text-xl md:text-2xl font-bold text-stone-800 mt-12 mb-4 pb-2 border-b border-stone-200" {...props} />
-  ),
-  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h3 className="text-lg font-bold text-stone-700 mt-8 mb-3" {...props} />
-  ),
-  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
-    <p className="text-stone-700 leading-relaxed mb-4 text-[15px]" {...props} />
-  ),
-  ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
-    <ul className="my-4 space-y-1.5 pl-4" {...props} />
-  ),
-  li: (props: React.HTMLAttributes<HTMLLIElement>) => (
-    <li className="text-stone-700 text-[15px] leading-relaxed list-disc ml-2" {...props} />
-  ),
-  blockquote: (props: React.HTMLAttributes<HTMLQuoteElement>) => (
-    <blockquote className="my-6 border-l-4 border-moss/40 pl-5 py-1 italic text-stone-600 bg-moss/5 rounded-r-xl" {...props} />
-  ),
-  hr: () => (
-    <hr className="my-10 border-stone-200" />
-  ),
-  table: (props: React.HTMLAttributes<HTMLTableElement>) => (
-    <div className="my-6 overflow-x-auto rounded-xl border border-stone-200">
-      <table className="w-full text-sm text-stone-700" {...props} />
-    </div>
-  ),
-  th: (props: React.HTMLAttributes<HTMLTableCellElement>) => (
-    <th className="bg-stone-50 px-4 py-2 text-left font-bold text-stone-600 border-b border-stone-200" {...props} />
-  ),
-  td: (props: React.HTMLAttributes<HTMLTableCellElement>) => (
-    <td className="px-4 py-2 border-b border-stone-100 last:border-0" {...props} />
-  ),
-  strong: (props: React.HTMLAttributes<HTMLElement>) => (
-    <strong className="font-bold text-stone-800" {...props} />
-  ),
-  code: (props: React.HTMLAttributes<HTMLElement>) => (
-    <code className="bg-stone-100 text-stone-700 px-1.5 py-0.5 rounded text-sm font-mono" {...props} />
-  ),
-  pre: (props: React.HTMLAttributes<HTMLPreElement>) => (
-    <pre className="my-4 bg-stone-100 rounded-xl p-4 overflow-x-auto text-sm font-mono text-stone-700" {...props} />
-  ),
-};
 
 // ─── 静的パス生成 ─────────────────────────────────────────────────────────────
 export async function generateStaticParams() {
@@ -172,10 +118,8 @@ export default async function GuidePage(
   const guide = getGuideBySlug(slug);
   if (!guide) notFound();
 
-  // MDXファイルが存在するか確認
-  const mdxPath = path.join(CONTENT_DIR, `${slug}.mdx`);
-  const hasMdx = fs.existsSync(mdxPath);
-  const mdxSource = hasMdx ? fs.readFileSync(mdxPath, "utf-8") : null;
+  // TSXコンポーネントが存在するか確認
+  const ContentComponent = GUIDE_COMPONENTS[slug] ?? null;
 
   const shrines = fetchRelatedShrines(guide);
   const related = GUIDES.filter((g) => guide.relatedSlugs.includes(g.slug));
@@ -210,12 +154,12 @@ export default async function GuidePage(
         </p>
       </header>
 
-      {/* 本文：MDXまたはTypeScriptセクションフォールバック */}
+      {/* 本文：TSXコンポーネントまたはTypeScriptセクションフォールバック */}
       <article>
-        {mdxSource ? (
-          <MDXRemote source={mdxSource} components={components as never} />
+        {ContentComponent ? (
+          <ContentComponent />
         ) : (
-          /* MDXなし：既存のTypeScriptセクションで表示 */
+          /* TSXなし：既存のTypeScriptセクションで表示 */
           <>
             <p className="text-stone-700 leading-relaxed mb-8 text-[15px]">{guide.lead}</p>
             {guide.sections.map((sec, i) => (
@@ -251,8 +195,8 @@ export default async function GuidePage(
         )}
       </article>
 
-      {/* 関連神社カード（MDXにない場合のみ表示） */}
-      {!hasMdx && shrines.length > 0 && (
+      {/* 関連神社カード（TSXコンポーネントにない場合のみ表示） */}
+      {!ContentComponent && shrines.length > 0 && (
         <section className="mt-10 mb-10">
           <h2 className="text-lg font-bold text-stone-800 mb-4">縁深い神社を探す</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -280,8 +224,8 @@ export default async function GuidePage(
         </section>
       )}
 
-      {/* 診断CTA（MDXにない記事のみ） */}
-      {!hasMdx && (
+      {/* 診断CTA（TSXコンポーネントにない記事のみ） */}
+      {!ContentComponent && (
         <section className="mt-10 mb-10 rounded-2xl bg-gradient-to-br from-vermilion/10 to-moss/10 border border-vermilion/20 p-6 text-center">
           <p className="text-sm text-stone-500 mb-1">あなただけの守護神社を知りたい方へ</p>
           <h3 className="text-xl font-bold text-stone-800 mb-3">{guide.ctaLabel}</h3>
