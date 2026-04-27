@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+import Script from 'next/script';
 import AppBar from '../components/AppBar';
 import '../styles/globals.css';
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
   title: {
@@ -47,6 +50,20 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap"
           rel="stylesheet"
         />
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">{`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}', { page_path: window.location.pathname });
+            `}</Script>
+          </>
+        )}
       </head>
       <body className="min-h-screen pt-10">
         <NextIntlClientProvider locale={locale} messages={messages}>

@@ -1,6 +1,12 @@
+import withSerwistInit from "@serwist/next";
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
+const withSerwist = withSerwistInit({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
+  disable: process.env.NODE_ENV === "development",
+});
 
 /** @type {import('next').NextConfig} */
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
@@ -57,4 +63,4 @@ const nextConfig = {
   },
 };
 
-export default withNextIntl(nextConfig);
+export default withNextIntl(withSerwist(nextConfig));

@@ -186,6 +186,70 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* 1.2) コンテンツ三本柱 */}
+      <section className="mb-10">
+        <div className="mb-3 flex items-baseline justify-between">
+          <h2 className="font-serif text-xl">⛩ 神社体験コンテンツ</h2>
+        </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Link
+            href="/diagnose"
+            className="group relative block overflow-hidden rounded-xl border border-vermilion/30 bg-gradient-to-br from-vermilion/8 via-washi to-transparent p-5 shadow-sm transition hover:shadow-md hover:border-vermilion/50"
+          >
+            <div className="mb-3 flex gap-1">
+              {(["木", "火", "土", "金", "水"] as const).map((el, i) => (
+                <span key={el} className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-bold text-white ${["bg-emerald-500","bg-orange-500","bg-amber-500","bg-slate-500","bg-blue-500"][i]}`}>{el}</span>
+              ))}
+            </div>
+            <p className="text-[10px] tracking-[0.2em] text-vermilion-deep font-semibold mb-1">SHRINE DIAGNOSIS</p>
+            <h3 className="font-serif text-lg text-sumi mb-1">守護神社診断</h3>
+            <p className="text-xs text-sumi/65 leading-relaxed mb-3">生年月・お悩みから五行属性と干支タイプを診断。縁深い守護神社を3社ご紹介します。</p>
+            <span className="inline-flex items-center gap-1 rounded-full bg-vermilion px-4 py-1.5 text-xs font-semibold text-white transition group-hover:bg-vermilion-deep">
+              無料で診断 →
+            </span>
+          </Link>
+
+          <Link
+            href="/omikuji"
+            className="group relative block overflow-hidden rounded-xl border border-amber-300/50 bg-gradient-to-br from-amber-50 via-washi to-transparent p-5 shadow-sm transition hover:shadow-md hover:border-amber-400/70"
+          >
+            <div className="mb-3 text-3xl">📜</div>
+            <p className="text-[10px] tracking-[0.2em] text-amber-700 font-semibold mb-1">DAILY OMIKUJI</p>
+            <h3 className="font-serif text-lg text-sumi mb-1">今日のおみくじ</h3>
+            <p className="text-xs text-sumi/65 leading-relaxed mb-3">1日1回引ける守護神からのメッセージ。五行属性に合わせた今日の運勢をお届けします。</p>
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-1.5 text-xs font-semibold text-white transition group-hover:bg-amber-600">
+              おみくじを引く →
+            </span>
+          </Link>
+
+          <Link
+            href="/diagnose/compat"
+            className="group relative block overflow-hidden rounded-xl border border-blue-300/50 bg-gradient-to-br from-blue-50 via-washi to-transparent p-5 shadow-sm transition hover:shadow-md hover:border-blue-400/70"
+          >
+            <div className="mb-3 text-3xl">🔄</div>
+            <p className="text-[10px] tracking-[0.2em] text-blue-700 font-semibold mb-1">COMPATIBILITY</p>
+            <h3 className="font-serif text-lg text-sumi mb-1">五行相性診断</h3>
+            <p className="text-xs text-sumi/65 leading-relaxed mb-3">木・火・土・金・水の五行属性から、相生・相克でふたりの縁と相性を読み解きます。</p>
+            <span className="inline-flex items-center gap-1 rounded-full bg-blue-500 px-4 py-1.5 text-xs font-semibold text-white transition group-hover:bg-blue-600">
+              相性を診断 →
+            </span>
+          </Link>
+
+          <Link
+            href="/worry"
+            className="group relative block overflow-hidden rounded-xl border border-moss/30 bg-gradient-to-br from-moss/8 via-washi to-transparent p-5 shadow-sm transition hover:shadow-md hover:border-moss/50"
+          >
+            <div className="mb-3 text-3xl">🙏</div>
+            <p className="text-[10px] tracking-[0.2em] text-moss font-semibold mb-1">WORRY DIAGNOSIS</p>
+            <h3 className="font-serif text-lg text-sumi mb-1">悩み別 神社診断</h3>
+            <p className="text-xs text-sumi/65 leading-relaxed mb-3">職場・恋愛・家族・健康・金運…今のあなたの悩みに縁深い神様と神社をご紹介します。</p>
+            <span className="inline-flex items-center gap-1 rounded-full bg-moss px-4 py-1.5 text-xs font-semibold text-white transition group-hover:bg-moss/80">
+              悩みで探す →
+            </span>
+          </Link>
+        </div>
+      </section>
+
       {/* 1.5) 注目神社（ランダム 4 枚、訪問毎に違う） */}
       {spotlight.length > 0 ? (
         <section className="mb-10">
@@ -546,39 +610,6 @@ export default async function HomePage() {
           </ul>
         </section>
       ) : null}
-
-      {/* 4.9) 守護神社診断バナー */}
-      <section className="mb-10">
-        <Link
-          href="/diagnose"
-          className="group relative block overflow-hidden rounded-2xl border-2 border-vermilion/30 bg-gradient-to-br from-vermilion/8 via-washi to-moss/8 p-6 shadow-sm transition hover:shadow-md hover:border-vermilion/50"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-vermilion/5 to-transparent pointer-events-none" />
-          <div className="relative flex flex-col md:flex-row items-center gap-5">
-            {/* 五行シンボル */}
-            <div className="flex-shrink-0 grid grid-cols-5 gap-1.5 text-center">
-              {(["木", "火", "土", "金", "水"] as const).map((el, i) => (
-                <div key={el} className={`w-10 h-10 rounded-full flex items-center justify-center text-lg font-serif font-bold text-white shadow ${
-                  ["bg-emerald-500", "bg-orange-500", "bg-amber-500", "bg-slate-500", "bg-blue-500"][i]
-                }`}>{el}</div>
-              ))}
-            </div>
-            <div className="flex-1 text-center md:text-left">
-              <p className="text-[10px] tracking-[0.28em] text-vermilion-deep font-semibold mb-1">⛩ SHRINE DIAGNOSIS</p>
-              <h2 className="font-serif text-xl text-sumi mb-1">守護神社診断</h2>
-              <p className="text-sm text-sumi/70 leading-relaxed">
-                生まれ年から干支・五行属性を導き出し、<br className="hidden md:block"/>
-                職場・家族・恋愛の悩みに縁深い守護神社をご紹介します。
-              </p>
-            </div>
-            <div className="flex-shrink-0">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-vermilion px-5 py-2.5 text-sm font-semibold text-white shadow transition group-hover:bg-vermilion-deep">
-                無料で診断する →
-              </span>
-            </div>
-          </div>
-        </Link>
-      </section>
 
       {/* 5) 学ぶ / 気持ちを届ける */}
       <section className="mb-10 grid grid-cols-1 gap-3 md:grid-cols-2">

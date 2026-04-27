@@ -53,6 +53,23 @@ type CheckinRow = {
 
 const RECENT_KEY = "ssp_recent_shrines";
 
+const ELEMENT_STYLE: Record<string, { bg: string }> = {
+  木: { bg: "bg-emerald-500" },
+  火: { bg: "bg-orange-500" },
+  土: { bg: "bg-amber-500" },
+  金: { bg: "bg-slate-500" },
+  水: { bg: "bg-blue-500" },
+};
+
+const FORTUNE_META: Record<string, { emoji: string; colorClass: string }> = {
+  大吉: { emoji: "🌟", colorClass: "text-amber-700" },
+  吉:   { emoji: "✨", colorClass: "text-green-700" },
+  中吉: { emoji: "🌸", colorClass: "text-blue-600" },
+  小吉: { emoji: "🍀", colorClass: "text-purple-700" },
+  末吉: { emoji: "🌿", colorClass: "text-slate-600" },
+  凶:   { emoji: "🌑", colorClass: "text-red-700" },
+};
+
 /** 閲覧履歴を LocalStorage に保持（既存の Export を維持する） */
 export function addRecent(spot: {
   id: number;
@@ -79,7 +96,10 @@ export function addRecent(spot: {
   } catch {}
 }
 
-type Tab = "recent" | "want" | "like" | "checkins";
+type Tab = "recent" | "want" | "like" | "checkins" | "omikuji";
+
+type GuardianProfile = { element: string; zodiac: string } | null;
+type OmikujiRecord = { date: string; fortune: string };
 
 export default function MyPageClient({ user }: { user?: SessionUser }) {
   const [tab, setTab] = useState<Tab>("recent");
@@ -89,6 +109,8 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
   const [like, setLike] = useState<BookmarkRow[] | null>(null);
   const [checkins, setCheckins] = useState<CheckinRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [profile, setProfile] = useState<GuardianProfile>(null);
+  const [omikujiHistory, setOmikujiHistory] = useState<OmikujiRecord[]>([]);
 
   useEffect(() => {
     setClientId(getClientId());
@@ -96,6 +118,21 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
       const raw = localStorage.getItem(RECENT_KEY) ?? "[]";
       setRecent(JSON.parse(raw));
     } catch {}
+    // 守護タイプ
+    const el = localStorage.getItem("guardian_element");
+    const zo = localStorage.getItem("guardian_zodiac");
+    if (el) setProfile({ element: el, zodiac: zo ?? "" });
+    // おみくじ履歴（全 omikuji_* キー）
+    const hist: OmikujiRecord[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.startsWith("omikuji_")) {
+        const fortune = localStorage.getItem(key);
+        if (fortune) hist.push({ date: key.replace("omikuji_", ""), fortune });
+      }
+    }
+    hist.sort((a, b) => b.date.localeCompare(a.date));
+    setOmikujiHistory(hist);
   }, []);
 
   const loadBookmarks = useCallback(
@@ -176,6 +213,29 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
         </div>
       </header>
 
+      {/* 守護タイプバッジ */}
+      {profile ? (
+        <div className="mb-5 flex items-center gap-3 rounded-xl border border-vermilion/20 bg-vermilion/5 px-4 py-3">
+          <span className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-xl font-bold text-white shadow ${ELEMENT_STYLE[profile.element]?.bg ?? "bg-sumi/40"}`}>
+            {profile.zodiac || profile.element}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] tracking-[0.2em] text-vermilion-deep font-semibold">守護属性</p>
+            <p className="text-sm font-semibold text-sumi">{profile.element}属性</p>
+          </div>
+          <Link href="/diagnose" className="shrink-0 text-xs text-vermilion-deep underline hover:no-underline">
+            再診断 →
+          </Link>
+        </div>
+      ) : (
+        <div className="mb-5 flex items-center justify-between gap-3 rounded-xl border border-dashed border-border bg-washi/60 px-4 py-3">
+          <p className="text-xs text-sumi/60">守護神社診断をするとあなたの属性・タイプが表示されます</p>
+          <Link href="/diagnose" className="shrink-0 rounded-full bg-vermilion px-3 py-1.5 text-xs font-semibold text-white hover:bg-vermilion-deep">
+            診断する →
+          </Link>
+        </div>
+      )}
+
       {/* タブ */}
       <nav className="mb-4 flex flex-wrap gap-1 border-b border-border">
         {(
@@ -184,6 +244,7 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
             { key: "want", label: "行きたい", icon: "📌" },
             { key: "like", label: "いいね", icon: "❤" },
             { key: "checkins", label: "参拝履歴", icon: "⛩" },
+            { key: "omikuji", label: "おみくじ", icon: "📜" },
           ] as const
         ).map((t) => (
           <button
@@ -312,6 +373,41 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
               </li>
             ))}
           </ul>
+        )
+      ) : null}
+
+      {tab === "omikuji" ? (
+        omikujiHistory.length === 0 ? (
+          <div className="rounded-md border border-dashed border-border bg-washi/60 p-6 text-center">
+            <p className="mb-3 text-sm text-sumi/70">まだおみくじの記録がありません。</p>
+            <Link
+              href="/omikuji"
+              className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600"
+            >
+              📜 今日のおみくじを引く
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-sumi/50">過去 {omikujiHistory.length} 件の記録</p>
+              <Link href="/omikuji" className="text-xs text-vermilion-deep underline hover:no-underline">今日のおみくじ →</Link>
+            </div>
+            <ul className="space-y-2">
+              {omikujiHistory.map((r) => {
+                const meta = FORTUNE_META[r.fortune] ?? { emoji: "📜", colorClass: "text-sumi" };
+                return (
+                  <li key={r.date} className="flex items-center gap-3 rounded-md border border-border bg-washi px-4 py-3">
+                    <span className="text-2xl">{meta.emoji}</span>
+                    <div className="flex-1">
+                      <p className={`text-lg font-bold font-serif ${meta.colorClass}`}>{r.fortune}</p>
+                      <p className="text-[11px] text-sumi/50">{r.date}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         )
       ) : null}
 

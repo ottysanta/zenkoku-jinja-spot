@@ -1338,3 +1338,54 @@ export function bulkImport(
   }
   return { inserted, updated, total: totalSpots() };
 }
+
+// ─── Push Subscriptions ──────────────────────────────────────────────────────
+
+function ensurePushTable() {
+  const db = getDb();
+  try {
+    db.exec(`CREATE TABLE IF NOT EXISTS push_subscriptions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      endpoint TEXT NOT NULL UNIQUE,
+      p256dh TEXT NOT NULL,
+      auth TEXT NOT NULL,
+      client_id TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )`);
+  } catch {}
+}
+
+export function savePushSubscription(sub: {
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  clientId?: string;
+}): void {
+  ensurePushTable();
+  const db = getDb();
+  db.prepare(
+    `INSERT INTO push_subscriptions (endpoint, p256dh, auth, client_id)
+     VALUES (?, ?, ?, ?)
+     ON CONFLICT(endpoint) DO UPDATE SET p256dh=excluded.p256dh, auth=excluded.auth`,
+  ).run(sub.endpoint, sub.p256dh, sub.auth, sub.clientId ?? null);
+}
+
+export function deletePushSubscription(endpoint: string): void {
+  ensurePushTable();
+  getDb().prepare("DELETE FROM push_subscriptions WHERE endpoint = ?").run(endpoint);
+}
+
+export function listPushSubscriptions(): Array<{
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+}> {
+  ensurePushTable();
+  try {
+    return getDb()
+      .prepare("SELECT endpoint, p256dh, auth FROM push_subscriptions")
+      .all() as Array<{ endpoint: string; p256dh: string; auth: string }>;
+  } catch {
+    return [];
+  }
+}
