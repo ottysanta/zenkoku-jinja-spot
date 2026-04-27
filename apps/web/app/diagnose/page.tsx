@@ -51,6 +51,77 @@ export async function generateMetadata(
   };
 }
 
+// ─── 構造化データ（FAQPage + WebApplication）────────────────────────────
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://zenkokujinjyaspot.com";
+
+const diagnoseSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "守護神社診断",
+      "url": `${SITE_URL}/diagnose`,
+      "description": "生年月日と今の悩みから、五行属性・干支・数秘ライフパスナンバーを導き出し、あなたに縁深い守護神社を診断するツール。全国46,000社以上のデータベースから最適な神社を提案。",
+      "applicationCategory": "LifestyleApplication",
+      "inLanguage": "ja",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "守護神社診断とは何ですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "守護神社診断は、生年月日（十干十二支・五行属性）と数秘術ライフパスナンバー、今抱えている悩みを組み合わせて、あなたに縁深い守護神社を特定するオリジナルの診断システムです。全国46,000社以上のデータベースから、あなたの属性とご利益が一致する神社を紹介します。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "五行属性（木・火・土・金・水）と神社の相性はどう決まりますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "五行思想では木・火・土・金・水のそれぞれに対応する神様と神社があります。木属性なら大国主命・素戔嗚尊をお祀りする神社、火属性なら天照大神・稲荷系の神社、水属性なら弁財天・住吉大神をお祀りする神社との相性が特に深くなります。生まれ年の十干から属性が決まり、その属性に合った神社を参拝することで運気が整いやすくなるとされています。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "数秘術ライフパスナンバーと神社参拝の関係は？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "数秘術のライフパスナンバーは生年月日の全桁を1桁に還元した数字（1〜9、マスターナンバー11・22・33）で、その人の魂の特質と人生テーマを示します。ライフパス7（真理の探究者）なら七の数に縁深い神社や霊験あらたかな神秘的な聖地との相性が深く、ライフパス1（先駆者）なら開拓・創始を象徴する神様をお祀りする神社との縁が強くなります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "干支で守護神社は変わりますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "はい、干支（十二支）によって縁深い神使（眷属）や祭神が変わります。子年生まれなら大黒天・大国主命との縁が深く、午年生まれなら馬を神使とする神社（駒形神社・藤森神社など）との相性が強くなります。十干十二支の組み合わせ（甲子・乙丑など60通り）でさらに細かい守護タイプが決まります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "仕事運・恋愛運・家族運・金運、それぞれに向いた神社はどこですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ご利益別では、仕事運・勝負運なら八幡宮・鹿島神宮系、恋愛・縁結びなら出雲大社系・月読神社系、家族・夫婦円満なら住吉大社系、金運・商売繁盛なら稲荷系神社（伏見稲荷など）が代表的です。ただし最適な神社はあなたの五行属性・ライフパスナンバーによっても変わるため、守護神社診断で個人に合った神社を確認することをお勧めします。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "2026年（丙午）に特に相性の良い神社はどこですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "2026年は丙午（ひのえうま）の年で、60年に一度の強い火のエネルギーを持つ年です。火属性を高める天照大神・稲荷系の神社（伏見稲荷大社・豊川稲荷など）、馬にゆかりの深い藤森神社・駒形神社・多度大社への参拝が特に縁深いとされています。午年生まれの方はもちろん、変化・決断・新しい挑戦を祈願したい方に強いエネルギーを与えてくれる年回りです。"
+          }
+        }
+      ]
+    }
+  ]
+};
+
 // ─── ページ ───────────────────────────────────────────────────────────────
 export default async function DiagnosePage(
   { searchParams }: { searchParams: SearchParams }
@@ -64,6 +135,10 @@ export default async function DiagnosePage(
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(diagnoseSchema) }}
+      />
       {/* 背景装飾 */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-vermilion/5 blur-3xl" />
