@@ -10,8 +10,8 @@ const DEFAULT_META = {
 
 // ─── 動的 OGP（URLに結果パラメータが含まれる場合） ────────────────────────
 type SearchParams = Promise<{
-  y?: string; m?: string; w?: string;
-  t?: string; mod?: string; el?: string; em?: string;
+  y?: string; m?: string; d?: string; w?: string;
+  t?: string; mod?: string; el?: string; em?: string; lp?: string;
 }>;
 
 export async function generateMetadata(
@@ -21,13 +21,14 @@ export async function generateMetadata(
 
   // 結果パラメータが揃っている場合だけ動的 OGP を生成
   if (p.t && p.el) {
-    const ogUrl = `/api/og/diagnose?type=${encodeURIComponent(p.t)}&mod=${encodeURIComponent(p.mod ?? "")}&el=${encodeURIComponent(p.el)}&em=${encodeURIComponent(p.em ?? "⛩")}&worry=${encodeURIComponent(p.w ?? "")}`;
+    const ogUrl = `/api/og/diagnose?type=${encodeURIComponent(p.t)}&mod=${encodeURIComponent(p.mod ?? "")}&el=${encodeURIComponent(p.el)}&em=${encodeURIComponent(p.em ?? "⛩")}&worry=${encodeURIComponent(p.w ?? "")}&lp=${encodeURIComponent(p.lp ?? "")}`;
+    const lpLabel = p.lp ? ` × ライフパス${p.lp}` : "";
     return {
-      title: `「${p.t}」— 守護神社診断結果`,
-      description: `${p.el}属性 ${p.mod ?? ""}。あなたの守護タイプは「${p.t}」。守護神社診断で自分に縁深い神社を見つけよう。`,
+      title: `「${p.t}」${lpLabel}— 守護神社診断結果`,
+      description: `${p.el}属性${lpLabel}。あなたの守護タイプは「${p.t}」。守護神社診断で自分に縁深い神社を見つけよう。`,
       openGraph: {
-        title: `あなたの守護タイプ：「${p.t}」`,
-        description: `${p.el}属性 ${p.mod ?? ""}`,
+        title: `守護タイプ「${p.t}」${lpLabel}`,
+        description: `${p.el}属性 ${p.mod ?? ""}${lpLabel}`,
         type: "website",
         images: [{ url: ogUrl, width: 1200, height: 630, alt: `守護タイプ：${p.t}` }],
       },
@@ -57,8 +58,8 @@ export default async function DiagnosePage(
   const p = await searchParams;
 
   // URL に結果パラメータがあれば DiagnoseClient に渡して自動表示
-  const initialParams = (p.y && p.m && p.w)
-    ? { year: p.y, month: p.m, worry: p.w as "work" | "love" | "family" | "self" }
+  const initialParams = (p.y && p.m && p.d && p.w)
+    ? { year: p.y, month: p.m, day: p.d, worry: p.w as "work" | "love" | "family" | "self" }
     : undefined;
 
   return (

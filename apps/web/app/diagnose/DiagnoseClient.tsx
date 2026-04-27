@@ -51,7 +51,12 @@ function StepIndicator({ step }: { step: number }) {
   );
 }
 
-type InitialParams = { year: string; month: string; worry: WorryKey };
+type InitialParams = { year: string; month: string; day: string; worry: WorryKey };
+
+function getDaysInMonth(year: string, month: string): number {
+  if (!year || !month) return 31;
+  return new Date(Number(year), Number(month), 0).getDate();
+}
 
 // ─── メイン ────────────────────────────────────────────────────────────────
 export default function DiagnoseClient({ initialParams }: { initialParams?: InitialParams }) {
@@ -62,23 +67,24 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
   const [step, setStep]     = useState<"birth" | "worry" | "loading" | "result">("birth");
   const [year, setYear]     = useState<string>(initialParams?.year ?? "");
   const [month, setMonth]   = useState<string>(initialParams?.month ?? "");
+  const [day, setDay]       = useState<string>(initialParams?.day ?? "");
   const [worry, setWorry]   = useState<WorryKey | null>(initialParams?.worry ?? null);
   const [result, setResult] = useState<DiagnoseResult | null>(null);
   const [error, setError]   = useState<string | null>(null);
 
   // URLに結果パラメータがあれば自動フェッチ
   useEffect(() => {
-    if (initialParams?.year && initialParams?.month && initialParams?.worry) {
-      void fetchResult(initialParams.year, initialParams.month, initialParams.worry);
+    if (initialParams?.year && initialParams?.month && initialParams?.day && initialParams?.worry) {
+      void fetchResult(initialParams.year, initialParams.month, initialParams.day, initialParams.worry);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function fetchResult(y: string, m: string, w: WorryKey) {
+  async function fetchResult(y: string, m: string, d: string, w: WorryKey) {
     setStep("loading");
     setError(null);
     try {
-      const res = await fetch(`/api/diagnose?year=${y}&month=${m}&worry=${w}`);
+      const res = await fetch(`/api/diagnose?year=${y}&month=${m}&day=${d}&worry=${w}`);
       if (!res.ok) throw new Error();
       const data: DiagnoseResult = await res.json();
       setResult(data);
@@ -89,11 +95,12 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
       localStorage.setItem("guardian_zodiac",  data.zodiac.emoji);
       // URLを結果パラメータ付きで更新（シェア用）
       const params = new URLSearchParams({
-        y, m, w,
+        y, m, d, w,
         t: data.typeName,
         mod: data.typeModifier,
         el: data.element,
         em: data.zodiac.emoji,
+        lp: String(data.lifePathNumber),
       });
       window.history.replaceState(null, "", `/diagnose?${params.toString()}`);
     } catch {
@@ -104,7 +111,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
 
   async function handleDiagnose(selectedWorry: WorryKey) {
     setWorry(selectedWorry);
-    await fetchResult(year, month, selectedWorry);
+    await fetchResult(year, month, day, selectedWorry);
   }
 
   function reset() {
@@ -112,6 +119,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
     setResult(null);
     setYear("");
     setMonth("");
+    setDay("");
     setWorry(null);
     setError(null);
     window.history.replaceState(null, "", "/diagnose");
@@ -157,7 +165,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
               {months.map((m) => (
                 <button
                   key={m}
-                  onClick={() => setMonth(String(m))}
+                  onClick={() => { setMonth(String(m)); setDay(""); }}
                   className={`rounded-lg py-2.5 text-sm font-semibold transition
                     ${month === String(m)
                       ? "bg-vermilion text-white shadow"
@@ -169,9 +177,29 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
             </div>
           </div>
 
+          <div>
+            <label className="block text-xs font-semibold text-sumi/60 mb-1.5 text-center tracking-wide">
+              生まれた日
+            </label>
+            <div className="grid grid-cols-7 gap-1">
+              {Array.from({ length: getDaysInMonth(year, month) }, (_, i) => i + 1).map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setDay(String(d))}
+                  className={`rounded-lg py-2 text-sm font-semibold transition
+                    ${day === String(d)
+                      ? "bg-vermilion text-white shadow"
+                      : "bg-washi border border-border text-sumi/70 hover:border-vermilion/40"}`}
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <button
             onClick={() => setStep("worry")}
-            disabled={!year || !month}
+            disabled={!year || !month || !day}
             className="w-full min-h-[52px] rounded-xl bg-vermilion px-6 py-3 text-base font-bold text-white shadow-lg transition hover:bg-vermilion-deep disabled:opacity-40 disabled:cursor-not-allowed mt-2"
           >
             次へ → 悩みを選ぶ
@@ -245,10 +273,10 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
 
   // ── 結果 ──────────────────────────────────────────────────────────────────
   if (!result) return null;
-  const { zodiac, stem, sexagenary, element, elementData, typeName, typeModifier, worryLabel, shrines } = result;
+  const { zodiac, stem, sexagenary, element, elementData, typeName, typeModifier, worryLabel, shrines, lifePathNumber, numerologyData } = result;
   const elColor = ELEMENT_COLORS[element] ?? ELEMENT_COLORS["水"];
 
-  const shareText = `守護神社診断：私は「${typeName}」${element}属性・${zodiac.emoji}${zodiac.kanji}年生まれ。守護神は${elementData.guardian}。あなたの守護神社は？`;
+  const shareText = `守護神社診断：私は「${typeName}」${element}属性${zodiac.emoji} × ライフパス${lifePathNumber}「${numerologyData.name}」。守護神は${elementData.guardian}。あなたの守護タイプは？`;
   // URLには結果パラメータが入っているので、現在のURLをそのまま使う
   const shareUrl  = typeof window !== "undefined" ? window.location.href : "";
   const xShare    = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
@@ -309,7 +337,45 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         </div>
       </section>
 
-      {/* ── ③ 悩み別アドバイス ───────────────────────────────────────────── */}
+      {/* ── ③ 数秘ライフパス ─────────────────────────────────────────────── */}
+      <section className="rounded-2xl border-2 border-sumi/15 bg-gradient-to-br from-sumi/5 to-sumi/2 p-5">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-full bg-sumi/10 flex items-center justify-center text-lg font-serif font-bold text-sumi shrink-0">
+            {lifePathNumber}
+          </div>
+          <div>
+            <p className="text-[10px] tracking-[0.3em] text-sumi/45 mb-0.5">
+              {lifePathNumber === 11 || lifePathNumber === 22 || lifePathNumber === 33
+                ? "✦ 数秘ライフパス — マスターナンバー"
+                : "✦ 数秘ライフパス"}
+            </p>
+            <p className="font-serif text-lg font-bold text-sumi leading-tight">
+              ライフパス{lifePathNumber}「{numerologyData.name}」
+            </p>
+            <p className="text-[11px] text-sumi/50 mt-0.5">{numerologyData.keyword}</p>
+          </div>
+        </div>
+
+        <p className="text-sm text-sumi/80 leading-[1.9] mb-4">{numerologyData.essence}</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+          <div className="rounded-xl bg-white/70 border border-sumi/10 p-3.5">
+            <p className="text-[10px] font-bold tracking-wider text-emerald-700 mb-2">✦ 魂の才能</p>
+            <p className="text-xs text-sumi/80 leading-relaxed">{numerologyData.talent}</p>
+          </div>
+          <div className="rounded-xl bg-white/70 border border-sumi/10 p-3.5">
+            <p className="text-[10px] font-bold tracking-wider text-amber-700 mb-2">△ 向き合う課題</p>
+            <p className="text-xs text-sumi/80 leading-relaxed">{numerologyData.shadow}</p>
+          </div>
+        </div>
+
+        <div className="rounded-xl bg-white/60 border border-sumi/10 p-3.5">
+          <p className="text-[10px] font-bold tracking-wider text-sumi/50 mb-1.5">あなたの人生テーマ</p>
+          <p className="text-xs text-sumi/75 leading-relaxed italic">「{numerologyData.lifeTheme}」</p>
+        </div>
+      </section>
+
+      {/* ── ④ 悩み別アドバイス ───────────────────────────────────────────── */}
       <section className="rounded-2xl overflow-hidden border border-vermilion/25">
         <div className="bg-vermilion/8 px-5 py-3 border-b border-vermilion/15">
           <p className="text-[10px] tracking-[0.3em] text-vermilion-deep font-bold">
@@ -328,7 +394,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         </div>
       </section>
 
-      {/* ── ④ 参拝ガイド ─────────────────────────────────────────────────── */}
+      {/* ── ⑤ 参拝ガイド ─────────────────────────────────────────────────── */}
       <section className="rounded-2xl border border-border bg-washi/60 p-5">
         <p className="text-[11px] tracking-[0.25em] text-sumi/50 mb-3">あなたへの参拝ガイド</p>
         <p className="text-sm text-sumi/80 leading-relaxed">{elementData.monthlyGuide}</p>
@@ -341,7 +407,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         </div>
       </section>
 
-      {/* ── ⑤ 守護神社 ──────────────────────────────────────────────────── */}
+      {/* ── ⑥ 守護神社 ──────────────────────────────────────────────────── */}
       <section>
         <div className="flex items-baseline justify-between mb-3">
           <p className="text-[11px] tracking-[0.25em] text-sumi/50">あなたに縁深い守護神社</p>
@@ -413,7 +479,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         )}
       </section>
 
-      {/* ── ⑥ 相性タイプ ─────────────────────────────────────────────────── */}
+      {/* ── ⑦ 相性タイプ ─────────────────────────────────────────────────── */}
       <section className="rounded-xl border border-border bg-washi/60 p-4 flex items-center gap-3">
         <span className="text-2xl">🔄</span>
         <div className="flex-1">
@@ -428,7 +494,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         </div>
       </section>
 
-      {/* ── ⑦ シェア ─────────────────────────────────────────────────────── */}
+      {/* ── ⑧ シェア ─────────────────────────────────────────────────────── */}
       <section className="rounded-2xl border border-border bg-washi/60 p-5">
         <p className="text-xs font-bold text-sumi/60 mb-1 text-center tracking-wide">結果をシェアする</p>
         <p className="text-[11px] text-sumi/45 text-center mb-4">
@@ -457,7 +523,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         </div>
       </section>
 
-      {/* ── ⑧ LINE CTA ──────────────────────────────────────────────────── */}
+      {/* ── ⑨ LINE CTA ──────────────────────────────────────────────────── */}
       <section className="rounded-2xl overflow-hidden shadow-lg"
         style={{ background: `linear-gradient(135deg, #1c1917, #292524)` }}>
         <div className="p-6 text-white text-center">
@@ -487,7 +553,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         </div>
       </section>
 
-      {/* ── ⑨ 関連コンテンツ ────────────────────────────────────────────── */}
+      {/* ── ⑩ 関連コンテンツ ────────────────────────────────────────────── */}
       <div className="rounded-xl border border-border bg-washi/60 p-5">
         <p className="text-xs font-semibold text-sumi/50 mb-3 text-center tracking-wide">次にやること</p>
         <div className="grid grid-cols-1 gap-2">

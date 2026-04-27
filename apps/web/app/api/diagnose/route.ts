@@ -65,6 +65,150 @@ const ZODIAC_MODIFIERS = [
 export type ElementKey = "木" | "火" | "土" | "金" | "水";
 export type WorryKey   = "work" | "love" | "family" | "self";
 
+// ─── 数秘術（ライフパスナンバー）────────────────────────────────────────────
+export type NumerologyData = {
+  number: number;
+  name: string;
+  keyword: string;
+  essence: string;
+  talent: string;
+  shadow: string;
+  shrineMessage: string;
+  lifeTheme: string;
+};
+
+const NUMEROLOGY: Record<number, NumerologyData> = {
+  1: {
+    number: 1,
+    name: "先駆者",
+    keyword: "独立・創始・強い意志",
+    essence: "あなたは「はじめの一歩」を踏み出す魂の持ち主です。誰も歩いていない道を切り拓き、新しい世界を創ることに使命感を感じます。他者の目や評価よりも、自分の内なる確信に従って行動できる稀有な存在。リーダーとして周囲を引っ張る力は、生まれながらに備わっています。",
+    talent: "独自のアイデアを形にする開拓精神。周囲が躊躇する場面でも一番乗りで踏み出せる勇気と、誰もやっていないことを恐れずに始められる行動力。",
+    shadow: "「自分でやった方が早い」という思考が孤独を生みやすい。協力を求めることを弱さと感じ、プライドの高さが柔軟性を奪う場合があります。",
+    shrineMessage: "新しい道は、まず踏み出した者だけが見ることができる。あなたの意志が神々への最高の祈りです。",
+    lifeTheme: "自らの足で新しい道を切り拓き、後に続く人たちのための光となる人生。",
+  },
+  2: {
+    number: 2,
+    name: "調和の人",
+    keyword: "協調・受容・繊細な感受性",
+    essence: "あなたは「人と人の間に橋をかける」魂の持ち主です。場の空気を敏感に読み取り、誰かが傷ついていることに誰より先に気づきます。表舞台よりも縁の下の力持ちとして輝き、その存在があるだけで場が安心に包まれます。縁結びの神様に最も愛されるタイプです。",
+    talent: "相手の感情を瞬時に読み取る直感力。対立する人々の間を取り持つ調停力。深く聴き、相手が言葉にできない本音を引き出す力。",
+    shadow: "自分の意見や気持ちを後回しにしすぎて知らぬ間に疲弊していることがある。優しさに付け込まれやすく、境界線を引くことが苦手な面も。",
+    shrineMessage: "縁は強引に結ぶものではなく、やさしく育てるもの。あなたの穏やかさが最も深い縁を引き寄せます。",
+    lifeTheme: "縁を紡ぎ、対立を溶かし、すべての人が安心できる場を創る人生。",
+  },
+  3: {
+    number: 3,
+    name: "表現者",
+    keyword: "創造・喜び・言葉の力",
+    essence: "あなたは「言葉と表現で世界を変える」魂の持ち主です。伝えることへの情熱と才能が生まれながらに備わっており、あなたの言葉は人の心に直接届きます。笑顔と明るさで場を照らし、周囲に喜びと活力を与える天性の才があります。神様から「伝えよ」という使命を受けています。",
+    talent: "人の心を動かす言葉の選び方。難しい物事をわかりやすく伝える表現力。アイデアの豊かさと、それを形にする創造性。",
+    shadow: "気持ちが乗らないと始められない気分屋な面がある。表現への恐れや批判への敏感さから、才能を眠らせてしまうことも。",
+    shrineMessage: "あなたの言葉一つで誰かの人生が変わる。その力を恐れず、ただ真正直に伝えなさい。",
+    lifeTheme: "才能と言葉を解き放ち、世界に喜びと美をもたらす人生。",
+  },
+  4: {
+    number: 4,
+    name: "礎の人",
+    keyword: "安定・誠実・揺るぎない土台",
+    essence: "あなたは「揺るぎない礎を築く」魂の持ち主です。地道な積み重ねの中にこそ価値を見出し、コツコツと一歩一歩を大切にする誠実さが最大の武器です。派手さはなくても、あなたが作ったものは100年の風雪に耐えます。神様は最も信頼できる仕事をあなたに託しています。",
+    talent: "計画を最後まで実行する持続力と責任感。細部への注意力と手を抜かない誠実さ。長期にわたって信頼関係を築く安定感。",
+    shadow: "変化への抵抗感が機会を逃すことがある。「正しい方法」にこだわりすぎて融通が利かない面も。完璧主義が自分と周囲を縛ることも。",
+    shrineMessage: "土台が深ければ深いほど、高い塔が建てられる。あなたの着実さは、天へ続く道です。",
+    lifeTheme: "誠実さと忍耐で世界に確かなものを残し、後の世代の礎となる人生。",
+  },
+  5: {
+    number: 5,
+    name: "自由の魂",
+    keyword: "変化・冒険・枠を超える力",
+    essence: "あなたは「常識の枠を超えていく」魂の持ち主です。同じ場所に留まることへの根本的な拒否感を持ち、変化と冒険の中にこそ生命力を感じます。多様な経験と人々との出会いがあなたを形成し、その豊富な経験知が人を助ける力になります。風の神様に愛される自由な魂です。",
+    talent: "どんな環境にも素早く適応する柔軟性。新しい視点をもたらす発想力と行動力。人の縁を繋ぐ社交性と場を動かすエネルギー。",
+    shadow: "「自由でいたい」という衝動が責任から逃げる方向に向くことがある。飽きっぽさと忍耐力の不足が途中で手放す原因になることも。",
+    shrineMessage: "風は止まることなく吹き続けることで大気を浄化する。あなたの動きが世界に新鮮な息吹を届けます。",
+    lifeTheme: "自由に風のように世界を旅し、どこへ行っても場に活力をもたらす人生。",
+  },
+  6: {
+    number: 6,
+    name: "愛の守護者",
+    keyword: "愛情・責任・家族への献身",
+    essence: "あなたは「愛で世界を包む」魂の持ち主です。家族・仲間・コミュニティへの深い愛情と責任感が、生きる原動力になっています。誰かのために尽くすことに喜びを感じ、その無条件の愛は周囲の人の心の安全基地になっています。神様から「愛を体現せよ」という使命を授かっています。",
+    talent: "無条件の愛情と誰も見捨てない包容力。人の痛みに寄り添い癒しをもたらす力。責任感の強さとコミュニティの調和を守る力。",
+    shadow: "愛情が過剰になり「してあげる」が期待に変わることがある。自分を犠牲にしすぎて燃え尽きることも。",
+    shrineMessage: "真の愛は与えながら自分自身も満たされている状態から生まれます。まず自分への愛を忘れずに。",
+    lifeTheme: "愛を循環させ、すべての縁の中に温かさをもたらす人生。",
+  },
+  7: {
+    number: 7,
+    name: "真理の探究者",
+    keyword: "内省・神秘・見えない世界への感応",
+    essence: "あなたは「見えない世界の真理を探る」魂の持ち主です。表面的な現象の奥にある本質を見抜く洞察力と、神秘的なものへの鋭い感応性を持っています。一人で深く思索する時間が魂の栄養であり、神社や聖地で感じ取るものが特別に深い、最もスピリチュアルなナンバーです。",
+    talent: "物事の本質を見抜く洞察力。直感と分析の両方を使いこなす知性。神聖な場所でのエネルギーを感じ取る霊的な感受性。",
+    shadow: "他者と距離を置きすぎて孤独になりやすい。完璧な答えを求めすぎて行動に移せないことも。内側に引きこもることで縁を遠ざけてしまうことがある。",
+    shrineMessage: "神様はあなたに特別なアンテナを授けました。その感覚を信じ、直感の声に従って行動してください。",
+    lifeTheme: "見えない世界の智恵を探り続け、その叡智で人々の道を照らす人生。",
+  },
+  8: {
+    number: 8,
+    name: "達成の人",
+    keyword: "豊かさ・力・大いなる実現",
+    essence: "あなたは「大きなものを現実に引き寄せる」魂の持ち主です。豊かさと力への追求は単なる欲ではなく使命感から来ています。目標に向かう推進力と、困難を力に変える精神的強さが際立ちます。神様から「豊かさを体現し、周囲に恵みを与えよ」という使命を授かっています。",
+    talent: "目標を設定し現実に変える実現力。困難な状況でも諦めない精神的タフネス。組織や計画を動かすリーダーシップ。",
+    shadow: "「成功」「結果」への執着が人間関係を壊すことがある。勝ち負けにこだわりすぎて過程の大切さを見失うことも。",
+    shrineMessage: "真の豊かさは手に入れるものではなく流れるものです。受け取り、そして次の人へ渡す流れの中にこそ無限の恵みがあります。",
+    lifeTheme: "力と豊かさを手にし、それを惜しみなく世界に循環させる人生。",
+  },
+  9: {
+    number: 9,
+    name: "完成の賢者",
+    keyword: "奉仕・叡智・すべてを包む愛",
+    essence: "あなたは「すべてを完成へと導く」魂の持ち主です。数秘術で最も大きな数であるライフパス9は、多くの経験と魂の成長を経てきた古い魂の証です。個人の利益を超えてより大きな視点で人々に貢献することに真の喜びを感じます。手放すことの美しさを知っている稀有な存在です。",
+    talent: "大局を見渡す広い視野と深い人間理解。自分の経験を他者への知恵として与える力。執着を手放し流れに乗る精神的成熟。",
+    shadow: "あまりにも多くを抱えすぎて疲弊することがある。「完璧な奉仕」を求めるあまり自分の人生を後回しにすることも。",
+    shrineMessage: "すべての経験は意味を持ち、すべての出会いには魂の約束がある。あなたの人生そのものが神様への最大の奉仕です。",
+    lifeTheme: "すべての経験を叡智に変え、人々が本来の輝きを取り戻す手助けをする人生。",
+  },
+  11: {
+    number: 11,
+    name: "光の使者",
+    keyword: "直感・啓示・マスターナンバー",
+    essence: "あなたは数秘術最高位のマスターナンバー11を持つ「光をもたらす使者」です。普通の人が見えないものを感じ取り、未来の流れを直感で把握する力を持っています。人生においてより高い使命を持ち、その敏感さと洞察力で多くの人に気づきと光をもたらすことを求められています。",
+    talent: "他者の感情・状況・未来の流れを感じ取る卓越した直感力。インスピレーションを通じて人々に気づきをもたらす力。精神的な深さと場の本質を見抜く霊的な感受性。",
+    shadow: "その感受性の強さゆえに精神的な疲弊や不安が起きやすい。高い理想と現実のギャップに苦しむことも。",
+    shrineMessage: "あなたの感じる「なんとなく」は神様からのメッセージです。その声を信じ、光のある方向へ一歩を踏み出してください。",
+    lifeTheme: "直感と霊感を磨き、人々の内なる光を呼び覚ます使者としての人生。",
+  },
+  22: {
+    number: 22,
+    name: "偉大なる建築家",
+    keyword: "大いなる計画・現実化・社会変革",
+    essence: "あなたは数秘術最高位のマスターナンバー22を持つ「大いなる計画を現実にする建築家」です。壮大なビジョンを具体的な形へと変える力を持ち、社会全体を動かすような大きなプロジェクトに関わることを求められます。夢想家であると同時に最も現実的な実行者です。",
+    talent: "壮大なビジョンを具体的な計画に落とし込む力。大きなプロジェクトを推進するカリスマ性と実行力。社会システムや組織の仕組みを変革する力。",
+    shadow: "その重大な使命感がプレッシャーとなり行動を止めることがある。完璧主義と高すぎる理想がスタートを遅らせる原因にもなる。",
+    shrineMessage: "大きな使命は一人で背負うものではありません。神様は必要な時に必要な縁を繋いでくれます。まず一歩踏み出す勇気を持ってください。",
+    lifeTheme: "世界を変える大きな計画を現実に変え、後世に続く偉大な礎を築く人生。",
+  },
+  33: {
+    number: 33,
+    name: "無条件の愛の体現者",
+    keyword: "奉仕・癒し・無条件の愛",
+    essence: "あなたは数秘術最高位のマスターナンバー33を持つ「無条件の愛を体現する師」です。ライフパス33は最も稀少なマスターナンバーであり、深い癒しと愛を世界にもたらすために生まれてきた魂です。条件なく愛する力と誰の痛みにも寄り添える共感力は人間の限界を超えています。",
+    talent: "条件なく愛し受け入れる癒しの力。人の痛みに深く共鳴し癒しをもたらす存在感。精神的な師として人々の道を照らす叡智。",
+    shadow: "その溢れる愛情ゆえに境界線を引けず自己犠牲が極限に達することも。他者の苦しみを自分のものとして背負いすぎることで消耗しやすい。",
+    shrineMessage: "あなたが世界にもたらすべき最大の愛は、まず自分自身を愛することから始まります。",
+    lifeTheme: "無条件の愛で人々を包み、この世界そのものを癒す光となる人生。",
+  },
+};
+
+function calcLifePath(year: number, month: number, day: number): number {
+  const digits = `${year}${month}${day}`.split("").map(Number);
+  let sum = digits.reduce((a, b) => a + b, 0);
+  while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+    sum = String(sum).split("").map(Number).reduce((a, b) => a + b, 0);
+  }
+  return sum;
+}
+
 // ─── 五行データ ───────────────────────────────────────────────────────────────
 const ELEMENTS: Record<ElementKey, {
   reading: string;
@@ -216,6 +360,7 @@ const ELEMENTS: Record<ElementKey, {
 export type DiagnoseResult = {
   year: number;
   month: number;
+  day: number;
   zodiac: (typeof ZODIAC)[number];
   stem: (typeof STEMS)[number];
   sexagenary: string;
@@ -223,6 +368,8 @@ export type DiagnoseResult = {
   elementData: (typeof ELEMENTS)[ElementKey];
   typeName: string;
   typeModifier: string;
+  lifePathNumber: number;
+  numerologyData: NumerologyData;
   worry: WorryKey;
   worryLabel: string;
   shrines: Array<{
@@ -263,6 +410,7 @@ const WORRY_REASON: Record<WorryKey, string> = {
 export async function GET(req: NextRequest) {
   const year  = Number(req.nextUrl.searchParams.get("year")  ?? "");
   const month = Number(req.nextUrl.searchParams.get("month") ?? "0");
+  const day   = Number(req.nextUrl.searchParams.get("day")   ?? "1");
   const worry = (req.nextUrl.searchParams.get("worry") ?? "self") as WorryKey;
 
   const currentYear = new Date().getFullYear();
@@ -271,6 +419,9 @@ export async function GET(req: NextRequest) {
   }
   if (!month || month < 1 || month > 12) {
     return NextResponse.json({ error: "invalid month" }, { status: 400 });
+  }
+  if (!day || day < 1 || day > 31) {
+    return NextResponse.json({ error: "invalid day" }, { status: 400 });
   }
   if (!["work", "love", "family", "self"].includes(worry)) {
     return NextResponse.json({ error: "invalid worry" }, { status: 400 });
@@ -286,6 +437,9 @@ export async function GET(req: NextRequest) {
 
   const typeName    = STEM_ARCHETYPES[stemIndex];
   const typeModifier = ZODIAC_MODIFIERS[zodiacIndex];
+
+  const lifePathNumber = calcLifePath(year, month, day);
+  const numerologyData = NUMEROLOGY[lifePathNumber] ?? NUMEROLOGY[9];
 
   // ─── 神社検索: 複数キーワードで3社を確保 ────────────────────────────────
   const seen = new Set<number>();
@@ -333,9 +487,10 @@ export async function GET(req: NextRequest) {
   }));
 
   return NextResponse.json({
-    year, month, zodiac, stem, sexagenary,
+    year, month, day, zodiac, stem, sexagenary,
     element, elementData,
     typeName, typeModifier,
+    lifePathNumber, numerologyData,
     worry, worryLabel: WORRY_LABELS[worry],
     shrines,
   } satisfies DiagnoseResult);
