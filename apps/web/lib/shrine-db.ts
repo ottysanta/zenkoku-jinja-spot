@@ -580,50 +580,66 @@ export function recentCheckins(limit: number): RecentCheckin[] {
 
 /** 志納受付対応の神社一覧（写真付きを優先）。 */
 export function listOfferingShrines(limit: number): ShrineRow[] {
-  const db = getDb();
-  return db
-    .prepare(
-      `SELECT * FROM spots WHERE accepts_offerings = 1
-       ORDER BY
-         CASE WHEN photo_url IS NOT NULL AND photo_url != '' THEN 0 ELSE 1 END,
-         CASE source_layer WHEN 'manual' THEN 0 WHEN 'wikidata' THEN 1 ELSE 2 END,
-         id
-       LIMIT ?`,
-    )
-    .all(limit) as ShrineRow[];
+  try {
+    const db = getDb();
+    return db
+      .prepare(
+        `SELECT * FROM spots WHERE accepts_offerings = 1
+         ORDER BY
+           CASE WHEN photo_url IS NOT NULL AND photo_url != '' THEN 0 ELSE 1 END,
+           CASE source_layer WHEN 'manual' THEN 0 WHEN 'wikidata' THEN 1 ELSE 2 END,
+           id
+         LIMIT ?`,
+      )
+      .all(limit) as ShrineRow[];
+  } catch {
+    return [];
+  }
 }
 
 export function countOfferingShrines(): number {
-  const db = getDb();
-  const r = db
-    .prepare("SELECT COUNT(*) AS n FROM spots WHERE accepts_offerings = 1")
-    .get() as { n: number };
-  return r.n;
+  try {
+    const db = getDb();
+    const r = db
+      .prepare("SELECT COUNT(*) AS n FROM spots WHERE accepts_offerings = 1")
+      .get() as { n: number };
+    return r.n;
+  } catch {
+    return 0;
+  }
 }
 
 /** 写真+概要がある spot をランダムに返す（トップの「注目神社」用） */
 export function randomFeaturedSpots(limit: number): ShrineRow[] {
-  const db = getDb();
-  return db
-    .prepare(
-      `SELECT * FROM spots
-       WHERE photo_url IS NOT NULL AND photo_url != ''
-         AND description IS NOT NULL AND description != ''
-       ORDER BY RANDOM() LIMIT ?`,
-    )
-    .all(limit) as ShrineRow[];
+  try {
+    const db = getDb();
+    return db
+      .prepare(
+        `SELECT * FROM spots
+         WHERE photo_url IS NOT NULL AND photo_url != ''
+           AND description IS NOT NULL AND description != ''
+         ORDER BY RANDOM() LIMIT ?`,
+      )
+      .all(limit) as ShrineRow[];
+  } catch {
+    return [];
+  }
 }
 
 /** 新しく登録された spot を id 降順で返す（「新着神社」用） */
 export function recentlyAddedSpots(limit: number): ShrineRow[] {
-  const db = getDb();
-  return db
-    .prepare(
-      `SELECT * FROM spots
-       WHERE photo_url IS NOT NULL AND photo_url != ''
-       ORDER BY id DESC LIMIT ?`,
-    )
-    .all(limit) as ShrineRow[];
+  try {
+    const db = getDb();
+    return db
+      .prepare(
+        `SELECT * FROM spots
+         WHERE photo_url IS NOT NULL AND photo_url != ''
+         ORDER BY id DESC LIMIT ?`,
+      )
+      .all(limit) as ShrineRow[];
+  } catch {
+    return [];
+  }
 }
 
 /** wikipedia_title が埋まっているが description 未充填の spot 一覧（エンリッチ候補） */
@@ -734,15 +750,19 @@ export function spotsBySameDeity(deity: string, excludeId: number, limit: number
 
 /** 都道府県ごとの spot 件数（地図ヒートマップ用）。全件 SELECT。 */
 export function prefectureCounts(): Array<{ prefecture: string; count: number }> {
-  const db = getDb();
-  const rows = db
-    .prepare(
-      `SELECT COALESCE(prefecture,'') AS prefecture, COUNT(*) AS count FROM spots
-       WHERE prefecture IS NOT NULL AND prefecture != ''
-       GROUP BY prefecture ORDER BY count DESC`,
-    )
-    .all() as { prefecture: string; count: number }[];
-  return rows;
+  try {
+    const db = getDb();
+    const rows = db
+      .prepare(
+        `SELECT COALESCE(prefecture,'') AS prefecture, COUNT(*) AS count FROM spots
+         WHERE prefecture IS NOT NULL AND prefecture != ''
+         GROUP BY prefecture ORDER BY count DESC`,
+      )
+      .all() as { prefecture: string; count: number }[];
+    return rows;
+  } catch {
+    return [];
+  }
 }
 
 export function facetCountsForPrefecture(opts: {
@@ -783,9 +803,13 @@ export function getSpotBySlug(slug: string): ShrineRow | null {
 }
 
 export function totalSpots(): number {
-  const db = getDb();
-  const row = db.prepare("SELECT COUNT(*) AS n FROM spots").get() as { n: number };
-  return row.n;
+  try {
+    const db = getDb();
+    const row = db.prepare("SELECT COUNT(*) AS n FROM spots").get() as { n: number };
+    return row.n;
+  } catch {
+    return 0;
+  }
 }
 
 export function statsBySourceLayer(): Record<string, number> {

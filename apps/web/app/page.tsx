@@ -71,20 +71,24 @@ function parseBenefits(json?: string | null): string[] {
 }
 
 function loadFeatured(limit = 8): FeaturedCard[] {
-  // manual source_layer を優先、photo_url があるものを上位に
-  const { rows } = searchSpots({ limit: 100 });
-  const withPhoto = rows.filter((r) => r.photo_url && r.description);
-  return withPhoto.slice(0, limit).map((r) => ({
-    id: r.id,
-    name: r.name,
-    slug: r.slug,
-    prefecture: r.prefecture,
-    shrine_type: r.shrine_type,
-    shrine_rank: r.shrine_rank,
-    photo_url: r.photo_url,
-    description: r.description,
-    benefits: parseBenefits(r.benefits),
-  }));
+  try {
+    // manual source_layer を優先、photo_url があるものを上位に
+    const { rows } = searchSpots({ limit: 100 });
+    const withPhoto = rows.filter((r) => r.photo_url && r.description);
+    return withPhoto.slice(0, limit).map((r) => ({
+      id: r.id,
+      name: r.name,
+      slug: r.slug,
+      prefecture: r.prefecture,
+      shrine_type: r.shrine_type,
+      shrine_rank: r.shrine_rank,
+      photo_url: r.photo_url,
+      description: r.description,
+      benefits: parseBenefits(r.benefits),
+    }));
+  } catch {
+    return [];
+  }
 }
 
 function formatRel(iso: string): string {
