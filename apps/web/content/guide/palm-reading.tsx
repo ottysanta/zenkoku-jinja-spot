@@ -48,7 +48,7 @@ export default function PalmReadingContent() {
       {/* ヒーロー画像：実際の手相写真 */}
       <div className="my-8 overflow-hidden rounded-2xl shadow-lg">
         <img
-          src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=1200&q=80"
+          src="https://images.pexels.com/photos/5376049/pexels-photo-5376049.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&dpr=1"
           alt="手相の線が見える手のひら"
           className="w-full object-cover"
         />
@@ -122,7 +122,7 @@ export default function PalmReadingContent() {
         {/* 手相写真（サンプル） */}
         <div className="relative">
           <img
-            src="https://images.unsplash.com/photo-1544985361-b420d7a77043?w=800&q=80"
+            src="https://images.pexels.com/photos/8383448/pexels-photo-8383448.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1"
             alt="手相鑑定サンプル"
             className="w-full object-cover max-h-64"
           />
@@ -230,7 +230,7 @@ export default function PalmReadingContent() {
 
       <div className="my-6 overflow-hidden rounded-2xl shadow-md">
         <img
-          src="https://images.unsplash.com/photo-1597589827317-4c6d6e0a90bd?w=1200&q=80"
+          src="https://images.pexels.com/photos/19650674/pexels-photo-19650674.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&dpr=1"
           alt="手のひらを広げた写真"
           className="w-full object-cover max-h-72"
         />
