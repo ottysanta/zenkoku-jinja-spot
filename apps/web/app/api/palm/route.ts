@@ -4,7 +4,8 @@ import OpenAI from "openai";
 const ANALYSIS_PROMPT = `あなたは日本の熟練した手相鑑定士です。
 送られてきた手のひらの写真を丁寧に観察し、以下のJSON形式で鑑定結果を返してください。
 
-手相が見えない・画像が不鮮明な場合は is_valid: false を返してください。
+手のひらが全く写っていない・明らかに手ではない画像の場合のみ is_valid: false を返してください。
+少し暗い・ぼやけている程度であれば is_valid: true として、見える範囲で最善の鑑定を行ってください。
 
 {
   "is_valid": true,
