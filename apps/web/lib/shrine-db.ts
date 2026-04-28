@@ -434,8 +434,8 @@ export function facetCountsForShrineType(opts: {
 // =====================================================================
 
 function ensureCheckinReactionTable() {
-  const db = getDb();
   try {
+    const db = getDb();
     db.exec(
       `CREATE TABLE IF NOT EXISTS checkin_reactions (
          id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -520,9 +520,9 @@ export type FeaturedUser = {
 };
 
 export function featuredUsers(limit: number): FeaturedUser[] {
-  ensureCheckinReactionTable();
-  const db = getDb();
   try {
+    ensureCheckinReactionTable();
+    const db = getDb();
     const rows = db
       .prepare(
         `SELECT
@@ -561,9 +561,8 @@ export type RecentCheckin = {
 };
 
 export function recentCheckins(limit: number): RecentCheckin[] {
-  const db = getDb();
-  // checkins テーブルがそもそも無いケースもあるので try/catch
   try {
+    const db = getDb();
     const rows = db
       .prepare(
         `SELECT c.id, c.spot_id, c.nickname, c.comment, c.wish_type, c.created_at,
