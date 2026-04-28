@@ -139,49 +139,54 @@ export default async function HomePage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-6 md:py-10">
       {/* 1) ヒーロー */}
-      <section className="relative mb-8 overflow-hidden rounded-2xl border border-border bg-washi p-6 md:p-10">
+      <section className="relative mb-8 overflow-hidden rounded-2xl border border-vermilion/20 bg-gradient-to-br from-vermilion/8 via-washi to-moss/5 p-6 md:p-12">
         <div className="absolute inset-0 bg-gradient-to-br from-vermilion/5 via-transparent to-moss/5 pointer-events-none" />
         <div className="relative text-center">
-          <p className="text-[0.72rem] tracking-[0.28em] text-ink-sub uppercase mb-2">
-            Shrine Map of Japan
+          <p className="text-[0.72rem] tracking-[0.28em] text-vermilion-deep font-semibold uppercase mb-3">
+            本当の自分で生きたい方へ
           </p>
-          <h1 className="text-3xl font-serif text-sumi mb-3 md:text-5xl">
-            全国神社スポット
+          <h1 className="text-3xl font-serif text-sumi mb-3 md:text-5xl leading-snug">
+            あなたの守護神社を<br className="md:hidden" />見つける
           </h1>
-          <p className="text-sumi/75 leading-relaxed text-sm md:text-base max-w-xl mx-auto">
-            自分に合う神社を見つけ、学び、訪れ、支える。
-            <br className="hidden md:block" />
-            気持ちを込めた参拝を、ここから。
+          <p className="text-sumi/70 leading-relaxed text-sm md:text-base max-w-lg mx-auto mb-6">
+            生年月日から五行属性・干支・ライフパスナンバーを診断。<br className="hidden md:block" />
+            縁深い守護神社と、神様からのメッセージをお届けします。
           </p>
-
-          {/* サマリバッジ */}
-          <div className="mt-5 flex flex-wrap justify-center gap-2 text-xs">
-            <span className="inline-flex items-center gap-1 rounded-full border border-border bg-white px-3 py-1 text-sumi/80">
-              <span className="text-sumi/55">登録</span>
-              <b className="tabular-nums text-vermilion-deep">{total.toLocaleString()}</b>
-              <span>社</span>
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-full border border-border bg-white px-3 py-1 text-sumi/80">
-              <span className="text-sumi/55">カバー</span>
-              <b className="tabular-nums text-vermilion-deep">{totalPref}</b>
-              <span>/ 47 都道府県</span>
-            </span>
-          </div>
 
           {/* 主 CTA */}
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
+          <Link
+            href="/diagnose"
+            className="inline-flex min-h-[52px] items-center gap-2 rounded-full bg-vermilion px-8 py-3 text-base font-bold text-white shadow-lg hover:bg-vermilion-deep transition active:scale-95"
+          >
+            ⛩ 守護神社診断を受ける（無料）
+          </Link>
+
+          {/* サブ CTA */}
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            <Link
+              href="/omikuji"
+              className="inline-flex min-h-[38px] items-center rounded-full border border-amber-400/60 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 transition"
+            >
+              📜 今日のおみくじ
+            </Link>
             <Link
               href="/map"
-              className="inline-flex min-h-[44px] items-center rounded-md border border-vermilion bg-vermilion px-5 py-2 text-sm font-semibold text-white shadow hover:bg-vermilion-deep"
+              className="inline-flex min-h-[38px] items-center rounded-full border border-border bg-white px-4 py-1.5 text-sm font-semibold text-sumi hover:bg-kinari transition"
             >
               🗺 地図で探す
             </Link>
-            <Link
-              href="/search"
-              className="inline-flex min-h-[44px] items-center rounded-md border border-border bg-white px-5 py-2 text-sm font-semibold text-sumi shadow hover:bg-kinari"
-            >
-              ≣ 一覧で探す
-            </Link>
+          </div>
+
+          {/* サマリバッジ */}
+          <div className="mt-5 flex flex-wrap justify-center gap-2 text-xs">
+            <span className="inline-flex items-center gap-1 rounded-full border border-border bg-white/80 px-3 py-1 text-sumi/70">
+              <b className="tabular-nums text-vermilion-deep">{total.toLocaleString()}</b>
+              <span>社収録</span>
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full border border-border bg-white/80 px-3 py-1 text-sumi/70">
+              <b className="tabular-nums text-vermilion-deep">{totalPref}</b>
+              <span>/ 47 都道府県</span>
+            </span>
           </div>
         </div>
       </section>

@@ -226,7 +226,7 @@ export default function OmikujiClient() {
   const stars = fortune ? Math.max(1, 6 - fortuneIndex) : 0;
 
   const shareText = fortune
-    ? `今日のおみくじ：${fortune}！${fortuneData?.advice ?? ""} #神社おみくじ`
+    ? `今日のおみくじ：${fortune}！${fortuneData?.advice ?? ""} あなたの属性も診断してみて👇 #神社おみくじ`
     : "";
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/omikuji` : "";
 
@@ -458,10 +458,16 @@ export default function OmikujiClient() {
 
       {/* LINE CTA */}
       <section className="rounded-2xl bg-gradient-to-br from-sumi to-sumi/80 p-5 text-white text-center">
-        <p className="font-serif text-lg mb-2">毎日のメッセージをLINEで受け取る</p>
-        <p className="text-sm text-white/70 mb-4">
-          あなたの属性に合わせた守護神からの言葉を、毎週お届けします。
+        <p className="text-[10px] tracking-[0.3em] text-white/40 mb-2">SPECIAL OFFER</p>
+        <p className="font-serif text-lg mb-2">登録後すぐ届く：守護神様からの3つのサイン</p>
+        <p className="text-sm text-white/70 mb-1">
+          あなたの五行属性に合わせた
         </p>
+        <ul className="text-left text-[12px] text-white/60 max-w-xs mx-auto mb-4 space-y-1">
+          <li>✦ 今のあなたに起きているサインの読み方</li>
+          <li>✦ 属性別・今月の吉日と参拝のタイミング</li>
+          <li>✦ 守護神様からの毎週のメッセージ</li>
+        </ul>
         <a href={LINE_REGISTER_URL} target="_blank" rel="noopener noreferrer"
           onClick={() => trackLineCta("omikuji")}
           className="inline-flex items-center gap-2 rounded-full bg-[#06C755] px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-[#05a648] active:scale-95">
