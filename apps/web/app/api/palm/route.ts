@@ -138,7 +138,12 @@ export async function POST(req: NextRequest) {
       annotatedImageUrl,
     });
   } catch (err) {
-    console.error("Palm API error:", err);
-    return NextResponse.json({ error: "鑑定中にエラーが発生しました" }, { status: 500 });
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("Palm API error:", msg);
+    // API キー未設定の場合は分かりやすいメッセージを返す
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({ error: "OPENAI_API_KEY が設定されていません" }, { status: 500 });
+    }
+    return NextResponse.json({ error: `鑑定中にエラーが発生しました: ${msg}` }, { status: 500 });
   }
 }
