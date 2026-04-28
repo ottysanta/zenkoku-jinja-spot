@@ -228,6 +228,19 @@ export default async function HomePage() {
           </Link>
 
           <Link
+            href="/palm"
+            className="group relative block overflow-hidden rounded-xl border border-purple-300/50 bg-gradient-to-br from-purple-50 via-washi to-transparent p-5 shadow-sm transition hover:shadow-md hover:border-purple-400/70"
+          >
+            <div className="mb-3 text-3xl">✋</div>
+            <p className="text-[10px] tracking-[0.2em] text-purple-700 font-semibold mb-1">AI PALM READING</p>
+            <h3 className="font-serif text-lg text-sumi mb-1">AI手相鑑定</h3>
+            <p className="text-xs text-sumi/65 leading-relaxed mb-3">手のひら写真をアップするだけで、AIが生命線・知能線・感情線・運命線を鑑定。無料3回。</p>
+            <span className="inline-flex items-center gap-1 rounded-full bg-purple-500 px-4 py-1.5 text-xs font-semibold text-white transition group-hover:bg-purple-600">
+              手相を鑑定する →
+            </span>
+          </Link>
+
+          <Link
             href="/diagnose/compat"
             className="group relative block overflow-hidden rounded-xl border border-blue-300/50 bg-gradient-to-br from-blue-50 via-washi to-transparent p-5 shadow-sm transition hover:shadow-md hover:border-blue-400/70"
           >
