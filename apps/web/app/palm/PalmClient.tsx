@@ -272,16 +272,23 @@ export default function PalmClient() {
       {/* 結果表示 */}
       {result && (
         <div className="space-y-5">
-          {/* 線描き込み画像 */}
-          {result.annotatedImageUrl && (
-            <div className="rounded-2xl overflow-hidden border border-border shadow-md">
-              <img
-                src={result.annotatedImageUrl}
-                alt="手相鑑定結果"
-                className="w-full"
-              />
+          {/* 注釈入り手のひら画像（大きく表示） */}
+          <div className="rounded-2xl overflow-hidden border border-border shadow-md">
+            <img
+              src={result.annotatedImageUrl ?? preview ?? ""}
+              alt="手相鑑定結果"
+              className="w-full"
+            />
+            <div className="bg-washi/80 px-4 py-2 flex gap-3 flex-wrap text-[11px] font-semibold">
+              <span className="text-red-500">① 生命線</span>
+              <span className="text-blue-500">② 知能線</span>
+              <span className="text-amber-500">③ 感情線</span>
+              <span className="text-green-600">④ 運命線</span>
+              {result.analysis.hand && (
+                <span className="ml-auto text-sumi/50">{result.analysis.hand}</span>
+              )}
             </div>
-          )}
+          </div>
 
           {/* 各線の鑑定 */}
           <section className="rounded-2xl border border-border bg-white p-5 space-y-4">
