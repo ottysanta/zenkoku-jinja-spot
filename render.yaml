@@ -12,6 +12,8 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "22"
+      - key: NODE_OPTIONS
+        value: "--experimental-sqlite"
       - key: SHRINE_DB_URL
         value: https://github.com/ottysanta/zenkoku-jinja-spot/releases/download/v1.0/shrine_spots.db
       - key: PORT
