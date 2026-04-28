@@ -107,11 +107,7 @@ export async function POST(req: NextRequest) {
 
     const analysis = JSON.parse(jsonMatch[0]);
 
-    if (!analysis.is_valid) {
-      return NextResponse.json({
-        error: "手のひらが鮮明に写っていないため鑑定できませんでした。手のひらを広げ、明るい場所で撮影してください。"
-      }, { status: 422 });
-    }
+    // is_valid チェックは行わず常に鑑定結果を返す
 
     // Step 2: GPT Image 2で線描き込み
     let annotatedImageUrl: string | null = null;
