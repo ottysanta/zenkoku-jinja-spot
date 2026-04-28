@@ -414,6 +414,20 @@ export default function OmikujiClient() {
         </div>
       </section>
 
+      {/* ガイド記事への誘導 */}
+      <section className="rounded-xl border border-vermilion/20 bg-vermilion/5 p-5 text-center">
+        <p className="text-[10px] tracking-[0.3em] text-vermilion-deep font-bold mb-2">深く知る</p>
+        <p className="text-sm text-sumi/75 leading-relaxed mb-4">
+          あなたの守護タイプ・神社との縁をもっと詳しく知りたい方へ
+        </p>
+        <Link
+          href="/guide/lifepath-7"
+          className="inline-flex items-center gap-1.5 rounded-full bg-vermilion px-6 py-2.5 text-sm font-bold text-white shadow transition hover:bg-vermilion/90 active:scale-95"
+        >
+          ⛩ 神社ガイド記事を読む →
+        </Link>
+      </section>
+
       {/* シェアボタン */}
       <section className="rounded-xl border border-border bg-white/60 p-4">
         <p className="text-xs text-sumi/50 text-center mb-3">今日の結果をシェアする</p>

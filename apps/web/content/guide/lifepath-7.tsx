@@ -734,6 +734,14 @@ export default function Lifepath7Content() {
       />
 
       <CtaBox
+        title="毎週、神様からのメッセージをLINEで受け取る"
+        body="ライフパス7の方へ向けた、守護神からの言葉・属性別アドバイス・吉日情報を毎週LINEでお届けします。登録無料、いつでも解除できます。"
+        href="https://s.lmes.jp/landing-qr/2001537229-95RWxAqY?uLand=BQcXql"
+        label="LINEで無料登録する"
+        variant="line"
+      />
+
+      <CtaBox
         title="あなたのライフパスナンバーと守護神社を今すぐ確認する"
         body="生年月日を入力するだけで、ライフパスナンバー・五行属性・干支から守護タイプと縁深い神社を診断します。3分でできる無料診断。"
         href="/diagnose"
