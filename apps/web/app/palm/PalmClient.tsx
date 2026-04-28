@@ -158,8 +158,62 @@ export default function PalmClient() {
         </section>
       )}
 
+      {/* スキャンアニメーション（鑑定中） */}
+      {loading && (
+        <>
+          <style>{`
+            @keyframes palmScan {
+              0%   { top: 0%; }
+              50%  { top: calc(100% - 3px); }
+              100% { top: 0%; }
+            }
+            @keyframes palmPulse {
+              0%, 100% { opacity: 0.15; }
+              50%       { opacity: 0.35; }
+            }
+            .palm-scan-line { animation: palmScan 2s ease-in-out infinite; }
+            .palm-overlay   { animation: palmPulse 2s ease-in-out infinite; }
+          `}</style>
+          <div className="space-y-5">
+            <div className="relative overflow-hidden rounded-2xl border-2 border-vermilion/60 shadow-lg shadow-vermilion/10">
+              {preview && (
+                <img
+                  src={preview}
+                  alt="スキャン中"
+                  className="max-h-[300px] w-full object-contain opacity-75"
+                />
+              )}
+              {/* スキャンライン */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div
+                  className="palm-scan-line absolute left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-vermilion to-transparent"
+                  style={{ boxShadow: "0 0 12px 4px rgba(201,48,44,0.5)", top: 0 }}
+                />
+                <div className="palm-overlay absolute inset-0 bg-vermilion" />
+              </div>
+              {/* 四隅のブラケット */}
+              <div className="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-vermilion pointer-events-none" />
+              <div className="absolute top-3 right-3 w-5 h-5 border-t-2 border-r-2 border-vermilion pointer-events-none" />
+              <div className="absolute bottom-3 left-3 w-5 h-5 border-b-2 border-l-2 border-vermilion pointer-events-none" />
+              <div className="absolute bottom-3 right-3 w-5 h-5 border-b-2 border-r-2 border-vermilion pointer-events-none" />
+            </div>
+            <div className="text-center space-y-2">
+              <div className="flex justify-center gap-1.5 flex-wrap">
+                {(["生命線", "知能線", "感情線", "運命線"] as const).map((line, i) => (
+                  <span key={line} className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
+                    ["bg-red-100 text-red-600","bg-blue-100 text-blue-600","bg-amber-100 text-amber-600","bg-green-100 text-green-600"][i]
+                  }`}>{line}</span>
+                ))}
+              </div>
+              <p className="text-sm font-semibold text-sumi/70">AIが手相を解析しています…</p>
+              <p className="text-xs text-sumi/45">20〜40秒かかります</p>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* アップロードエリア */}
-      {!isLimitReached && (
+      {!isLimitReached && !loading && (
         <div className="space-y-4">
           <div
             onClick={() => fileRef.current?.click()}
@@ -201,18 +255,10 @@ export default function PalmClient() {
           {preview && (
             <button
               onClick={handleSubmit}
-              disabled={loading}
-              className="w-full rounded-full bg-vermilion py-3.5 text-base font-bold text-white shadow-lg transition hover:bg-vermilion/90 active:scale-95 disabled:opacity-60"
+              className="w-full rounded-full bg-vermilion py-3.5 text-base font-bold text-white shadow-lg transition hover:bg-vermilion/90 active:scale-95"
             >
-              {loading ? "鑑定中..." : "この手相を鑑定する"}
+              この手相を鑑定する
             </button>
-          )}
-
-          {loading && (
-            <div className="text-center space-y-2">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-vermilion/30 border-t-vermilion" />
-              <p className="text-xs text-sumi/55">AIが手相を読み取っています（20〜40秒）</p>
-            </div>
           )}
 
           {error && (
