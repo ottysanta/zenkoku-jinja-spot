@@ -5,10 +5,10 @@ import { GUIDES } from "@/lib/guide-content";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://zenkokujinjyaspot.com";
 
 export const metadata: Metadata = {
-  title: "神社ガイド — ライフパス・五行属性・干支別の参拝ガイド完全版",
-  description: "数秘術ライフパスナンバー別・五行属性別・干支別の神社参拝ガイド。自分の数字・属性・生まれ年に合った縁深い神社の選び方を解説します。",
+  title: "神社ガイド — 誕生数・五行属性・干支別の参拝ガイド完全版",
+  description: "数秘術誕生数別・五行属性別・干支別の神社参拝ガイド。自分の数字・属性・生まれ年に合った縁深い神社の選び方を解説します。",
   openGraph: {
-    title: "神社ガイド — ライフパス・五行属性・干支別",
+    title: "神社ガイド — 誕生数・五行属性・干支別",
     description: "あなたの数字・属性に合った神社の選び方を徹底解説",
     type: "website",
   },
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 const CATEGORY_LABEL: Record<string, string> = {
-  lifepath: "ライフパス別",
+  lifepath: "誕生数別",
   element: "五行属性別",
   zodiac: "干支別",
   special: "特集",
@@ -56,7 +56,7 @@ export default function GuidePage() {
           神社参拝ガイド
         </h1>
         <p className="text-stone-600 leading-relaxed">
-          生年月日から導き出されるライフパスナンバー・五行属性・干支によって、縁深い神社は異なります。
+          生年月日から導き出される誕生数・五行属性・干支によって、縁深い神社は異なります。
           自分の数字・属性を知り、最も縁深い神社への参拝でより深いご縁を結びましょう。
         </p>
         <div className="mt-4">
@@ -104,7 +104,7 @@ export default function GuidePage() {
       <section className="mt-4 rounded-2xl bg-gradient-to-br from-vermilion/10 to-moss/10 border border-vermilion/20 p-6 text-center">
         <h3 className="text-lg font-bold text-stone-800 mb-2">自分のタイプが分からない方へ</h3>
         <p className="text-sm text-stone-600 mb-4">
-          生年月日を入力するだけで、ライフパスナンバー・五行属性・干支から守護タイプと縁深い神社を診断します。
+          生年月日を入力するだけで、誕生数・五行属性・干支から守護タイプと縁深い神社を診断します。
         </p>
         <Link
           href="/diagnose"

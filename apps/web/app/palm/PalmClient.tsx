@@ -16,6 +16,7 @@ type LineResult = {
 
 type Analysis = {
   is_valid: boolean;
+  hand?: string;
   lines: {
     life: LineResult;
     head: LineResult;

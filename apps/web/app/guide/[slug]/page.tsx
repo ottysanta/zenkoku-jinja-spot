@@ -99,7 +99,7 @@ function buildSchema(guide: NonNullable<ReturnType<typeof getGuideBySlug>>) {
 }
 
 const CATEGORY_LABEL: Record<string, string> = {
-  lifepath: "ライフパス別", element: "五行属性別", zodiac: "干支別",
+  lifepath: "誕生数別", element: "五行属性別", zodiac: "干支別",
   special: "特集", worry: "悩み別",
 };
 const CATEGORY_COLOR: Record<string, string> = {

@@ -276,7 +276,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
   const { zodiac, stem, sexagenary, element, elementData, typeName, typeModifier, worryLabel, shrines, lifePathNumber, numerologyData } = result;
   const elColor = ELEMENT_COLORS[element] ?? ELEMENT_COLORS["水"];
 
-  const shareText = `守護神社診断：私は「${typeName}」${element}属性${zodiac.emoji} × ライフパス${lifePathNumber}「${numerologyData.name}」。守護神は${elementData.guardian}。あなたの守護タイプは？`;
+  const shareText = `守護神社診断：私は「${typeName}」${element}属性${zodiac.emoji} × 誕生数${lifePathNumber}「${numerologyData.name}」。守護神は${elementData.guardian}。あなたの守護タイプは？`;
   // URLには結果パラメータが入っているので、現在のURLをそのまま使う
   const shareUrl  = typeof window !== "undefined" ? window.location.href : "";
   const xShare    = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
@@ -337,7 +337,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         </div>
       </section>
 
-      {/* ── ③ 数秘ライフパス ─────────────────────────────────────────────── */}
+      {/* ── ③ 数秘・誕生数 ─────────────────────────────────────────────── */}
       <section className="rounded-2xl border-2 border-sumi/15 bg-gradient-to-br from-sumi/5 to-sumi/2 p-5">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-full bg-sumi/10 flex items-center justify-center text-lg font-serif font-bold text-sumi shrink-0">
@@ -346,11 +346,11 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
           <div>
             <p className="text-[10px] tracking-[0.3em] text-sumi/45 mb-0.5">
               {lifePathNumber === 11 || lifePathNumber === 22 || lifePathNumber === 33
-                ? "✦ 数秘ライフパス — マスターナンバー"
-                : "✦ 数秘ライフパス"}
+                ? "✦ 数秘・誕生数 — マスターナンバー"
+                : "✦ 数秘・誕生数"}
             </p>
             <p className="font-serif text-lg font-bold text-sumi leading-tight">
-              ライフパス{lifePathNumber}「{numerologyData.name}」
+              誕生数{lifePathNumber}「{numerologyData.name}」
             </p>
             <p className="text-[11px] text-sumi/50 mt-0.5">{numerologyData.keyword}</p>
           </div>

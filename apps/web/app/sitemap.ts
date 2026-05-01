@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/learn`,              changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/offerings`,          changeFrequency: "weekly",  priority: 0.6 },
     { url: `${BASE}/guide`,              changeFrequency: "weekly",  priority: 0.8 },
-    // ガイド記事（ライフパス・五行属性・特集）
+    // ガイド記事（誕生数・五行属性・特集）
     ...GUIDES.map((g) => ({
       url: `${BASE}/guide/${g.slug}`,
       changeFrequency: "monthly" as const,

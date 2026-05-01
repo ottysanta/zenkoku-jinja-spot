@@ -153,7 +153,7 @@ export default async function HomePage() {
             あなたの守護神社を<br className="md:hidden" />見つける
           </h1>
           <p className="text-sumi/70 leading-relaxed text-sm md:text-base max-w-lg mx-auto mb-6">
-            生年月日から五行属性・干支・ライフパスナンバーを診断。<br className="hidden md:block" />
+            生年月日から五行属性・干支・誕生数を診断。<br className="hidden md:block" />
             縁深い守護神社と、神様からのメッセージをお届けします。
           </p>
 
