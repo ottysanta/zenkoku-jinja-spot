@@ -24,8 +24,8 @@ html[data-text-size="xlarge"] p {
 }
 
 html, body {
-  background: #0D0A07;
-  color: #F5EFE2;
+  background: #080604;
+  color: #d8c7a5;
   font-family: theme('fontFamily.sans');
   -webkit-font-smoothing: antialiased;
 }
@@ -39,7 +39,7 @@ body {
 /* 見出しは明朝で厳かに */
 h1, h2, h3, h4 {
   font-family: theme('fontFamily.serif');
-  color: #F5EFE2;
+  color: #fff7e6;
   letter-spacing: 0.04em;
 }
 

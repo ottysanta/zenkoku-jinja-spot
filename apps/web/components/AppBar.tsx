@@ -62,12 +62,17 @@ export default function AppBar() {
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-[60] flex h-10 items-center justify-between border-b border-shrine-gold/20 bg-night/95 px-3 backdrop-blur"
-      style={{ ["--app-bar-h" as string]: "40px" }}
+      className="fixed inset-x-0 top-0 z-[60] flex h-12 items-center justify-between px-4 md:px-6"
+      style={{
+        background: "rgba(8,6,4,0.88)",
+        backdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(201,155,77,0.22)",
+        ["--app-bar-h" as string]: "48px",
+      }}
     >
-      <Link href="/" className="flex items-center gap-2 text-sm">
-        <span className="text-base">⛩</span>
-        <span className="font-serif font-bold text-shrine-gold">全国神社スポット</span>
+      <Link href="/" className="flex items-center gap-2">
+        <span className="text-lg">⛩</span>
+        <span className="font-serif font-bold" style={{ color: "#C99B4D", fontSize: "0.95rem", letterSpacing: "0.05em" }}>全国神社スポット</span>
       </Link>
 
       <div className="flex items-center gap-2">
