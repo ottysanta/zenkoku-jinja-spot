@@ -62,12 +62,12 @@ export default function AppBar() {
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-[60] flex h-10 items-center justify-between border-b border-border bg-washi/95 px-3 backdrop-blur"
+      className="fixed inset-x-0 top-0 z-[60] flex h-10 items-center justify-between border-b border-shrine-gold/20 bg-night/95 px-3 backdrop-blur"
       style={{ ["--app-bar-h" as string]: "40px" }}
     >
       <Link href="/" className="flex items-center gap-2 text-sm">
         <span className="text-base">⛩</span>
-        <span className="font-serif font-bold text-sumi">全国神社スポット</span>
+        <span className="font-serif font-bold text-shrine-gold">全国神社スポット</span>
       </Link>
 
       <div className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export default function AppBar() {
           onClick={() => setMenuOpen((v) => !v)}
           aria-expanded={menuOpen}
           aria-haspopup="menu"
-          className="flex min-h-[32px] items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1.5 text-xs text-sumi hover:bg-kinari active:bg-kinari"
+          className="flex min-h-[32px] items-center gap-1.5 rounded-full border border-shrine-gold/40 bg-night-card px-3 py-1.5 text-xs text-kinari hover:bg-night-50 active:bg-night-50"
           style={{ touchAction: "manipulation" }}
         >
           <span aria-hidden="true">☰</span>
@@ -90,7 +90,7 @@ export default function AppBar() {
         {menuOpen ? (
           <div
             role="menu"
-            className="absolute right-0 top-full z-10 mt-1 w-56 overflow-hidden rounded-md border border-border bg-white shadow-lg"
+            className="absolute right-0 top-full z-10 mt-1 w-56 overflow-hidden rounded-md border border-shrine-gold/25 bg-night-50 shadow-lg"
           >
             <ul className="py-1 text-sm">
               {NAV_ITEMS.map((item) => (
@@ -98,8 +98,8 @@ export default function AppBar() {
                   <Link
                     href={item.href}
                     className={
-                      "flex items-center gap-2 px-3 py-2 text-sumi hover:bg-kinari " +
-                      (pathname === item.href ? "bg-kinari/60 font-semibold" : "")
+                      "flex items-center gap-2 px-3 py-2 text-kinari hover:bg-night-100 " +
+                      (pathname === item.href ? "bg-night-100 font-semibold text-shrine-gold" : "")
                     }
                   >
                     <span className="w-5 text-center" aria-hidden="true">
@@ -111,17 +111,17 @@ export default function AppBar() {
               ))}
             </ul>
             {/* モバイル向け: メニュー内に文字サイズ切替 */}
-            <div className="border-t border-border px-3 py-2 md:hidden">
-              <p className="mb-1 text-[11px] text-sumi/70">文字サイズ</p>
+            <div className="border-t border-shrine-gold/20 px-3 py-2 md:hidden">
+              <p className="mb-1 text-[11px] text-kinari/70">文字サイズ</p>
               <TextSizeSwitcher />
             </div>
-            <div className="border-t border-border px-3 py-2">
-              <label className="flex items-center justify-between gap-2 text-[11px] text-sumi/70">
+            <div className="border-t border-shrine-gold/20 px-3 py-2">
+              <label className="flex items-center justify-between gap-2 text-[11px] text-kinari/70">
                 <span>🌐 言語</span>
                 <select
                   value={locale}
                   onChange={(e) => changeLocale(e.target.value)}
-                  className="rounded border border-border bg-white px-2 py-1 text-xs text-sumi outline-none"
+                  className="rounded border border-shrine-gold/30 bg-night-card px-2 py-1 text-xs text-kinari outline-none"
                 >
                   {routing.locales.map((loc) => (
                     <option key={loc} value={loc}>

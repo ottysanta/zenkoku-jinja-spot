@@ -28,6 +28,25 @@ const config: Config = {
         paper:   '#FFFFFF',
         moss:    '#4F6B4A',
         border:  { DEFAULT: '#D9CFB8', soft: '#E8E0CC' },
+        // 高級和風ダークパレット
+        night: {
+          DEFAULT: '#0D0A07',
+          50:      '#1A1209',
+          100:     '#221710',
+          200:     '#2E1E13',
+          card:    '#1C1108',
+          warm:    '#160D06',
+        },
+        'shrine-gold': {
+          DEFAULT: '#C9A84C',
+          light:   '#E4C76A',
+          dim:     '#7A631F',
+        },
+        'shrine-red': {
+          DEFAULT: '#8B1E27',
+          light:   '#B8373E',
+          deep:    '#5E1219',
+        },
       },
       fontFamily: {
         serif:   ['"Shippori Mincho"', '"Noto Serif JP"', 'serif'],

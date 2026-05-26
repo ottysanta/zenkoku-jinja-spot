@@ -24,8 +24,8 @@ html[data-text-size="xlarge"] p {
 }
 
 html, body {
-  background: theme('colors.washi');
-  color: theme('colors.ink');
+  background: #0D0A07;
+  color: #F5EFE2;
   font-family: theme('fontFamily.sans');
   -webkit-font-smoothing: antialiased;
 }
@@ -39,6 +39,15 @@ body {
 /* 見出しは明朝で厳かに */
 h1, h2, h3, h4 {
   font-family: theme('fontFamily.serif');
-  color: theme('colors.sumi');
+  color: #F5EFE2;
   letter-spacing: 0.04em;
 }
+
+/* スクロールバーをダークテーマに合わせる */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0D0A07; }
+::-webkit-scrollbar-thumb { background: #3A2510; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #C9A84C44; }
+
+/* 選択テキストの色 */
+::selection { background: rgba(201,168,76,0.3); color: #F5EFE2; }
