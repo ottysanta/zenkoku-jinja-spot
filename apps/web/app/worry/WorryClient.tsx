@@ -263,11 +263,7 @@ export default function WorryClient() {
             </h2>
             <p className="text-sm text-white/80 leading-relaxed mb-5 max-w-sm mx-auto">
               LINE登録で、あなたの悩みに寄り添う
-              <br />
-              <span className="text-white font-semibold">
-                「神様からの7日間のメッセージ」
-              </span>
-              <br />
+              <span className="text-white font-semibold">「神様からの7日間のメッセージ」</span>
               を無料でお届けします。
             </p>
             <a

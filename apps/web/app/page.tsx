@@ -254,9 +254,12 @@ export default async function HomePage() {
                 lineHeight: 1.22,
                 letterSpacing: "0.04em",
                 marginBottom: "20px",
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                wordBreak: "auto-phrase" as any,
+                overflowWrap: "break-word",
               }}
             >
-              あなたの守護神社を<br />見つける
+              あなたの守護神社を見つける
             </h1>
 
             {/* 金の装飾ライン */}
@@ -275,8 +278,7 @@ export default async function HomePage() {
               marginBottom: "40px",
               letterSpacing: "0.03em",
             }}>
-              生年月日から五行属性・干支・誕生数を診断。<br />
-              縁深い守護神社と、神様からのメッセージをお届けします。
+              生年月日から五行属性・干支・誕生数を診断。縁深い守護神社と、神様からのメッセージをお届けします。
             </p>
 
             {/* CTA ボタン群 */}
