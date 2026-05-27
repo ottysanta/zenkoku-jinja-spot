@@ -184,15 +184,16 @@ export default async function SearchPage({
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="rounded-md border border-border bg-washi px-2.5 py-1.5 text-xs text-sumi hover:bg-kinari"
+              className="rounded-md px-2.5 py-1.5 text-xs transition hover:opacity-80"
+              style={{ border: "1px solid rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.6)", color: "#d8c7a5" }}
               aria-label="トップへ戻る"
             >
               ← トップ
             </Link>
-            <h1 className="text-xl font-bold text-sumi sm:text-2xl">神社を探す</h1>
+            <h1 className="text-xl font-bold sm:text-2xl" style={{ color: "#fff7e6" }}>神社を探す</h1>
           </div>
           {/* 地図/一覧 ビュートグル（Comfy 参考）*/}
-          <div className="inline-flex overflow-hidden rounded-md border border-border bg-washi text-xs shadow-sm">
+          <div className="inline-flex overflow-hidden rounded-md text-xs shadow-sm" style={{ border: "1px solid rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.6)" }}>
             <Link
               href={(() => {
                 const qs = new URLSearchParams();
@@ -203,7 +204,8 @@ export default async function SearchPage({
                 const s = qs.toString();
                 return `/map${s ? `?${s}` : ""}`;
               })()}
-              className="px-3 py-1.5 text-sumi hover:bg-kinari"
+              className="px-3 py-1.5 hover:opacity-80"
+              style={{ color: "#d8c7a5" }}
             >
               🗺 地図
             </Link>
@@ -235,33 +237,32 @@ export default async function SearchPage({
             })()}
             className={
               "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium " +
-              (acceptsOnly
-                ? "border-moss bg-moss text-white"
-                : "border-border bg-white text-sumi/80 hover:bg-kinari")
+              (acceptsOnly ? "border-moss bg-moss text-white" : "hover:opacity-80")
             }
+            style={!acceptsOnly ? { borderColor: "rgba(201,155,77,0.35)", background: "rgba(28,17,8,0.5)", color: "#d8c7a5" } : {}}
             title="オンライン志納に対応している神社のみ表示"
           >
             {acceptsOnly ? "✓" : "◻︎"} 🙏 オンライン志納 受付中のみ
           </Link>
           {acceptsOnly ? (
-            <span className="text-sumi/50">
+            <span style={{ color: "rgba(220,202,168,0.55)" }}>
               （宗教法人登録・受付同意が確認できた神社）
             </span>
           ) : null}
         </div>
         {/* 条件数 + 結果件数（Comfy 風の動的バッジ）*/}
-        <div className="flex flex-wrap items-center gap-2 rounded-md border border-border bg-washi/70 px-3 py-2 text-xs">
-          <span className="inline-flex items-center rounded-full border border-border bg-white px-2 py-0.5 text-sumi/80">
-            条件 <b className="ml-1 text-sumi">({activeFilters.length})</b>
+        <div className="flex flex-wrap items-center gap-2 rounded-md px-3 py-2 text-xs" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(28,17,8,0.5)" }}>
+          <span className="inline-flex items-center rounded-full px-2 py-0.5" style={{ border: "1px solid rgba(201,155,77,0.25)", background: "rgba(201,155,77,0.07)", color: "#d8c7a5" }}>
+            条件 <b className="ml-1" style={{ color: "#fff7e6" }}>({activeFilters.length})</b>
           </span>
-          <span className="text-sumi/60">|</span>
+          <span style={{ color: "rgba(220,202,168,0.5)" }}>|</span>
           <span className="text-vermilion-deep font-bold tabular-nums">
             {totalCount.toLocaleString()}
           </span>
-          <span className="text-sumi/70">件</span>
+          <span style={{ color: "rgba(220,202,168,0.72)" }}>件</span>
           {activeFilters.length > 0 ? (
             <>
-              <span className="ml-2 text-sumi/40">—</span>
+              <span className="ml-2" style={{ color: "rgba(220,202,168,0.35)" }}>—</span>
               {activeFilters.map((f) => (
                 <Link
                   key={`${f.key}:${f.value}`}
@@ -278,7 +279,8 @@ export default async function SearchPage({
               ))}
               <Link
                 href="/search"
-                className="ml-1 text-[11px] text-sumi/50 underline hover:text-sumi/80"
+                className="ml-1 text-[11px] underline"
+                style={{ color: "rgba(220,202,168,0.55)" }}
               >
                 すべて解除
               </Link>
@@ -289,13 +291,13 @@ export default async function SearchPage({
 
       {/* 市区町村ファセット: 都道府県が絞られている場合のみ */}
       {prefecture && cityFacets.length > 0 ? (
-        <section className="mb-6 rounded-md border border-border bg-washi/60 p-3">
+        <section className="mb-6 rounded-md p-3" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(16,8,3,0.7)" }}>
           <div className="mb-2 flex items-center justify-between border-b border-vermilion/30 pb-1.5">
             <h2 className="text-xs font-semibold text-vermilion-deep">
               {prefecture} の市区町村
             </h2>
             {city ? (
-              <Link href={removeHref("city")} className="text-[10px] text-sumi/60 hover:underline">
+              <Link href={removeHref("city")} className="text-[10px] hover:underline" style={{ color: "rgba(220,202,168,0.6)" }}>
                 解除
               </Link>
             ) : null}
@@ -314,7 +316,7 @@ export default async function SearchPage({
                         href={href}
                         className={
                           "relative block rounded px-1.5 py-1 " +
-                          (active ? "bg-vermilion text-white" : "text-sumi/90 hover:bg-kinari")
+                          (active ? "bg-vermilion text-white" : "text-[#d8c7a5] hover:bg-vermilion/10")
                         }
                       >
                         <span
@@ -331,7 +333,7 @@ export default async function SearchPage({
                           </span>
                           <span
                             className={
-                              "tabular-nums " + (active ? "text-white/80" : "text-sumi/50")
+                              "tabular-nums " + (active ? "text-white/80" : "text-[#d8c7a5]/60")
                             }
                           >
                             [{r.count}]
@@ -356,13 +358,14 @@ export default async function SearchPage({
       })()}
       <aside className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         {/* ご利益 */}
-        <section className="rounded-md border border-border bg-washi/60 p-3">
+        <section className="rounded-md p-3" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(16,8,3,0.7)" }}>
           <div className="mb-2 flex items-center justify-between border-b border-vermilion/30 pb-1.5">
             <h2 className="text-xs font-semibold text-vermilion-deep">ご利益</h2>
             {benefit ? (
               <Link
                 href={removeHref("benefit")}
-                className="text-[10px] text-sumi/60 hover:underline"
+                className="text-[10px] hover:underline"
+                style={{ color: "rgba(220,202,168,0.6)" }}
               >
                 解除
               </Link>
@@ -386,7 +389,7 @@ export default async function SearchPage({
                   return (
                     <li key={b}>
                       {disabled ? (
-                        <span className="relative flex items-center justify-between gap-1 rounded px-1 py-0.5 text-sumi/30">
+                        <span className="relative flex items-center justify-between gap-1 rounded px-1 py-0.5" style={{ color: "rgba(220,202,168,0.25)" }}>
                           <span>◻︎ {b}</span>
                           <span className="tabular-nums">[0]</span>
                         </span>
@@ -397,7 +400,7 @@ export default async function SearchPage({
                             "relative block rounded px-1 py-0.5 " +
                             (active
                               ? "bg-vermilion text-white"
-                              : "text-sumi/90 hover:bg-kinari")
+                              : "text-[#d8c7a5] hover:bg-vermilion/10")
                           }
                         >
                           <span
@@ -415,7 +418,7 @@ export default async function SearchPage({
                             <span
                               className={
                                 "tabular-nums " +
-                                (active ? "text-white/80" : "text-sumi/50")
+                                (active ? "text-white/80" : "text-[#d8c7a5]/60")
                               }
                             >
                               [{count.toLocaleString()}]
@@ -432,13 +435,14 @@ export default async function SearchPage({
         </section>
 
         {/* 神社形式 */}
-        <section className="rounded-md border border-border bg-washi/60 p-3">
+        <section className="rounded-md p-3" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(16,8,3,0.7)" }}>
           <div className="mb-2 flex items-center justify-between border-b border-vermilion/30 pb-1.5">
             <h2 className="text-xs font-semibold text-vermilion-deep">神社形式</h2>
             {shrine_type ? (
               <Link
                 href={removeHref("shrine_type")}
-                className="text-[10px] text-sumi/60 hover:underline"
+                className="text-[10px] hover:underline"
+                style={{ color: "rgba(220,202,168,0.6)" }}
               >
                 解除
               </Link>
@@ -450,7 +454,7 @@ export default async function SearchPage({
             return (
               <ul className="max-h-40 space-y-0.5 overflow-y-auto text-[11px]">
                 {topN.length === 0 ? (
-                  <li className="text-sumi/40">— 該当なし —</li>
+                  <li style={{ color: "rgba(220,202,168,0.4)" }}>— 該当なし —</li>
                 ) : (
                   topN.map((r) => {
                     const active = r.value === shrine_type;
@@ -466,7 +470,7 @@ export default async function SearchPage({
                             "relative block rounded px-1 py-0.5 " +
                             (active
                               ? "bg-vermilion text-white"
-                              : "text-sumi/90 hover:bg-kinari")
+                              : "text-[#d8c7a5] hover:bg-vermilion/10")
                           }
                         >
                           <span
@@ -484,7 +488,7 @@ export default async function SearchPage({
                             <span
                               className={
                                 "tabular-nums " +
-                                (active ? "text-white/80" : "text-sumi/50")
+                                (active ? "text-white/80" : "text-[#d8c7a5]/60")
                               }
                             >
                               [{r.count.toLocaleString()}]
@@ -501,13 +505,14 @@ export default async function SearchPage({
         </section>
 
         {/* 都道府県 */}
-        <section className="rounded-md border border-border bg-washi/60 p-3">
+        <section className="rounded-md p-3" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(16,8,3,0.7)" }}>
           <div className="mb-2 flex items-center justify-between border-b border-vermilion/30 pb-1.5">
             <h2 className="text-xs font-semibold text-vermilion-deep">都道府県</h2>
             {prefecture ? (
               <Link
                 href={removeHref("prefecture")}
-                className="text-[10px] text-sumi/60 hover:underline"
+                className="text-[10px] hover:underline"
+                style={{ color: "rgba(220,202,168,0.6)" }}
               >
                 解除
               </Link>
@@ -519,7 +524,7 @@ export default async function SearchPage({
             return (
               <ul className="max-h-40 space-y-0.5 overflow-y-auto text-[11px]">
                 {topN.length === 0 ? (
-                  <li className="text-sumi/40">— 該当なし —</li>
+                  <li style={{ color: "rgba(220,202,168,0.4)" }}>— 該当なし —</li>
                 ) : (
                   topN.map((r) => {
                     const active = r.value === prefecture;
@@ -535,7 +540,7 @@ export default async function SearchPage({
                             "relative block rounded px-1 py-0.5 " +
                             (active
                               ? "bg-vermilion text-white"
-                              : "text-sumi/90 hover:bg-kinari")
+                              : "text-[#d8c7a5] hover:bg-vermilion/10")
                           }
                         >
                           <span
@@ -553,7 +558,7 @@ export default async function SearchPage({
                             <span
                               className={
                                 "tabular-nums " +
-                                (active ? "text-white/80" : "text-sumi/50")
+                                (active ? "text-white/80" : "text-[#d8c7a5]/60")
                               }
                             >
                               [{r.count.toLocaleString()}]
@@ -571,21 +576,21 @@ export default async function SearchPage({
       </aside>
 
       {results.length === 0 ? (
-        <section className="rounded-md border border-dashed border-border bg-washi/60 p-6 text-center text-sm text-sumi/70">
+        <section className="rounded-md p-6 text-center text-sm" style={{ border: "1px dashed rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.5)", color: "rgba(220,202,168,0.72)" }}>
           {t("noResults")}
         </section>
       ) : (
         <section>
-          <div className="mb-3 flex items-center justify-between text-xs text-sumi/60">
+          <div className="mb-3 flex items-center justify-between text-xs" style={{ color: "rgba(220,202,168,0.6)" }}>
             <p>
               全 <b className="text-vermilion-deep tabular-nums">{totalCount.toLocaleString()}</b> 件中{" "}
-              <b className="text-sumi tabular-nums">
+              <b className="tabular-nums" style={{ color: "#fff7e6" }}>
                 {((page - 1) * PAGE_SIZE + 1).toLocaleString()}〜
                 {Math.min(page * PAGE_SIZE, totalCount).toLocaleString()}
               </b>{" "}
               件を表示
             </p>
-            <p className="text-sumi/50">
+            <p style={{ color: "rgba(220,202,168,0.5)" }}>
               ページ {page} / {totalPages}
             </p>
           </div>
@@ -597,7 +602,8 @@ export default async function SearchPage({
                 <li key={s.id}>
                   <Link
                     href={`/shrines/${spotSlug(s)}`}
-                    className="flex h-full flex-col overflow-hidden rounded-md border border-border bg-washi shadow-sm transition hover:shadow-md"
+                    className="flex h-full flex-col overflow-hidden rounded-md shadow-sm transition hover:shadow-md"
+                    style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}
                   >
                     {s.photo_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -608,13 +614,13 @@ export default async function SearchPage({
                         loading="lazy"
                       />
                     ) : (
-                      <div className="flex h-16 w-full items-center justify-center bg-kinari text-[10px] text-sumi/40 sm:h-20">
+                      <div className="flex h-16 w-full items-center justify-center text-[10px] sm:h-20" style={{ background: "rgba(201,155,77,0.05)", color: "rgba(220,202,168,0.35)" }}>
                         写真なし
                       </div>
                     )}
                     <div className="flex flex-1 flex-col gap-1 p-3">
                       <div className="flex items-center gap-1.5">
-                        <h2 className="line-clamp-1 flex-1 text-sm font-semibold text-sumi">
+                        <h2 className="line-clamp-1 flex-1 text-sm font-semibold" style={{ color: "#fff7e6" }}>
                           {s.canonical_name || s.name}
                         </h2>
                         {s.accepts_offerings ? (
@@ -626,7 +632,7 @@ export default async function SearchPage({
                           </span>
                         ) : null}
                       </div>
-                      <p className="line-clamp-1 text-[11px] text-sumi/60">
+                      <p className="line-clamp-1 text-[11px]" style={{ color: "rgba(220,202,168,0.58)" }}>
                         {[
                           [s.prefecture, s.city].filter(Boolean).join(" "),
                           s.shrine_type,
@@ -636,17 +642,17 @@ export default async function SearchPage({
                           .join(" / ") || "—"}
                       </p>
                       {s.deity ? (
-                        <p className="line-clamp-1 text-[11px] text-sumi/70">
+                        <p className="line-clamp-1 text-[11px]" style={{ color: "rgba(220,202,168,0.72)" }}>
                           御祭神: {s.deity}
                         </p>
                       ) : null}
                       {s.address ? (
-                        <p className="line-clamp-1 text-[11px] text-sumi/60">
+                        <p className="line-clamp-1 text-[11px]" style={{ color: "rgba(220,202,168,0.58)" }}>
                           {s.address}
                         </p>
                       ) : null}
                       {summary ? (
-                        <p className="line-clamp-2 text-[11px] text-sumi/70">
+                        <p className="line-clamp-2 text-[11px]" style={{ color: "rgba(220,202,168,0.72)" }}>
                           {summary}
                           {summary.length >= 90 ? "…" : ""}
                         </p>
@@ -662,7 +668,7 @@ export default async function SearchPage({
                             </span>
                           ))}
                           {benefits.length > 5 ? (
-                            <span className="text-[10px] text-sumi/50">+{benefits.length - 5}</span>
+                            <span className="text-[10px]" style={{ color: "rgba(220,202,168,0.5)" }}>+{benefits.length - 5}</span>
                           ) : null}
                         </div>
                       ) : null}
@@ -706,28 +712,28 @@ export default async function SearchPage({
                     {page > 1 ? (
                       <Link
                         href={pageHref(page - 1)}
-                        className="rounded-md border border-border bg-white px-3 py-1.5 text-sumi hover:bg-kinari"
+                        className="rounded-md px-3 py-1.5 transition hover:opacity-80"
+                        style={{ border: "1px solid rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.6)", color: "#d8c7a5" }}
                       >
                         ← 前へ
                       </Link>
                     ) : (
-                      <span className="rounded-md border border-border bg-kinari px-3 py-1.5 text-sumi/40">
+                      <span className="rounded-md px-3 py-1.5" style={{ border: "1px solid rgba(201,155,77,0.15)", background: "rgba(16,8,3,0.4)", color: "rgba(220,202,168,0.3)" }}>
                         ← 前へ
                       </span>
                     )}
                     {dedup.map((p, i) =>
                       p === "…" ? (
-                        <span key={"d" + i} className="px-2 text-sumi/40">…</span>
+                        <span key={"d" + i} className="px-2" style={{ color: "rgba(220,202,168,0.35)" }}>…</span>
                       ) : (
                         <Link
                           key={p}
                           href={pageHref(p)}
                           className={
                             "rounded-md px-3 py-1.5 border " +
-                            (p === page
-                              ? "border-vermilion bg-vermilion text-white"
-                              : "border-border bg-white text-sumi hover:bg-kinari")
+                            (p === page ? "border-vermilion bg-vermilion text-white" : "hover:opacity-80")
                           }
+                          style={p !== page ? { borderColor: "rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.6)", color: "#d8c7a5" } : {}}
                           aria-current={p === page ? "page" : undefined}
                         >
                           {p}
@@ -737,12 +743,13 @@ export default async function SearchPage({
                     {page < totalPages ? (
                       <Link
                         href={pageHref(page + 1)}
-                        className="rounded-md border border-border bg-white px-3 py-1.5 text-sumi hover:bg-kinari"
+                        className="rounded-md px-3 py-1.5 transition hover:opacity-80"
+                        style={{ border: "1px solid rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.6)", color: "#d8c7a5" }}
                       >
                         次へ →
                       </Link>
                     ) : (
-                      <span className="rounded-md border border-border bg-kinari px-3 py-1.5 text-sumi/40">
+                      <span className="rounded-md px-3 py-1.5" style={{ border: "1px solid rgba(201,155,77,0.15)", background: "rgba(16,8,3,0.4)", color: "rgba(220,202,168,0.3)" }}>
                         次へ →
                       </span>
                     )}

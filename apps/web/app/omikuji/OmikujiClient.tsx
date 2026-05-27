@@ -240,10 +240,10 @@ export default function OmikujiClient() {
           <p className="text-[11px] tracking-[0.3em] text-vermilion-deep font-semibold mb-3">
             ⛩ DAILY OMIKUJI
           </p>
-          <h1 className="font-serif text-3xl text-sumi mb-3">今日のおみくじ</h1>
-          <p className="text-sumi/60 text-sm max-w-xs mx-auto leading-relaxed">
+          <h1 className="font-serif text-3xl mb-3" style={{ color: "#fff7e6" }}>今日のおみくじ</h1>
+          <p className="text-sm max-w-xs mx-auto leading-relaxed" style={{ color: "rgba(220,202,168,0.72)" }}>
             1日1回、守護神様からの今日のメッセージを受け取りましょう。
-            {element && <span className="block mt-1 text-xs text-sumi/45">あなたの属性：<strong className="text-sumi/70">{element}属性</strong></span>}
+            {element && <span className="block mt-1 text-xs" style={{ color: "rgba(220,202,168,0.55)" }}>あなたの属性：<strong style={{ color: "rgba(220,202,168,0.85)" }}>{element}属性</strong></span>}
           </p>
         </div>
 
@@ -266,14 +266,14 @@ export default function OmikujiClient() {
           >
             おみくじを引く
           </button>
-          <p className="text-[11px] text-sumi/40">本日の結果は1日1回まで</p>
+          <p className="text-[11px]" style={{ color: "rgba(220,202,168,0.4)" }}>本日の結果は1日1回まで</p>
           <PushNotificationButton />
         </div>
 
         {/* 守護診断への誘導 */}
         {!element && (
-          <div className="rounded-xl border border-border bg-washi/60 p-4 text-center">
-            <p className="text-xs text-sumi/60 mb-2">
+          <div className="rounded-xl p-4 text-center" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(28,17,8,0.6)" }}>
+            <p className="text-xs mb-2" style={{ color: "rgba(220,202,168,0.65)" }}>
               守護神社診断をすると、属性別のメッセージが届きます
             </p>
             <Link href="/diagnose"
@@ -297,8 +297,8 @@ export default function OmikujiClient() {
           </div>
         </div>
         <div className="text-center">
-          <p className="font-serif text-xl text-sumi">神様に問いかけています…</p>
-          <p className="text-sm text-sumi/50 mt-1">今日のあなたへのメッセージを受け取っています</p>
+          <p className="font-serif text-xl" style={{ color: "#fff7e6" }}>神様に問いかけています…</p>
+          <p className="text-sm mt-1" style={{ color: "rgba(220,202,168,0.6)" }}>今日のあなたへのメッセージを受け取っています</p>
         </div>
       </div>
     );
@@ -336,26 +336,26 @@ export default function OmikujiClient() {
       </section>
 
       {/* 神様からの言葉 */}
-      <section className="rounded-xl border-l-4 border-vermilion bg-vermilion/5 px-5 py-4">
+      <section className="rounded-xl border-l-4 border-vermilion px-5 py-4" style={{ background: "rgba(139,30,39,0.12)" }}>
         <p className="text-[10px] tracking-[0.3em] text-vermilion-deep font-bold mb-2">神様からの言葉</p>
-        <p className="font-serif text-base text-sumi/85 leading-relaxed italic">
+        <p className="font-serif text-base leading-relaxed italic" style={{ color: "rgba(240,226,198,0.9)" }}>
           {fortuneData.deityVoice}
         </p>
       </section>
 
       {/* アドバイス */}
-      <section className="rounded-xl border border-vermilion/20 bg-vermilion/5 p-5">
+      <section className="rounded-xl p-5" style={{ border: "1px solid rgba(139,30,39,0.25)", background: "rgba(139,30,39,0.1)" }}>
         <p className="text-[10px] tracking-[0.3em] text-vermilion-deep font-bold mb-2">今日のアドバイス</p>
-        <p className="text-sm text-sumi/80 leading-relaxed">{fortuneData.advice}</p>
+        <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.85)" }}>{fortuneData.advice}</p>
       </section>
 
       {/* 今日すること */}
-      <section className="rounded-xl border border-border bg-white p-5">
-        <p className="text-[10px] tracking-[0.3em] text-sumi/50 font-bold mb-3">今日すること</p>
+      <section className="rounded-xl p-5" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108 0%, #170d06 100%)" }}>
+        <p className="text-[10px] tracking-[0.3em] font-bold mb-3" style={{ color: "rgba(220,202,168,0.55)" }}>今日すること</p>
         <ul className="space-y-2">
           {fortuneData.doToday.map((item, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-sumi/80">
-              <span className="shrink-0 w-5 h-5 rounded-full bg-vermilion/10 text-vermilion-deep text-[10px] font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
+            <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "rgba(220,202,168,0.85)" }}>
+              <span className="shrink-0 w-5 h-5 rounded-full bg-vermilion/15 text-vermilion-deep text-[10px] font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
               {item}
             </li>
           ))}
@@ -363,61 +363,56 @@ export default function OmikujiClient() {
       </section>
 
       {/* ラッキー情報 */}
-      <section className="rounded-xl border border-border bg-washi/60 p-5">
-        <p className="text-[10px] tracking-[0.3em] text-sumi/50 font-bold mb-3">今日のラッキー</p>
+      <section className="rounded-xl p-5" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108 0%, #170d06 100%)" }}>
+        <p className="text-[10px] tracking-[0.3em] font-bold mb-3" style={{ color: "rgba(220,202,168,0.55)" }}>今日のラッキー</p>
         <div className="grid grid-cols-2 gap-2 text-sm">
-          <div className="rounded-lg bg-white p-2.5">
-            <p className="text-[10px] text-sumi/45 mb-0.5">色</p>
-            <p className="font-semibold text-sumi/80">{fortuneData.luckyColor}</p>
-          </div>
-          <div className="rounded-lg bg-white p-2.5">
-            <p className="text-[10px] text-sumi/45 mb-0.5">数字</p>
-            <p className="font-semibold text-sumi/80">{fortuneData.luckyNumber}</p>
-          </div>
-          <div className="rounded-lg bg-white p-2.5">
-            <p className="text-[10px] text-sumi/45 mb-0.5">方位</p>
-            <p className="font-semibold text-sumi/80">{fortuneData.luckyDirection}</p>
-          </div>
-          <div className="rounded-lg bg-white p-2.5">
-            <p className="text-[10px] text-sumi/45 mb-0.5">アイテム</p>
-            <p className="font-semibold text-sumi/80 text-xs">{fortuneData.luckyItem}</p>
-          </div>
+          {[
+            { label: "色", value: fortuneData.luckyColor },
+            { label: "数字", value: fortuneData.luckyNumber },
+            { label: "方位", value: fortuneData.luckyDirection },
+            { label: "アイテム", value: fortuneData.luckyItem },
+          ].map(({ label, value }) => (
+            <div key={label} className="rounded-lg p-2.5" style={{ background: "rgba(201,155,77,0.07)", border: "1px solid rgba(201,155,77,0.15)" }}>
+              <p className="text-[10px] mb-0.5" style={{ color: "rgba(220,202,168,0.5)" }}>{label}</p>
+              <p className="font-semibold text-xs" style={{ color: "#fff7e6" }}>{value}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* 属性別メッセージ */}
       {element && (
-        <section className="rounded-xl border border-border bg-washi/60 p-5 space-y-3">
-          <p className="text-[10px] tracking-[0.25em] text-sumi/50 font-bold">
+        <section className="rounded-xl p-5 space-y-3" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108 0%, #170d06 100%)" }}>
+          <p className="text-[10px] tracking-[0.25em] font-bold" style={{ color: "rgba(220,202,168,0.55)" }}>
             {element}属性・{ELEMENT_SUPPLEMENT[element].deity}からのメッセージ
           </p>
-          <p className="text-sm text-sumi/80 leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.85)" }}>
             {ELEMENT_SUPPLEMENT[element].message}
           </p>
-          <div className="rounded-lg bg-vermilion/5 border border-vermilion/15 p-3">
+          <div className="rounded-lg p-3" style={{ background: "rgba(139,30,39,0.12)", border: "1px solid rgba(139,30,39,0.2)" }}>
             <p className="text-[10px] text-vermilion-deep font-bold mb-1">今日のフォーカス</p>
-            <p className="text-xs text-sumi/75">{ELEMENT_SUPPLEMENT[element].todayFocus}</p>
+            <p className="text-xs" style={{ color: "rgba(220,202,168,0.8)" }}>{ELEMENT_SUPPLEMENT[element].todayFocus}</p>
           </div>
-          <div className="rounded-lg bg-stone-50 p-3">
-            <p className="text-[10px] text-sumi/50 mb-1">参拝時のおすすめの言葉</p>
-            <p className="text-xs text-sumi/70 italic">{ELEMENT_SUPPLEMENT[element].prayer}</p>
+          <div className="rounded-lg p-3" style={{ background: "rgba(201,155,77,0.07)", border: "1px solid rgba(201,155,77,0.15)" }}>
+            <p className="text-[10px] mb-1" style={{ color: "rgba(220,202,168,0.5)" }}>参拝時のおすすめの言葉</p>
+            <p className="text-xs italic" style={{ color: "rgba(220,202,168,0.75)" }}>{ELEMENT_SUPPLEMENT[element].prayer}</p>
           </div>
         </section>
       )}
 
       {/* 参拝アドバイス */}
-      <section className="rounded-xl border border-border bg-white p-5">
-        <p className="text-[10px] tracking-[0.3em] text-sumi/50 font-bold mb-2">今日の参拝アドバイス</p>
-        <p className="text-sm text-sumi/75 leading-relaxed">{fortuneData.shrineAdvice}</p>
+      <section className="rounded-xl p-5" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108 0%, #170d06 100%)" }}>
+        <p className="text-[10px] tracking-[0.3em] font-bold mb-2" style={{ color: "rgba(220,202,168,0.55)" }}>今日の参拝アドバイス</p>
+        <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.82)" }}>{fortuneData.shrineAdvice}</p>
         <div className="mt-3 text-center">
           <Link href="/map" className="text-xs text-vermilion-deep underline">近くの神社を探す →</Link>
         </div>
       </section>
 
       {/* ガイド記事への誘導 */}
-      <section className="rounded-xl border border-vermilion/20 bg-vermilion/5 p-5 text-center">
+      <section className="rounded-xl p-5 text-center" style={{ border: "1px solid rgba(139,30,39,0.3)", background: "rgba(139,30,39,0.1)" }}>
         <p className="text-[10px] tracking-[0.3em] text-vermilion-deep font-bold mb-2">深く知る</p>
-        <p className="text-sm text-sumi/75 leading-relaxed mb-4">
+        <p className="text-sm leading-relaxed mb-4" style={{ color: "rgba(220,202,168,0.8)" }}>
           あなたの守護タイプ・神社との縁をもっと詳しく知りたい方へ
         </p>
         <Link
@@ -429,13 +424,13 @@ export default function OmikujiClient() {
       </section>
 
       {/* シェアボタン */}
-      <section className="rounded-xl border border-border bg-white/60 p-4">
-        <p className="text-xs text-sumi/50 text-center mb-3">今日の結果をシェアする</p>
+      <section className="rounded-xl p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(28,17,8,0.5)" }}>
+        <p className="text-xs text-center mb-3" style={{ color: "rgba(220,202,168,0.55)" }}>今日の結果をシェアする</p>
         <div className="flex flex-wrap justify-center gap-2">
           <a
             href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`}
             target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full bg-black px-4 py-2 text-sm font-bold text-white transition hover:bg-sumi active:scale-95"
+            className="inline-flex items-center gap-1.5 rounded-full bg-black px-4 py-2 text-sm font-bold text-white transition hover:opacity-80 active:scale-95"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -444,9 +439,10 @@ export default function OmikujiClient() {
           </a>
           <button
             onClick={() => { navigator.clipboard?.writeText(`${shareText} ${shareUrl}`); trackShareClick("omikuji"); }}
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-4 py-2 text-sm font-semibold text-sumi transition hover:bg-washi active:scale-95"
+            className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition active:scale-95"
+            style={{ border: "1px solid rgba(201,155,77,0.3)", background: "rgba(201,155,77,0.08)", color: "#fff7e6" }}
           >
-            📋 コピー
+            コピー
           </button>
         </div>
       </section>

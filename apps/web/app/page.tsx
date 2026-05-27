@@ -49,16 +49,16 @@ const BENEFIT_PRESETS = [
   { name: "勝負運",   emoji: "⚔" },
 ];
 
-/* ご利益 → GPT生成アイコン画像のマッピング */
+/* ご利益 → GPT生成アイコン画像のマッピング（背景除去済み proc_ 版） */
 const BENEFIT_IMG: Record<string, string> = {
-  "縁結び":   "/assets/shrine/icons/57efda59-2701-44b0-98a0-0590eeada950.png",
-  "商売繁盛": "/assets/shrine/icons/f65e1cc4-3b43-4d8a-8762-9c6042c4e57a.png",
-  "合格祈願": "/assets/shrine/icons/c8012f0f-36e7-4b51-ab89-2535f2c189cf.png",
-  "健康":     "/assets/shrine/icons/95ee1947-1fcb-4fa0-9b6c-9bf2e3cc57ec.png",
-  "厄除け":   "/assets/shrine/icons/98569539-627a-488c-8369-d5a19b20f9fe.png",
-  "金運":     "/assets/shrine/icons/b8a8bb71-8a6a-47c0-b754-dd0f26dbca8c.png",
-  "交通安全": "/assets/shrine/icons/1f359d9c-8344-4f3a-adeb-4c45653153f5.png",
-  "勝負運":   "/assets/shrine/icons/c74f512b-c102-4961-baaf-84cfacfa5e81.png",
+  "縁結び":   "/assets/shrine/icons/proc_57efda59-2701-44b0-98a0-0590eeada950.png",
+  "商売繁盛": "/assets/shrine/icons/proc_f65e1cc4-3b43-4d8a-8762-9c6042c4e57a.png",
+  "合格祈願": "/assets/shrine/icons/proc_c8012f0f-36e7-4b51-ab89-2535f2c189cf.png",
+  "健康":     "/assets/shrine/icons/proc_95ee1947-1fcb-4fa0-9b6c-9bf2e3cc57ec.png",
+  "厄除け":   "/assets/shrine/icons/proc_98569539-627a-488c-8369-d5a19b20f9fe.png",
+  "金運":     "/assets/shrine/icons/proc_b8a8bb71-8a6a-47c0-b754-dd0f26dbca8c.png",
+  "交通安全": "/assets/shrine/icons/proc_1f359d9c-8344-4f3a-adeb-4c45653153f5.png",
+  "勝負運":   "/assets/shrine/icons/proc_c74f512b-c102-4961-baaf-84cfacfa5e81.png",
 };
 
 /* ─── 型定義 ─── */

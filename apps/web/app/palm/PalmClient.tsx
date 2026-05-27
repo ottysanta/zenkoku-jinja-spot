@@ -120,8 +120,8 @@ export default function PalmClient() {
       {/* ヘッダー */}
       <div className="text-center">
         <p className="text-[10px] tracking-[0.3em] text-vermilion-deep font-bold mb-2">AI PALM READING</p>
-        <h1 className="font-serif text-3xl text-sumi mb-2">手相鑑定</h1>
-        <p className="text-sm text-sumi/65 leading-relaxed">
+        <h1 className="font-serif text-3xl mb-2" style={{ color: "#fff7e6" }}>手相鑑定</h1>
+        <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.75)" }}>
           手のひらの写真をアップロードするだけで、<br />
           AIが生命線・知能線・感情線・運命線を鑑定します。
         </p>
@@ -134,7 +134,8 @@ export default function PalmClient() {
             無料鑑定 残り <strong>{remaining}</strong> 回
           </span>
         ) : (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-stone-300 bg-stone-100 px-4 py-1.5 text-sm font-semibold text-stone-500">
+          <span className="inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold"
+            style={{ border: "1px solid rgba(201,155,77,0.3)", background: "#1c1108", color: "rgba(220,202,168,0.6)" }}>
             無料鑑定 0回（LINE登録で追加）
           </span>
         )}
@@ -206,8 +207,8 @@ export default function PalmClient() {
                   }`}>{line}</span>
                 ))}
               </div>
-              <p className="text-sm font-semibold text-sumi/70">AIが手相を解析しています…</p>
-              <p className="text-xs text-sumi/45">20〜40秒かかります</p>
+              <p className="text-sm font-semibold" style={{ color: "rgba(220,202,168,0.8)" }}>AIが手相を解析しています…</p>
+              <p className="text-xs" style={{ color: "rgba(220,202,168,0.5)" }}>20〜40秒かかります</p>
             </div>
           </div>
         </>
@@ -229,8 +230,8 @@ export default function PalmClient() {
             ) : (
               <>
                 <p className="text-4xl mb-3">✋</p>
-                <p className="text-sm font-semibold text-sumi/70">タップして手のひら写真を選ぶ</p>
-                <p className="text-xs text-sumi/45 mt-1">JPG / PNG / HEIC 対応</p>
+                <p className="text-sm font-semibold" style={{ color: "rgba(220,202,168,0.8)" }}>タップして手のひら写真を選ぶ</p>
+                <p className="text-xs mt-1" style={{ color: "rgba(220,202,168,0.5)" }}>JPG / PNG / HEIC 対応</p>
               </>
             )}
           </div>
@@ -243,9 +244,9 @@ export default function PalmClient() {
           />
 
           {/* 撮影ガイド */}
-          <div className="rounded-xl border border-border bg-washi/60 p-4">
-            <p className="text-xs font-bold text-sumi/60 mb-2">きれいに撮るコツ</p>
-            <ul className="space-y-1 text-xs text-sumi/55">
+          <div className="rounded-xl p-4" style={{ background: "#1c1108", border: "1px solid rgba(201,155,77,0.22)" }}>
+            <p className="text-xs font-bold mb-2" style={{ color: "rgba(220,202,168,0.7)" }}>きれいに撮るコツ</p>
+            <ul className="space-y-1 text-xs" style={{ color: "rgba(220,202,168,0.6)" }}>
               <li>• 手のひらを広げ、指を自然に伸ばす</li>
               <li>• 明るい場所（自然光が最適）で撮影する</li>
               <li>• 手全体がフレームに収まるように</li>
@@ -274,26 +275,26 @@ export default function PalmClient() {
       {result && (
         <div className="space-y-5">
           {/* 注釈入り手のひら画像（大きく表示） */}
-          <div className="rounded-2xl overflow-hidden border border-border shadow-md">
+          <div className="rounded-2xl overflow-hidden shadow-md" style={{ border: "1px solid rgba(201,155,77,0.25)" }}>
             <img
               src={result.annotatedImageUrl ?? preview ?? ""}
               alt="手相鑑定結果"
               className="w-full"
             />
-            <div className="bg-washi/80 px-4 py-2 flex gap-3 flex-wrap text-[11px] font-semibold">
-              <span className="text-red-500">① 生命線</span>
-              <span className="text-blue-500">② 知能線</span>
-              <span className="text-amber-500">③ 感情線</span>
-              <span className="text-green-600">④ 運命線</span>
+            <div className="px-4 py-2 flex gap-3 flex-wrap text-[11px] font-semibold" style={{ background: "#1c1108" }}>
+              <span className="text-red-400">① 生命線</span>
+              <span className="text-blue-400">② 知能線</span>
+              <span className="text-amber-400">③ 感情線</span>
+              <span className="text-green-400">④ 運命線</span>
               {result.analysis.hand && (
-                <span className="ml-auto text-sumi/50">{result.analysis.hand}</span>
+                <span className="ml-auto" style={{ color: "rgba(220,202,168,0.5)" }}>{result.analysis.hand}</span>
               )}
             </div>
           </div>
 
           {/* 各線の鑑定 */}
-          <section className="rounded-2xl border border-border bg-white p-5 space-y-4">
-            <p className="text-[10px] tracking-[0.3em] text-sumi/50 font-bold">主要な線の見方</p>
+          <section className="rounded-2xl p-5 space-y-4" style={{ background: "linear-gradient(145deg, #1e1108, #170d06)", border: "1px solid rgba(201,155,77,0.22)" }}>
+            <p className="text-[10px] tracking-[0.3em] font-bold" style={{ color: "rgba(220,202,168,0.55)" }}>主要な線の見方</p>
             {(["life", "head", "heart", "fate"] as const).map((key, i) => {
               const line = result.analysis.lines[key];
               return (
@@ -320,28 +321,28 @@ export default function PalmClient() {
           </section>
 
           {/* 総合鑑定 */}
-          <section className="rounded-2xl border border-vermilion/20 bg-gradient-to-br from-vermilion/8 to-washi p-6">
+          <section className="rounded-2xl p-6" style={{ background: "linear-gradient(145deg, #1e1108, #170d06)", border: "1px solid rgba(139,30,39,0.4)" }}>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-lg">✦</span>
-              <p className="text-[10px] tracking-[0.2em] text-vermilion-deep font-bold">総合鑑定結果</p>
+              <span className="text-lg" style={{ color: "#C99B4D" }}>✦</span>
+              <p className="text-[10px] tracking-[0.2em] font-bold" style={{ color: "#C99B4D" }}>総合鑑定結果</p>
             </div>
-            <h2 className="font-serif text-xl text-sumi mb-3 leading-snug">
+            <h2 className="font-serif text-xl mb-3 leading-snug" style={{ color: "#fff7e6" }}>
               {result.analysis.overall.headline}
             </h2>
-            <p className="text-sm text-sumi/70 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.8)" }}>
               {result.analysis.overall.body}
             </p>
           </section>
 
           {/* 開運ヒント */}
-          <section className="rounded-2xl border border-border bg-white p-5">
+          <section className="rounded-2xl p-5" style={{ background: "#1c1108", border: "1px solid rgba(201,155,77,0.22)" }}>
             <div className="flex items-center gap-2 mb-3">
               <span>🗝</span>
-              <p className="text-[10px] tracking-[0.2em] text-sumi/50 font-bold">開運ヒント</p>
+              <p className="text-[10px] tracking-[0.2em] font-bold" style={{ color: "rgba(220,202,168,0.55)" }}>開運ヒント</p>
             </div>
             <ul className="space-y-2">
               {result.analysis.hints.map((hint, i) => (
-                <li key={i} className="flex items-center gap-2.5 text-sm text-sumi/70">
+                <li key={i} className="flex items-center gap-2.5 text-sm" style={{ color: "rgba(220,202,168,0.8)" }}>
                   <span className="text-base">{HINT_ICONS[i] ?? "✦"}</span>
                   {hint}
                 </li>
@@ -350,11 +351,11 @@ export default function PalmClient() {
           </section>
 
           {/* 神社参拝アドバイス */}
-          <section className="rounded-xl border border-moss/30 bg-moss/5 p-4">
-            <p className="text-[10px] tracking-[0.2em] text-moss font-bold mb-2">⛩ 神社参拝アドバイス</p>
-            <p className="text-sm text-sumi/70 leading-relaxed">{result.analysis.shrine_advice}</p>
+          <section className="rounded-xl p-4" style={{ background: "rgba(79,107,74,0.12)", border: "1px solid rgba(79,107,74,0.35)" }}>
+            <p className="text-[10px] tracking-[0.2em] font-bold mb-2" style={{ color: "#7aab72" }}>⛩ 神社参拝アドバイス</p>
+            <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.8)" }}>{result.analysis.shrine_advice}</p>
             <div className="mt-3 text-center">
-              <Link href="/diagnose" className="text-xs text-vermilion-deep underline">
+              <Link href="/diagnose" className="text-xs underline" style={{ color: "#C99B4D" }}>
                 守護神社診断も受けてみる →
               </Link>
             </div>
@@ -365,13 +366,14 @@ export default function PalmClient() {
             <div className="text-center">
               <button
                 onClick={() => { setResult(null); setPreview(null); if (fileRef.current) fileRef.current.value = ""; }}
-                className="rounded-full border border-border bg-white px-6 py-2.5 text-sm font-semibold text-sumi transition hover:bg-washi"
+                className="rounded-full px-6 py-2.5 text-sm font-semibold transition hover:opacity-80"
+                style={{ border: "1px solid rgba(201,155,77,0.35)", background: "#1c1108", color: "#d8c7a5" }}
               >
                 別の手相を鑑定する（残り{remaining}回）
               </button>
             </div>
           ) : (
-            <section className="rounded-2xl bg-gradient-to-br from-sumi to-sumi/80 p-6 text-white text-center">
+            <section className="rounded-2xl p-6 text-white text-center" style={{ background: "linear-gradient(135deg, #1c1917, #292524)" }}>
               <p className="font-serif text-lg mb-2">無料鑑定を使い切りました</p>
               <p className="text-sm text-white/70 mb-5 leading-relaxed">
                 LINE登録で<strong className="text-white">3回分を追加プレゼント</strong>。<br />
@@ -388,7 +390,7 @@ export default function PalmClient() {
             </section>
           )}
 
-          <p className="text-center text-[10px] text-sumi/35">
+          <p className="text-center text-[10px]" style={{ color: "rgba(220,202,168,0.38)" }}>
             ※手相は占いとしての見方であり、医学的・科学的な診断ではありません。
           </p>
         </div>

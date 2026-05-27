@@ -37,8 +37,8 @@ export default function LearnIndexPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-8 md:py-12">
       <header className="mb-8">
-        <h1 className="font-serif text-3xl md:text-4xl">神社を学ぶ</h1>
-        <p className="mt-2 text-sm text-sumi/70">
+        <h1 className="font-serif text-3xl md:text-4xl" style={{ color: "#fff7e6" }}>神社を学ぶ</h1>
+        <p className="mt-2 text-sm" style={{ color: "rgba(220,202,168,0.72)" }}>
           参拝の作法、祭神、御朱印、歴史。現地でより深く参拝できる知識を少しずつ。
         </p>
       </header>
@@ -48,16 +48,17 @@ export default function LearnIndexPage() {
           <li key={s.href}>
             <Link
               href={s.href}
-              className="block rounded-md border border-border bg-washi p-4 hover:bg-kinari"
+              className="block rounded-md p-4 transition"
+              style={{ border: "1px solid rgba(201,155,77,0.25)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}
             >
-              <h2 className="font-serif text-lg">{s.title}</h2>
-              <p className="mt-1 text-xs text-sumi/70">{s.description}</p>
+              <h2 className="font-serif text-lg" style={{ color: "#fff7e6" }}>{s.title}</h2>
+              <p className="mt-1 text-xs" style={{ color: "rgba(220,202,168,0.7)" }}>{s.description}</p>
             </Link>
           </li>
         ))}
       </ul>
 
-      <p className="mt-8 text-xs text-sumi/50">
+      <p className="mt-8 text-xs" style={{ color: "rgba(220,202,168,0.5)" }}>
         各記事は順次公開予定です。Phase 2 で多言語版（EN/ZH）にも展開します。
       </p>
     </main>

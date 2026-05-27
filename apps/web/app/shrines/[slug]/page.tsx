@@ -263,10 +263,11 @@ export default async function ShrineDetailPage({
             {specs.map((s) => (
               <span
                 key={s.label + s.value}
-                className="inline-flex items-center gap-1 rounded-full border border-border bg-washi px-2.5 py-0.5"
+                className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5"
+                style={{ border: "1px solid rgba(201,155,77,0.25)", background: "rgba(28,17,8,0.6)" }}
               >
-                <span className="text-sumi/55">{s.label}</span>
-                <span className="font-semibold text-sumi">{s.value}</span>
+                <span style={{ color: "rgba(220,202,168,0.55)" }}>{s.label}</span>
+                <span className="font-semibold" style={{ color: "#fff7e6" }}>{s.value}</span>
               </span>
             ))}
             {benefits.slice(0, 8).map((b) => (
@@ -288,7 +289,7 @@ export default async function ShrineDetailPage({
               <span className="inline-flex items-center gap-1 rounded-full bg-moss px-2.5 py-1 text-[11px] font-semibold text-white">
                 ✓ オンライン志納 受付中
               </span>
-              <span className="flex-1 text-sumi/80">
+              <span className="flex-1" style={{ color: "rgba(220,202,168,0.82)" }}>
                 当サイト経由で{shrine.name}への志納（奉納）を受け付けています。遠方からでも感謝や決意を届けられます。
                 <Link href="/offerings" className="ml-1 text-moss underline">
                   仕組みを見る
@@ -296,11 +297,11 @@ export default async function ShrineDetailPage({
               </span>
             </div>
           ) : (
-            <div className="flex flex-wrap items-start gap-3 rounded-md border border-border bg-kinari/40 p-3 text-xs">
+            <div className="flex flex-wrap items-start gap-3 rounded-md p-3 text-xs" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(28,17,8,0.5)" }}>
               <span className="inline-flex items-center gap-1 rounded-full bg-sumi/60 px-2.5 py-1 text-[11px] font-semibold text-white">
                 — オンライン志納 未対応
               </span>
-              <span className="flex-1 text-sumi/80">
+              <span className="flex-1" style={{ color: "rgba(220,202,168,0.75)" }}>
                 {shrine.name}は現在オンラインでの志納受付に対応していません。直接参拝または
                 {shrine.website ? (
                   <>
@@ -320,7 +321,7 @@ export default async function ShrineDetailPage({
 
         {/* CTA バー (Comfy 問い合わせ風) */}
         <section className="mb-6 grid grid-cols-1 gap-2 md:grid-cols-[1fr_auto_auto_auto]">
-          <div className="rounded-md border border-border bg-white px-3 py-2 text-xs text-sumi/80">
+          <div className="rounded-md px-3 py-2 text-xs" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(28,17,8,0.5)", color: "rgba(220,202,168,0.75)" }}>
             <p>
               このページでは{shrine.name}の基本情報を公開しています。参拝予定の方は、
               地図で現在地から見る・奉納する・レビューを読むなどが可能です。
@@ -328,7 +329,8 @@ export default async function ShrineDetailPage({
           </div>
           <Link
             href={`/map?spot=${shrine.id}`}
-            className="inline-flex min-h-[40px] items-center justify-center rounded-md border border-border bg-washi px-3 text-xs font-medium text-sumi hover:bg-kinari"
+            className="inline-flex min-h-[40px] items-center justify-center rounded-md px-3 text-xs font-medium transition hover:opacity-80"
+            style={{ border: "1px solid rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.6)", color: "#d8c7a5" }}
           >
             🗺 地図で開く
           </Link>
@@ -337,7 +339,8 @@ export default async function ShrineDetailPage({
               href={shrine.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[40px] items-center justify-center rounded-md border border-border bg-washi px-3 text-xs font-medium text-sumi hover:bg-kinari"
+              className="inline-flex min-h-[40px] items-center justify-center rounded-md px-3 text-xs font-medium transition hover:opacity-80"
+              style={{ border: "1px solid rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.6)", color: "#d8c7a5" }}
             >
               🔗 公式サイト
             </a>
@@ -351,7 +354,8 @@ export default async function ShrineDetailPage({
             </Link>
           ) : (
             <span
-              className="inline-flex min-h-[40px] cursor-not-allowed items-center justify-center rounded-md border border-border bg-kinari px-3 text-xs font-medium text-sumi/50"
+              className="inline-flex min-h-[40px] cursor-not-allowed items-center justify-center rounded-md px-3 text-xs font-medium"
+              style={{ border: "1px solid rgba(201,155,77,0.15)", background: "rgba(16,8,3,0.5)", color: "rgba(220,202,168,0.35)" }}
               title="現在、オンライン志納未対応"
             >
               🙏 志納未対応
@@ -364,15 +368,15 @@ export default async function ShrineDetailPage({
           <div className="min-w-0">
             {/* 概要 */}
             {shrine.description ? (
-              <section className="mb-6 rounded-md border border-border bg-washi/70 p-4">
+              <section className="mb-6 rounded-md p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
                 <h2 className="mb-2 text-xs font-semibold tracking-wide text-vermilion-deep">
                   概要
                 </h2>
-                <p className="whitespace-pre-wrap text-[14px] leading-relaxed text-sumi/90">
+                <p className="whitespace-pre-wrap text-[14px] leading-relaxed" style={{ color: "rgba(220,202,168,0.88)" }}>
                   {shrine.description}
                 </p>
                 {shrine.wikipedia_url ? (
-                  <p className="mt-2 text-[11px] text-sumi/60">
+                  <p className="mt-2 text-[11px]" style={{ color: "rgba(220,202,168,0.55)" }}>
                     出典:{" "}
                     <a
                       href={shrine.wikipedia_url}
@@ -389,11 +393,11 @@ export default async function ShrineDetailPage({
 
             {/* 歴史 */}
             {shrine.history ? (
-              <section className="mb-6 rounded-md border border-border bg-white p-4">
+              <section className="mb-6 rounded-md p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
                 <h2 className="mb-2 text-xs font-semibold tracking-wide text-vermilion-deep">
                   歴史
                 </h2>
-                <p className="whitespace-pre-wrap text-[14px] leading-relaxed text-sumi/90">
+                <p className="whitespace-pre-wrap text-[14px] leading-relaxed" style={{ color: "rgba(220,202,168,0.88)" }}>
                   {shrine.history}
                 </p>
               </section>
@@ -401,11 +405,11 @@ export default async function ShrineDetailPage({
 
             {/* 見どころ */}
             {highlights.length > 0 ? (
-              <section className="mb-6 rounded-md border border-border bg-white p-4">
+              <section className="mb-6 rounded-md p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
                 <h2 className="mb-2 text-xs font-semibold tracking-wide text-vermilion-deep">
                   見どころ
                 </h2>
-                <ul className="list-disc space-y-1 pl-5 text-[14px] text-sumi/90">
+                <ul className="list-disc space-y-1 pl-5 text-[14px]" style={{ color: "rgba(220,202,168,0.88)" }}>
                   {highlights.map((h) => (
                     <li key={h}>{h}</li>
                   ))}
@@ -415,11 +419,11 @@ export default async function ShrineDetailPage({
 
             {/* 祭神 */}
             {shrine.deity ? (
-              <section className="mb-6 rounded-md border border-border bg-white p-4">
+              <section className="mb-6 rounded-md p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
                 <h2 className="mb-2 text-xs font-semibold tracking-wide text-vermilion-deep">
                   御祭神
                 </h2>
-                <p className="whitespace-pre-wrap text-[14px] text-sumi/90">
+                <p className="whitespace-pre-wrap text-[14px]" style={{ color: "rgba(220,202,168,0.88)" }}>
                   {shrine.deity}
                 </p>
               </section>
@@ -427,18 +431,18 @@ export default async function ShrineDetailPage({
 
             {/* 最近の参拝コメント（SQLite 直読） */}
             {thisCheckins.length > 0 ? (
-              <section className="mb-6 rounded-md border border-border bg-white p-4">
+              <section className="mb-6 rounded-md p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
                 <h2 className="mb-2 text-xs font-semibold tracking-wide text-vermilion-deep">
                   参拝者の声
                 </h2>
                 <ul className="space-y-2">
                   {thisCheckins.map((c) => (
-                    <li key={c.id} className="rounded-md bg-washi/80 p-3 text-[13px]">
+                    <li key={c.id} className="rounded-md p-3 text-[13px]" style={{ background: "rgba(201,155,77,0.07)", border: "1px solid rgba(201,155,77,0.15)" }}>
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-medium text-sumi">
+                        <span className="font-medium" style={{ color: "#fff7e6" }}>
                           {c.nickname || "匿名さん"}
                         </span>
-                        <span className="text-[10px] text-sumi/50">
+                        <span className="text-[10px]" style={{ color: "rgba(220,202,168,0.5)" }}>
                           {new Date(c.created_at).toLocaleDateString("ja-JP")}
                         </span>
                       </div>
@@ -456,7 +460,7 @@ export default async function ShrineDetailPage({
                         </span>
                       ) : null}
                       {c.comment ? (
-                        <p className="mt-1 text-sumi/80">「{c.comment}」</p>
+                        <p className="mt-1" style={{ color: "rgba(220,202,168,0.82)" }}>「{c.comment}」</p>
                       ) : null}
                       <div className="mt-2">
                         <ReactionButtons checkinId={c.id} compact />
@@ -478,7 +482,8 @@ export default async function ShrineDetailPage({
                     <li key={s.id}>
                       <Link
                         href={`/shrines/${spotSlug(s)}`}
-                        className="block overflow-hidden rounded-md border border-border bg-washi transition hover:shadow"
+                        className="block overflow-hidden rounded-md transition hover:shadow"
+                        style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}
                       >
                         {s.photo_url ? (
                           // eslint-disable-next-line @next/next/no-img-element
@@ -490,10 +495,10 @@ export default async function ShrineDetailPage({
                           />
                         ) : null}
                         <div className="p-2">
-                          <p className="line-clamp-1 text-[12px] font-semibold text-sumi">
+                          <p className="line-clamp-1 text-[12px] font-semibold" style={{ color: "#fff7e6" }}>
                             {s.name}
                           </p>
-                          <p className="line-clamp-1 text-[10px] text-sumi/60">
+                          <p className="line-clamp-1 text-[10px]" style={{ color: "rgba(220,202,168,0.55)" }}>
                             {s.prefecture ?? "—"}
                           </p>
                         </div>
@@ -515,7 +520,8 @@ export default async function ShrineDetailPage({
                     <li key={s.id}>
                       <Link
                         href={`/shrines/${spotSlug(s)}`}
-                        className="group flex items-center gap-2 rounded-md border border-border bg-washi p-2 text-[12px] transition hover:bg-kinari"
+                        className="group flex items-center gap-2 rounded-md p-2 text-[12px] transition hover:opacity-90"
+                        style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}
                       >
                         {s.photo_url ? (
                           // eslint-disable-next-line @next/next/no-img-element
@@ -526,13 +532,13 @@ export default async function ShrineDetailPage({
                             loading="lazy"
                           />
                         ) : (
-                          <span className="flex h-10 w-10 items-center justify-center rounded bg-kinari text-xs text-sumi/60">
+                          <span className="flex h-10 w-10 items-center justify-center rounded text-xs" style={{ background: "rgba(201,155,77,0.07)", color: "rgba(220,202,168,0.5)" }}>
                             ⛩
                           </span>
                         )}
                         <div className="min-w-0 flex-1">
-                          <p className="line-clamp-1 font-medium text-sumi">{s.name}</p>
-                          <p className="text-[10px] text-sumi/60">
+                          <p className="line-clamp-1 font-medium" style={{ color: "#fff7e6" }}>{s.name}</p>
+                          <p className="text-[10px]" style={{ color: "rgba(220,202,168,0.55)" }}>
                             {s.prefecture ?? "—"} ·{" "}
                             {(s.distance_m / 1000).toFixed(
                               s.distance_m < 1000 ? 2 : 1,
@@ -549,17 +555,17 @@ export default async function ShrineDetailPage({
 
             {/* FAQ（LLMO / SEO 向け。構造化データは head に仕込み済み） */}
             {faqEntries.length > 0 ? (
-              <section className="mb-6 rounded-md border border-border bg-white p-4">
+              <section className="mb-6 rounded-md p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
                 <h2 className="mb-3 text-xs font-semibold tracking-wide text-vermilion-deep">
                   よくある質問
                 </h2>
                 <dl className="space-y-3">
                   {faqEntries.map((f) => (
                     <div key={f.q}>
-                      <dt className="text-[13px] font-semibold text-sumi">
+                      <dt className="text-[13px] font-semibold" style={{ color: "#fff7e6" }}>
                         Q. {f.q}
                       </dt>
-                      <dd className="mt-1 text-[13px] leading-relaxed text-sumi/80">
+                      <dd className="mt-1 text-[13px] leading-relaxed" style={{ color: "rgba(220,202,168,0.82)" }}>
                         A. {f.a}
                       </dd>
                     </div>
@@ -575,15 +581,15 @@ export default async function ShrineDetailPage({
           {/* サイドバー */}
           <aside className="min-w-0">
             <div className="sticky top-4 space-y-3">
-              <section className="rounded-md border border-border bg-white p-3 text-[13px]">
-                <h2 className="mb-2 border-b border-border pb-1 text-[11px] font-semibold text-sumi/70">
+              <section className="rounded-md p-3 text-[13px]" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
+                <h2 className="mb-2 pb-1 text-[11px] font-semibold" style={{ borderBottom: "1px solid rgba(201,155,77,0.2)", color: "rgba(220,202,168,0.65)" }}>
                   基本情報
                 </h2>
                 <dl className="space-y-1.5">
                   {shrine.prefecture || shrine.city ? (
                     <div className="flex gap-2">
-                      <dt className="w-14 shrink-0 text-sumi/55">所在地</dt>
-                      <dd className="flex flex-wrap gap-1 text-sumi/90">
+                      <dt className="w-14 shrink-0" style={{ color: "rgba(220,202,168,0.55)" }}>所在地</dt>
+                      <dd className="flex flex-wrap gap-1" style={{ color: "rgba(220,202,168,0.88)" }}>
                         {shrine.prefecture ? (
                           <Link
                             href={`/search?prefecture=${encodeURIComponent(shrine.prefecture)}`}
@@ -605,28 +611,28 @@ export default async function ShrineDetailPage({
                   ) : null}
                   {shrine.address ? (
                     <div className="flex gap-2">
-                      <dt className="w-14 shrink-0 text-sumi/55">住所</dt>
-                      <dd className="break-all text-sumi/90">{shrine.address}</dd>
+                      <dt className="w-14 shrink-0" style={{ color: "rgba(220,202,168,0.55)" }}>住所</dt>
+                      <dd className="break-all" style={{ color: "rgba(220,202,168,0.88)" }}>{shrine.address}</dd>
                     </div>
                   ) : null}
                   {shrine.access_info ? (
                     <div className="flex gap-2">
-                      <dt className="w-14 shrink-0 text-sumi/55">アクセス</dt>
-                      <dd className="whitespace-pre-wrap text-sumi/90">
+                      <dt className="w-14 shrink-0" style={{ color: "rgba(220,202,168,0.55)" }}>アクセス</dt>
+                      <dd className="whitespace-pre-wrap" style={{ color: "rgba(220,202,168,0.88)" }}>
                         {shrine.access_info}
                       </dd>
                     </div>
                   ) : null}
                   {shrine.founded ? (
                     <div className="flex gap-2">
-                      <dt className="w-14 shrink-0 text-sumi/55">創建</dt>
-                      <dd className="text-sumi/90">{shrine.founded}</dd>
+                      <dt className="w-14 shrink-0" style={{ color: "rgba(220,202,168,0.55)" }}>創建</dt>
+                      <dd style={{ color: "rgba(220,202,168,0.88)" }}>{shrine.founded}</dd>
                     </div>
                   ) : null}
                   {shrine.shrine_rank ? (
                     <div className="flex gap-2">
-                      <dt className="w-14 shrink-0 text-sumi/55">社格</dt>
-                      <dd className="text-sumi/90">{shrine.shrine_rank}</dd>
+                      <dt className="w-14 shrink-0" style={{ color: "rgba(220,202,168,0.55)" }}>社格</dt>
+                      <dd style={{ color: "rgba(220,202,168,0.88)" }}>{shrine.shrine_rank}</dd>
                     </div>
                   ) : null}
                 </dl>
@@ -634,11 +640,11 @@ export default async function ShrineDetailPage({
 
               {/* 御朱印 */}
               {(shrine.goshuin_available != null || shrine.goshuin_info) ? (
-                <section className="rounded-md border border-border bg-white p-3 text-[13px]">
-                  <h2 className="mb-1.5 border-b border-border pb-1 text-[11px] font-semibold text-sumi/70">
+                <section className="rounded-md p-3 text-[13px]" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
+                  <h2 className="mb-1.5 pb-1 text-[11px] font-semibold" style={{ borderBottom: "1px solid rgba(201,155,77,0.2)", color: "rgba(220,202,168,0.65)" }}>
                     御朱印
                   </h2>
-                  <p className="text-sumi/90">
+                  <p style={{ color: "rgba(220,202,168,0.88)" }}>
                     {shrine.goshuin_available === true
                       ? "授与あり"
                       : shrine.goshuin_available === false
@@ -646,7 +652,7 @@ export default async function ShrineDetailPage({
                         : "—"}
                   </p>
                   {shrine.goshuin_info ? (
-                    <p className="mt-1 text-[12px] text-sumi/70">
+                    <p className="mt-1 text-[12px]" style={{ color: "rgba(220,202,168,0.72)" }}>
                       {shrine.goshuin_info}
                     </p>
                   ) : null}
@@ -655,11 +661,11 @@ export default async function ShrineDetailPage({
 
               {/* 授与品 */}
               {shrine.juyohin_info ? (
-                <section className="rounded-md border border-border bg-white p-3 text-[13px]">
-                  <h2 className="mb-1.5 border-b border-border pb-1 text-[11px] font-semibold text-sumi/70">
+                <section className="rounded-md p-3 text-[13px]" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
+                  <h2 className="mb-1.5 pb-1 text-[11px] font-semibold" style={{ borderBottom: "1px solid rgba(201,155,77,0.2)", color: "rgba(220,202,168,0.65)" }}>
                     授与品
                   </h2>
-                  <p className="whitespace-pre-wrap text-sumi/90">
+                  <p className="whitespace-pre-wrap" style={{ color: "rgba(220,202,168,0.88)" }}>
                     {shrine.juyohin_info}
                   </p>
                 </section>
@@ -676,7 +682,7 @@ export default async function ShrineDetailPage({
             <OfferingSection spotId={shrine.id} />
           </div>
         ) : (
-          <div className="mt-10 rounded-md border border-dashed border-border bg-washi/60 p-5 text-center text-sm text-sumi/70">
+          <div className="mt-10 rounded-md p-5 text-center text-sm" style={{ border: "1px dashed rgba(201,155,77,0.25)", background: "rgba(28,17,8,0.5)", color: "rgba(220,202,168,0.72)" }}>
             <p>
               この神社はオンライン志納未対応です。参拝・奉納は現地または
               {shrine.website ? (
@@ -686,7 +692,8 @@ export default async function ShrineDetailPage({
             </p>
             <Link
               href="/offerings/shrines"
-              className="mt-3 inline-block rounded-md border border-border bg-white px-4 py-2 text-xs hover:bg-kinari"
+              className="mt-3 inline-block rounded-md px-4 py-2 text-xs transition hover:opacity-80"
+              style={{ border: "1px solid rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.6)", color: "#d8c7a5" }}
             >
               オンライン志納 対応神社の一覧を見る
             </Link>

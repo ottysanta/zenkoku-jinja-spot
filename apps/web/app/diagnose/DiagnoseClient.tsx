@@ -24,6 +24,19 @@ const WORRY_OPTIONS: { key: WorryKey; label: string; sublabel: string; icon: str
   { key: "self",   label: "自分自身",     sublabel: "自己信頼・将来・内面の悩み",     icon: "🪞" },
 ];
 
+// ─── カード共通スタイル ────────────────────────────────────────────────────
+const DARK_CARD = {
+  background: "linear-gradient(145deg, #1e1108 0%, #170d06 100%)",
+  border: "1px solid rgba(201,155,77,0.25)",
+  borderRadius: "16px",
+} as const;
+
+const DARK_CARD_SM = {
+  background: "#1c1108",
+  border: "1px solid rgba(201,155,77,0.2)",
+  borderRadius: "12px",
+} as const;
+
 // ─── ステップ表示 ──────────────────────────────────────────────────────────
 function StepIndicator({ step }: { step: number }) {
   const steps = ["生年月日", "悩み", "結果"];
@@ -31,19 +44,27 @@ function StepIndicator({ step }: { step: number }) {
     <div className="flex items-center justify-center gap-2 mb-8">
       {steps.map((label, i) => (
         <div key={i} className="flex items-center gap-2">
-          <div className={`flex flex-col items-center ${i + 1 <= step ? "opacity-100" : "opacity-30"}`}>
-            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold
-              ${i + 1 < step ? "bg-vermilion text-white" :
-                i + 1 === step ? "bg-vermilion text-white ring-4 ring-vermilion/20" :
-                "bg-sumi/10 text-sumi/50"}`}>
+          <div className={`flex flex-col items-center ${i + 1 <= step ? "opacity-100" : "opacity-50"}`}>
+            <div
+              className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold
+                ${i + 1 < step ? "bg-vermilion text-white" :
+                  i + 1 === step ? "bg-vermilion text-white ring-4 ring-vermilion/20" : ""}`}
+              style={i + 1 > step ? { backgroundColor: "rgba(201,155,77,0.1)", color: "rgba(240,226,198,0.5)", border: "1px solid rgba(201,155,77,0.3)" } : {}}
+            >
               {i + 1 < step ? "✓" : i + 1}
             </div>
-            <span className={`text-[10px] mt-1 ${i + 1 === step ? "text-vermilion font-semibold" : "text-sumi/40"}`}>
+            <span
+              className={`text-[10px] mt-1 ${i + 1 === step ? "text-vermilion font-semibold" : ""}`}
+              style={i + 1 !== step ? { color: "rgba(240,226,198,0.45)" } : {}}
+            >
               {label}
             </span>
           </div>
           {i < steps.length - 1 && (
-            <div className={`w-8 h-px mb-4 ${i + 1 < step ? "bg-vermilion" : "bg-sumi/10"}`} />
+            <div
+              className={`w-8 h-px mb-4 ${i + 1 < step ? "bg-vermilion" : ""}`}
+              style={i + 1 >= step ? { background: "rgba(201,155,77,0.2)" } : {}}
+            />
           )}
         </div>
       ))}
@@ -132,33 +153,40 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         <StepIndicator step={1} />
 
         <div className="text-center">
-          <p className="text-[11px] tracking-[0.3em] text-vermilion-deep font-semibold mb-3">
-            ⛩ SHRINE DIAGNOSIS
+          <p className="text-[11px] tracking-[0.3em] font-semibold mb-3" style={{ color: "#C99B4D" }}>
+            SHRINE DIAGNOSIS
           </p>
-          <h1 className="font-serif text-3xl md:text-4xl text-sumi mb-4">守護神社診断</h1>
-          <p className="text-sumi/65 text-sm max-w-sm mx-auto leading-relaxed">
+          <h1 className="font-serif text-3xl md:text-4xl mb-4" style={{ color: "#fff7e6" }}>守護神社診断</h1>
+          <p className="text-sm max-w-sm mx-auto leading-relaxed" style={{ color: "rgba(220,202,168,0.75)" }}>
             生まれ年・月から干支と五行属性を導き出し、
             今の悩みに答えを持つ守護神社をお伝えします。
           </p>
         </div>
 
-        <div className="max-w-sm mx-auto space-y-4">
+        <div className="max-w-sm mx-auto space-y-5">
+          {/* 年選択 */}
           <div>
-            <label className="block text-xs font-semibold text-sumi/60 mb-1.5 text-center tracking-wide">
+            <label className="block text-xs font-semibold mb-1.5 text-center tracking-wide" style={{ color: "rgba(220,202,168,0.8)" }}>
               生まれた年
             </label>
             <select
               value={year}
               onChange={(e) => setYear(e.target.value)}
-              className="w-full rounded-xl border-2 border-border bg-white px-4 py-3.5 text-base text-sumi focus:border-vermilion focus:outline-none transition"
+              className="w-full rounded-xl px-4 py-3.5 text-base transition focus:outline-none"
+              style={{
+                background: "#1c1108",
+                border: "1.5px solid rgba(201,155,77,0.4)",
+                color: year ? "#fff7e6" : "rgba(220,202,168,0.45)",
+              }}
             >
               <option value="">── 年を選ぶ ──</option>
               {years.map((y) => <option key={y} value={y}>{y}年（{currentYear - y}歳）</option>)}
             </select>
           </div>
 
+          {/* 月選択 */}
           <div>
-            <label className="block text-xs font-semibold text-sumi/60 mb-1.5 text-center tracking-wide">
+            <label className="block text-xs font-semibold mb-1.5 text-center tracking-wide" style={{ color: "rgba(220,202,168,0.8)" }}>
               生まれた月
             </label>
             <div className="grid grid-cols-6 gap-1.5">
@@ -166,10 +194,16 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
                 <button
                   key={m}
                   onClick={() => { setMonth(String(m)); setDay(""); }}
-                  className={`rounded-lg py-2.5 text-sm font-semibold transition
-                    ${month === String(m)
-                      ? "bg-vermilion text-white shadow"
-                      : "bg-washi border border-border text-sumi/70 hover:border-vermilion/40"}`}
+                  className="rounded-lg py-2.5 text-sm font-semibold transition"
+                  style={month === String(m) ? {
+                    background: "linear-gradient(135deg, #9b2029, #7a1520)",
+                    color: "#fff",
+                    border: "1px solid rgba(201,155,77,0.5)",
+                  } : {
+                    background: "#1c1108",
+                    border: "1px solid rgba(201,155,77,0.25)",
+                    color: "rgba(220,202,168,0.75)",
+                  }}
                 >
                   {m}月
                 </button>
@@ -177,8 +211,9 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
             </div>
           </div>
 
+          {/* 日選択 */}
           <div>
-            <label className="block text-xs font-semibold text-sumi/60 mb-1.5 text-center tracking-wide">
+            <label className="block text-xs font-semibold mb-1.5 text-center tracking-wide" style={{ color: "rgba(220,202,168,0.8)" }}>
               生まれた日
             </label>
             <div className="grid grid-cols-7 gap-1">
@@ -186,10 +221,16 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
                 <button
                   key={d}
                   onClick={() => setDay(String(d))}
-                  className={`rounded-lg py-2 text-sm font-semibold transition
-                    ${day === String(d)
-                      ? "bg-vermilion text-white shadow"
-                      : "bg-washi border border-border text-sumi/70 hover:border-vermilion/40"}`}
+                  className="rounded-lg py-2 text-sm font-semibold transition"
+                  style={day === String(d) ? {
+                    background: "linear-gradient(135deg, #9b2029, #7a1520)",
+                    color: "#fff",
+                    border: "1px solid rgba(201,155,77,0.5)",
+                  } : {
+                    background: "#1c1108",
+                    border: "1px solid rgba(201,155,77,0.2)",
+                    color: "rgba(220,202,168,0.75)",
+                  }}
                 >
                   {d}
                 </button>
@@ -197,14 +238,27 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
             </div>
           </div>
 
+          {/* 次へボタン */}
           <button
             onClick={() => setStep("worry")}
             disabled={!year || !month || !day}
-            className="w-full min-h-[52px] rounded-xl bg-vermilion px-6 py-3 text-base font-bold text-white shadow-lg transition hover:bg-vermilion-deep disabled:opacity-40 disabled:cursor-not-allowed mt-2"
+            className="w-full min-h-[52px] rounded-xl px-6 py-3 text-base font-bold text-white shadow-lg transition mt-2"
+            style={(!year || !month || !day) ? {
+              background: "rgba(139,30,39,0.3)",
+              border: "1px solid rgba(201,155,77,0.2)",
+              color: "rgba(255,255,255,0.4)",
+              cursor: "not-allowed",
+            } : {
+              background: "linear-gradient(135deg, #9b2029 0%, #7a1520 60%, #5e1019 100%)",
+              border: "1px solid rgba(201,155,77,0.5)",
+              boxShadow: "0 4px 20px rgba(139,30,39,0.4)",
+            }}
           >
             次へ → 悩みを選ぶ
           </button>
-          <p className="text-[11px] text-sumi/40 text-center">生年月のみ使用します。個人情報は取得しません。</p>
+          <p className="text-[11px] text-center" style={{ color: "rgba(220,202,168,0.45)" }}>
+            生年月のみ使用します。個人情報は取得しません。
+          </p>
         </div>
       </div>
     );
@@ -217,30 +271,46 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         <StepIndicator step={2} />
 
         <div className="text-center">
-          <h2 className="font-serif text-2xl text-sumi mb-2">今一番の悩みは？</h2>
-          <p className="text-sumi/60 text-sm">
+          <h2 className="font-serif text-2xl mb-2" style={{ color: "#fff7e6" }}>今一番の悩みは？</h2>
+          <p className="text-sm" style={{ color: "rgba(220,202,168,0.7)" }}>
             選んだテーマに合わせて、守護神からのメッセージが届きます
           </p>
         </div>
 
-        {error && <p className="text-sm text-red-600 text-center">{error}</p>}
+        {error && <p className="text-sm text-red-400 text-center">{error}</p>}
 
         <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto">
           {WORRY_OPTIONS.map(({ key, label, sublabel, icon }) => (
             <button
               key={key}
               onClick={() => handleDiagnose(key)}
-              className="group flex flex-col items-center gap-2 rounded-2xl border-2 border-border bg-washi p-5 text-center transition hover:border-vermilion/50 hover:bg-vermilion/5 hover:shadow-md active:scale-95"
+              className="group flex flex-col items-center gap-2 rounded-2xl p-5 text-center transition active:scale-95"
+              style={{
+                background: "linear-gradient(145deg, #1e1108 0%, #170d06 100%)",
+                border: "1.5px solid rgba(201,155,77,0.28)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(201,155,77,0.6)";
+                (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 20px rgba(0,0,0,0.4)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(201,155,77,0.28)";
+                (e.currentTarget as HTMLButtonElement).style.boxShadow = "none";
+              }}
             >
               <span className="text-3xl">{icon}</span>
-              <span className="font-bold text-sumi text-sm">{label}</span>
-              <span className="text-[11px] text-sumi/50 leading-tight">{sublabel}</span>
+              <span className="font-bold text-sm" style={{ color: "#fff7e6" }}>{label}</span>
+              <span className="text-[11px] leading-tight" style={{ color: "rgba(220,202,168,0.6)" }}>{sublabel}</span>
             </button>
           ))}
         </div>
 
         <div className="text-center">
-          <button onClick={() => setStep("birth")} className="text-sm text-sumi/40 underline hover:text-sumi/70">
+          <button
+            onClick={() => setStep("birth")}
+            className="text-sm underline hover:opacity-80 transition"
+            style={{ color: "rgba(220,202,168,0.5)" }}
+          >
             ← 生年月を変更する
           </button>
         </div>
@@ -257,12 +327,12 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
           <span className="absolute inset-0 flex items-center justify-center text-3xl">⛩</span>
         </div>
         <div className="text-center">
-          <p className="font-serif text-xl text-sumi">神様に問い合わせています…</p>
-          <p className="text-sm text-sumi/50 mt-2">あなたとの縁を確かめています</p>
+          <p className="font-serif text-xl" style={{ color: "#fff7e6" }}>神様に問い合わせています…</p>
+          <p className="text-sm mt-2" style={{ color: "rgba(220,202,168,0.6)" }}>あなたとの縁を確かめています</p>
         </div>
         <div className="flex gap-1 mt-2">
           {["木","火","土","金","水"].map((el, i) => (
-            <span key={el} className="text-lg opacity-60 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }}>
+            <span key={el} className="text-lg opacity-60 animate-bounce" style={{ animationDelay: `${i * 0.15}s`, color: "#C99B4D" }}>
               {el}
             </span>
           ))}
@@ -320,7 +390,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         </div>
       </section>
 
-      {/* ── ② 本質・属性 ─────────────────────────────────────────────────── */}
+      {/* ── ② 本質・属性（element-colored light bg → dark text はそのまま正しい） */}
       <section className="rounded-2xl border-2 p-5" style={{ borderColor: elColor.border, backgroundColor: elColor.light }}>
         <p className="text-[11px] tracking-[0.25em] text-sumi/50 mb-3">あなたの本質</p>
         <p className="text-sm text-sumi/85 leading-relaxed mb-4">{elementData.description}</p>
@@ -338,69 +408,71 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
       </section>
 
       {/* ── ③ 数秘・誕生数 ─────────────────────────────────────────────── */}
-      <section className="rounded-2xl border-2 border-sumi/15 bg-gradient-to-br from-sumi/5 to-sumi/2 p-5">
+      <section className="rounded-2xl p-5" style={DARK_CARD}>
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-full bg-sumi/10 flex items-center justify-center text-lg font-serif font-bold text-sumi shrink-0">
+          <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-serif font-bold shrink-0"
+            style={{ background: "rgba(201,155,77,0.15)", border: "1px solid rgba(201,155,77,0.4)", color: "#C99B4D" }}>
             {lifePathNumber}
           </div>
           <div>
-            <p className="text-[10px] tracking-[0.3em] text-sumi/45 mb-0.5">
+            <p className="text-[10px] tracking-[0.3em] mb-0.5" style={{ color: "rgba(220,202,168,0.5)" }}>
               {lifePathNumber === 11 || lifePathNumber === 22 || lifePathNumber === 33
                 ? "✦ 数秘・誕生数 — マスターナンバー"
                 : "✦ 数秘・誕生数"}
             </p>
-            <p className="font-serif text-lg font-bold text-sumi leading-tight">
+            <p className="font-serif text-lg font-bold leading-tight" style={{ color: "#fff7e6" }}>
               誕生数{lifePathNumber}「{numerologyData.name}」
             </p>
-            <p className="text-[11px] text-sumi/50 mt-0.5">{numerologyData.keyword}</p>
+            <p className="text-[11px] mt-0.5" style={{ color: "rgba(220,202,168,0.55)" }}>{numerologyData.keyword}</p>
           </div>
         </div>
 
-        <p className="text-sm text-sumi/80 leading-[1.9] mb-4">{numerologyData.essence}</p>
+        <p className="text-sm leading-[1.9] mb-4" style={{ color: "rgba(220,202,168,0.82)" }}>{numerologyData.essence}</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-          <div className="rounded-xl bg-white/70 border border-sumi/10 p-3.5">
-            <p className="text-[10px] font-bold tracking-wider text-emerald-700 mb-2">✦ 魂の才能</p>
-            <p className="text-xs text-sumi/80 leading-relaxed">{numerologyData.talent}</p>
+          <div className="rounded-xl p-3.5" style={DARK_CARD_SM}>
+            <p className="text-[10px] font-bold tracking-wider mb-2" style={{ color: "#6aab8a" }}>✦ 魂の才能</p>
+            <p className="text-xs leading-relaxed" style={{ color: "rgba(220,202,168,0.78)" }}>{numerologyData.talent}</p>
           </div>
-          <div className="rounded-xl bg-white/70 border border-sumi/10 p-3.5">
-            <p className="text-[10px] font-bold tracking-wider text-amber-700 mb-2">△ 向き合う課題</p>
-            <p className="text-xs text-sumi/80 leading-relaxed">{numerologyData.shadow}</p>
+          <div className="rounded-xl p-3.5" style={DARK_CARD_SM}>
+            <p className="text-[10px] font-bold tracking-wider mb-2" style={{ color: "#C99B4D" }}>△ 向き合う課題</p>
+            <p className="text-xs leading-relaxed" style={{ color: "rgba(220,202,168,0.78)" }}>{numerologyData.shadow}</p>
           </div>
         </div>
 
-        <div className="rounded-xl bg-white/60 border border-sumi/10 p-3.5">
-          <p className="text-[10px] font-bold tracking-wider text-sumi/50 mb-1.5">あなたの人生テーマ</p>
-          <p className="text-xs text-sumi/75 leading-relaxed italic">「{numerologyData.lifeTheme}」</p>
+        <div className="rounded-xl p-3.5" style={DARK_CARD_SM}>
+          <p className="text-[10px] font-bold tracking-wider mb-1.5" style={{ color: "rgba(220,202,168,0.55)" }}>あなたの人生テーマ</p>
+          <p className="text-xs leading-relaxed italic" style={{ color: "rgba(220,202,168,0.75)" }}>「{numerologyData.lifeTheme}」</p>
         </div>
       </section>
 
       {/* ── ④ 悩み別アドバイス ───────────────────────────────────────────── */}
-      <section className="rounded-2xl overflow-hidden border border-vermilion/25">
-        <div className="bg-vermilion/8 px-5 py-3 border-b border-vermilion/15">
-          <p className="text-[10px] tracking-[0.3em] text-vermilion-deep font-bold">
+      <section className="rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(139,30,39,0.4)" }}>
+        <div className="px-5 py-3" style={{ background: "rgba(139,30,39,0.2)", borderBottom: "1px solid rgba(139,30,39,0.25)" }}>
+          <p className="text-[10px] tracking-[0.3em] font-bold text-vermilion-light">
             ✦ 守護神からのメッセージ
           </p>
-          <p className="text-xs text-sumi/60 mt-0.5">悩み：{worryLabel}</p>
+          <p className="text-xs mt-0.5" style={{ color: "rgba(220,202,168,0.65)" }}>悩み：{worryLabel}</p>
         </div>
-        <div className="bg-white p-5">
-          <p className="text-sm text-sumi/85 leading-[1.9]">{elementData.worryAdvice[result.worry]}</p>
-          <div className="mt-4 pt-4 border-t border-sumi/8">
-            <p className="text-xs text-sumi/55 italic leading-relaxed">
+        <div className="p-5" style={{ background: "linear-gradient(145deg, #1e1108 0%, #170d06 100%)" }}>
+          <p className="text-sm leading-[1.9]" style={{ color: "rgba(220,202,168,0.85)" }}>{elementData.worryAdvice[result.worry]}</p>
+          <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(201,155,77,0.15)" }}>
+            <p className="text-xs italic leading-relaxed" style={{ color: "rgba(220,202,168,0.6)" }}>
               「{elementData.deityGuideMessage}」
             </p>
-            <p className="text-[11px] text-sumi/35 mt-1">─ {elementData.guardian}</p>
+            <p className="text-[11px] mt-1" style={{ color: "rgba(220,202,168,0.4)" }}>─ {elementData.guardian}</p>
           </div>
         </div>
       </section>
 
       {/* ── ⑤ 参拝ガイド ─────────────────────────────────────────────────── */}
-      <section className="rounded-2xl border border-border bg-washi/60 p-5">
-        <p className="text-[11px] tracking-[0.25em] text-sumi/50 mb-3">あなたへの参拝ガイド</p>
-        <p className="text-sm text-sumi/80 leading-relaxed">{elementData.monthlyGuide}</p>
+      <section className="rounded-2xl p-5" style={DARK_CARD}>
+        <p className="text-[11px] tracking-[0.25em] mb-3" style={{ color: "rgba(220,202,168,0.55)" }}>あなたへの参拝ガイド</p>
+        <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.82)" }}>{elementData.monthlyGuide}</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {elementData.benefits.map((b) => (
-            <span key={b} className="rounded-full border border-vermilion/30 bg-vermilion/8 px-2.5 py-1 text-[11px] text-vermilion-deep font-medium">
+            <span key={b} className="rounded-full px-2.5 py-1 text-[11px] font-medium"
+              style={{ border: "1px solid rgba(139,30,39,0.5)", background: "rgba(139,30,39,0.15)", color: "#e07070" }}>
               {b}
             </span>
           ))}
@@ -410,12 +482,12 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
       {/* ── ⑥ 守護神社 ──────────────────────────────────────────────────── */}
       <section>
         <div className="flex items-baseline justify-between mb-3">
-          <p className="text-[11px] tracking-[0.25em] text-sumi/50">あなたに縁深い守護神社</p>
-          <p className="text-[11px] text-sumi/40">{shrines.length}社</p>
+          <p className="text-[11px] tracking-[0.25em]" style={{ color: "rgba(220,202,168,0.55)" }}>あなたに縁深い守護神社</p>
+          <p className="text-[11px]" style={{ color: "rgba(220,202,168,0.4)" }}>{shrines.length}社</p>
         </div>
 
         {shrines.length === 0 ? (
-          <div className="rounded-xl border border-border bg-washi/40 p-6 text-center text-sm text-sumi/50">
+          <div className="rounded-xl p-6 text-center text-sm" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "#1c1108", color: "rgba(220,202,168,0.5)" }}>
             現在データを準備中です。近日公開予定。
           </div>
         ) : (
@@ -424,7 +496,8 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
               <li key={shrine.id}>
                 <Link
                   href={`/shrines/${shrine.slug}`}
-                  className="group flex overflow-hidden rounded-xl border border-border bg-white shadow-sm transition hover:shadow-md"
+                  className="group flex overflow-hidden shadow-sm transition hover:shadow-md"
+                  style={{ ...DARK_CARD_SM, display: "flex", textDecoration: "none" }}
                 >
                   {/* 写真 */}
                   <div className="relative w-24 sm:w-32 flex-shrink-0">
@@ -438,11 +511,11 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
                       />
                     ) : (
                       <div className="h-full w-full flex flex-col items-center justify-center gap-1 text-3xl"
-                        style={{ backgroundColor: elColor.light }}>
+                        style={{ backgroundColor: "#1c1108" }}>
                         ⛩
                       </div>
                     )}
-                    <div className="absolute top-2 left-2 rounded-full bg-black/50 w-5 h-5 flex items-center justify-center text-[10px] text-white font-bold">
+                    <div className="absolute top-2 left-2 rounded-full bg-black/60 w-5 h-5 flex items-center justify-center text-[10px] text-white font-bold">
                       {idx + 1}
                     </div>
                   </div>
@@ -450,22 +523,24 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
                   {/* 情報 */}
                   <div className="flex-1 p-3 flex flex-col gap-1 min-w-0">
                     <div className="flex items-start justify-between gap-1">
-                      <p className="font-bold text-sm text-sumi line-clamp-1">{shrine.name}</p>
+                      <p className="font-bold text-sm line-clamp-1" style={{ color: "#fff7e6" }}>{shrine.name}</p>
                     </div>
-                    <p className="text-[11px] text-sumi/50">
+                    <p className="text-[11px]" style={{ color: "rgba(220,202,168,0.55)" }}>
                       {shrine.prefecture ?? "—"}
                       {shrine.shrine_type ? ` · ${shrine.shrine_type}` : ""}
                     </p>
-                    <div className="inline-flex items-center gap-1 rounded-full bg-vermilion/8 px-2 py-0.5 w-fit">
-                      <span className="text-[10px] text-vermilion-deep font-semibold">{shrine.reasonLabel}</span>
+                    <div className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 w-fit"
+                      style={{ background: "rgba(139,30,39,0.2)" }}>
+                      <span className="text-[10px] font-semibold" style={{ color: "#e07070" }}>{shrine.reasonLabel}</span>
                     </div>
                     {shrine.description && (
-                      <p className="text-[11px] text-sumi/65 line-clamp-2 mt-0.5 leading-relaxed">{shrine.description}</p>
+                      <p className="text-[11px] line-clamp-2 mt-0.5 leading-relaxed" style={{ color: "rgba(220,202,168,0.65)" }}>{shrine.description}</p>
                     )}
                     {shrine.benefits.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-auto pt-1">
                         {shrine.benefits.map((b) => (
-                          <span key={b} className="rounded-full border border-sumi/15 bg-washi px-1.5 py-0.5 text-[10px] text-sumi/60">
+                          <span key={b} className="rounded-full px-1.5 py-0.5 text-[10px]"
+                            style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(201,155,77,0.08)", color: "rgba(220,202,168,0.6)" }}>
                             {b}
                           </span>
                         ))}
@@ -480,29 +555,30 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
       </section>
 
       {/* ── ⑦ 相性タイプ ─────────────────────────────────────────────────── */}
-      <section className="rounded-xl border border-border bg-washi/60 p-4 flex items-center gap-3">
+      <section className="rounded-xl p-4 flex items-center gap-3" style={DARK_CARD}>
         <span className="text-2xl">🔄</span>
         <div className="flex-1">
-          <p className="text-xs font-semibold text-sumi/60 mb-0.5">相性の良い属性タイプ</p>
-          <p className="text-sm font-bold text-sumi">{elementData.compatibleType}</p>
+          <p className="text-xs font-semibold mb-0.5" style={{ color: "rgba(220,202,168,0.65)" }}>相性の良い属性タイプ</p>
+          <p className="text-sm font-bold" style={{ color: "#fff7e6" }}>{elementData.compatibleType}</p>
         </div>
         <div className="text-right">
-          <p className="text-[10px] text-sumi/40">友達に試させてみよう</p>
-          <Link href="/diagnose" className="text-[11px] text-vermilion-deep underline">
+          <p className="text-[10px]" style={{ color: "rgba(220,202,168,0.4)" }}>友達に試させてみよう</p>
+          <Link href="/diagnose" className="text-[11px] underline" style={{ color: "#C99B4D" }}>
             診断を共有 →
           </Link>
         </div>
       </section>
 
       {/* ── ⑧ シェア ─────────────────────────────────────────────────────── */}
-      <section className="rounded-2xl border border-border bg-washi/60 p-5">
-        <p className="text-xs font-bold text-sumi/60 mb-1 text-center tracking-wide">結果をシェアする</p>
-        <p className="text-[11px] text-sumi/45 text-center mb-4">
+      <section className="rounded-2xl p-5" style={DARK_CARD}>
+        <p className="text-xs font-bold mb-1 text-center tracking-wide" style={{ color: "rgba(220,202,168,0.65)" }}>結果をシェアする</p>
+        <p className="text-[11px] text-center mb-4" style={{ color: "rgba(220,202,168,0.5)" }}>
           「私は{typeName}でした！あなたは？」
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <a href={xShare} target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-bold text-white shadow transition hover:bg-sumi active:scale-95">
+            className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold text-white shadow transition hover:opacity-90 active:scale-95"
+            style={{ background: "#000" }}>
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
             </svg>
@@ -517,7 +593,8 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
           </a>
           <button type="button"
             onClick={() => { navigator.clipboard?.writeText(`${shareText} ${shareUrl}`); trackShareClick("diagnosis"); }}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-5 py-2.5 text-sm font-semibold text-sumi shadow-sm transition hover:bg-washi active:scale-95">
+            className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold shadow-sm transition hover:opacity-80 active:scale-95"
+            style={{ border: "1px solid rgba(201,155,77,0.35)", background: "#1c1108", color: "#d8c7a5" }}>
             📋 コピー
           </button>
         </div>
@@ -554,41 +631,53 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
       </section>
 
       {/* ── ⑩ 関連コンテンツ ────────────────────────────────────────────── */}
-      <div className="rounded-xl border border-border bg-washi/60 p-5">
-        <p className="text-xs font-semibold text-sumi/50 mb-3 text-center tracking-wide">次にやること</p>
+      <div className="rounded-xl p-5" style={DARK_CARD}>
+        <p className="text-xs font-semibold mb-3 text-center tracking-wide" style={{ color: "rgba(220,202,168,0.55)" }}>次にやること</p>
         <div className="grid grid-cols-1 gap-2">
           <Link href="/omikuji"
-            className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3 transition hover:border-vermilion/30 hover:bg-vermilion/5">
+            className="flex items-center gap-3 rounded-xl px-4 py-3 transition"
+            style={DARK_CARD_SM}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(201,155,77,0.5)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(201,155,77,0.2)"; }}
+          >
             <span className="text-2xl">📜</span>
             <div>
-              <p className="text-sm font-bold text-sumi">今日のおみくじ</p>
-              <p className="text-[11px] text-sumi/50">{element}属性の今日のメッセージを受け取る</p>
+              <p className="text-sm font-bold" style={{ color: "#fff7e6" }}>今日のおみくじ</p>
+              <p className="text-[11px]" style={{ color: "rgba(220,202,168,0.55)" }}>{element}属性の今日のメッセージを受け取る</p>
             </div>
-            <span className="ml-auto text-sumi/30 text-sm">→</span>
+            <span className="ml-auto text-sm" style={{ color: "rgba(220,202,168,0.35)" }}>→</span>
           </Link>
           <Link href="/diagnose/compat"
-            className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3 transition hover:border-vermilion/30 hover:bg-vermilion/5">
+            className="flex items-center gap-3 rounded-xl px-4 py-3 transition"
+            style={DARK_CARD_SM}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(201,155,77,0.5)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(201,155,77,0.2)"; }}
+          >
             <span className="text-2xl">🔄</span>
             <div>
-              <p className="text-sm font-bold text-sumi">五行相性診断</p>
-              <p className="text-[11px] text-sumi/50">気になる相手との縁の深さを読み解く</p>
+              <p className="text-sm font-bold" style={{ color: "#fff7e6" }}>五行相性診断</p>
+              <p className="text-[11px]" style={{ color: "rgba(220,202,168,0.55)" }}>気になる相手との縁の深さを読み解く</p>
             </div>
-            <span className="ml-auto text-sumi/30 text-sm">→</span>
+            <span className="ml-auto text-sm" style={{ color: "rgba(220,202,168,0.35)" }}>→</span>
           </Link>
           <Link href="/musubu"
-            className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3 transition hover:border-vermilion/30 hover:bg-vermilion/5">
+            className="flex items-center gap-3 rounded-xl px-4 py-3 transition"
+            style={DARK_CARD_SM}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(201,155,77,0.5)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(201,155,77,0.2)"; }}
+          >
             <span className="text-2xl">📖</span>
             <div>
-              <p className="text-sm font-bold text-sumi">縁の法則を読む</p>
-              <p className="text-[11px] text-sumi/50">神社が教えてくれた「縁」の深い話</p>
+              <p className="text-sm font-bold" style={{ color: "#fff7e6" }}>縁の法則を読む</p>
+              <p className="text-[11px]" style={{ color: "rgba(220,202,168,0.55)" }}>神社が教えてくれた「縁」の深い話</p>
             </div>
-            <span className="ml-auto text-sumi/30 text-sm">→</span>
+            <span className="ml-auto text-sm" style={{ color: "rgba(220,202,168,0.35)" }}>→</span>
           </Link>
         </div>
       </div>
 
       <div className="text-center">
-        <button onClick={reset} className="text-sm text-sumi/40 underline hover:text-sumi/70">
+        <button onClick={reset} className="text-sm underline hover:opacity-80 transition" style={{ color: "rgba(220,202,168,0.5)" }}>
           もう一度診断する
         </button>
       </div>

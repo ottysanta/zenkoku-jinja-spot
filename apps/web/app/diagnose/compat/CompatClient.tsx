@@ -107,8 +107,8 @@ export default function CompatClient() {
         <p className="text-[11px] tracking-[0.3em] text-vermilion-deep font-semibold mb-3">
           ⛩ COMPATIBILITY
         </p>
-        <h1 className="font-serif text-3xl text-sumi mb-2">五行相性診断</h1>
-        <p className="text-sumi/60 text-sm max-w-xs mx-auto">
+        <h1 className="font-serif text-3xl mb-2" style={{ color: "#fff7e6" }}>五行相性診断</h1>
+        <p className="text-sm max-w-xs mx-auto" style={{ color: "rgba(220,202,168,0.65)" }}>
           五行の「相生・相克」の関係からふたりの縁を読み解きます
         </p>
       </div>
@@ -117,7 +117,7 @@ export default function CompatClient() {
       <div className="grid grid-cols-2 gap-4">
         {/* 自分 */}
         <div>
-          <p className="text-xs font-semibold text-sumi/60 mb-2 text-center">あなたの属性</p>
+          <p className="text-xs font-semibold mb-2 text-center" style={{ color: "rgba(220,202,168,0.65)" }}>あなたの属性</p>
           <div className="grid grid-cols-1 gap-1.5">
             {ELEMENTS.map((el) => {
               const info = ELEMENT_LABELS[el];
@@ -126,17 +126,17 @@ export default function CompatClient() {
                   key={el}
                   onClick={() => setMyElement(el)}
                   className={`flex items-center gap-2 rounded-xl border-2 px-3 py-2.5 text-left transition
-                    ${myElement === el
-                      ? "border-current shadow-sm"
-                      : "border-border bg-washi hover:border-sumi/20"}`}
-                  style={myElement === el ? { borderColor: info.color, backgroundColor: info.light } : {}}
+                    ${myElement === el ? "border-current shadow-sm" : ""}`}
+                  style={myElement === el
+                    ? { borderColor: info.color, backgroundColor: info.light }
+                    : { background: "linear-gradient(145deg, #1e1108, #170d06)", borderColor: "rgba(201,155,77,0.25)" }}
                 >
                   <span className="text-xl">{info.emoji}</span>
                   <div>
-                    <span className="font-bold text-sm" style={myElement === el ? { color: info.color } : {}}>
+                    <span className="font-bold text-sm" style={myElement === el ? { color: info.color } : { color: "#fff7e6" }}>
                       {el}
                     </span>
-                    <span className="text-[10px] text-sumi/50 ml-1">（{info.reading}）</span>
+                    <span className="text-[10px] ml-1" style={myElement === el ? { color: "rgba(28,22,19,0.55)" } : { color: "rgba(220,202,168,0.5)" }}>（{info.reading}）</span>
                   </div>
                 </button>
               );
@@ -146,7 +146,7 @@ export default function CompatClient() {
 
         {/* 相手 */}
         <div>
-          <p className="text-xs font-semibold text-sumi/60 mb-2 text-center">相手の属性</p>
+          <p className="text-xs font-semibold mb-2 text-center" style={{ color: "rgba(220,202,168,0.65)" }}>相手の属性</p>
           <div className="grid grid-cols-1 gap-1.5">
             {ELEMENTS.map((el) => {
               const info = ELEMENT_LABELS[el];
@@ -155,17 +155,17 @@ export default function CompatClient() {
                   key={el}
                   onClick={() => setTheirElement(el)}
                   className={`flex items-center gap-2 rounded-xl border-2 px-3 py-2.5 text-left transition
-                    ${theirElement === el
-                      ? "border-current shadow-sm"
-                      : "border-border bg-washi hover:border-sumi/20"}`}
-                  style={theirElement === el ? { borderColor: info.color, backgroundColor: info.light } : {}}
+                    ${theirElement === el ? "border-current shadow-sm" : ""}`}
+                  style={theirElement === el
+                    ? { borderColor: info.color, backgroundColor: info.light }
+                    : { background: "linear-gradient(145deg, #1e1108, #170d06)", borderColor: "rgba(201,155,77,0.25)" }}
                 >
                   <span className="text-xl">{info.emoji}</span>
                   <div>
-                    <span className="font-bold text-sm" style={theirElement === el ? { color: info.color } : {}}>
+                    <span className="font-bold text-sm" style={theirElement === el ? { color: info.color } : { color: "#fff7e6" }}>
                       {el}
                     </span>
-                    <span className="text-[10px] text-sumi/50 ml-1">（{info.reading}）</span>
+                    <span className="text-[10px] ml-1" style={theirElement === el ? { color: "rgba(28,22,19,0.55)" } : { color: "rgba(220,202,168,0.5)" }}>（{info.reading}）</span>
                   </div>
                 </button>
               );
@@ -200,38 +200,38 @@ export default function CompatClient() {
           </section>
 
           {/* 関係の説明 */}
-          <section className="rounded-xl border border-border bg-white p-5">
-            <p className="text-[10px] tracking-[0.25em] text-sumi/50 mb-2">関係の本質</p>
-            <p className="text-sm text-sumi/80 leading-relaxed">{compat.description}</p>
+          <section className="rounded-xl p-5" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
+            <p className="text-[10px] tracking-[0.25em] mb-2" style={{ color: "rgba(220,202,168,0.55)" }}>関係の本質</p>
+            <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.85)" }}>{compat.description}</p>
           </section>
 
           {/* 輝く場面 & 気をつけること */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <section className="rounded-xl border border-moss/30 bg-moss/5 p-4">
-              <p className="text-[10px] tracking-[0.2em] text-moss font-bold mb-2">🌿 この関係が輝く場面</p>
-              <p className="text-sm text-sumi/80 leading-relaxed">{compat.strength}</p>
+            <section className="rounded-xl p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
+              <p className="text-[10px] tracking-[0.2em] font-bold mb-2" style={{ color: "rgba(201,155,77,0.8)" }}>この関係が輝く場面</p>
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.82)" }}>{compat.strength}</p>
             </section>
-            <section className="rounded-xl border border-amber-300/40 bg-amber-50/60 p-4">
-              <p className="text-[10px] tracking-[0.2em] text-amber-700 font-bold mb-2">⚠ 気をつけること</p>
-              <p className="text-sm text-sumi/80 leading-relaxed">{compat.caution}</p>
+            <section className="rounded-xl p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
+              <p className="text-[10px] tracking-[0.2em] font-bold mb-2" style={{ color: "rgba(201,155,77,0.8)" }}>気をつけること</p>
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.82)" }}>{compat.caution}</p>
             </section>
           </div>
 
           {/* アドバイス */}
-          <section className="rounded-xl border border-vermilion/20 bg-vermilion/5 p-5">
+          <section className="rounded-xl p-5" style={{ border: "1px solid rgba(139,30,39,0.3)", background: "rgba(139,30,39,0.1)" }}>
             <p className="text-[10px] tracking-[0.25em] text-vermilion-deep font-bold mb-2">
               ✦ この縁を活かすアドバイス
             </p>
-            <p className="text-sm text-sumi/80 leading-relaxed">{compat.advice}</p>
+            <p className="text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.85)" }}>{compat.advice}</p>
           </section>
 
           {/* 一緒に参拝するなら */}
-          <section className="rounded-xl border border-stone-200 bg-stone-50 p-5">
-            <p className="text-[10px] tracking-[0.2em] text-stone-500 font-bold mb-2">⛩ 一緒に参拝するなら</p>
-            <p className="text-sm text-sumi/80 leading-relaxed mb-3">{compat.shrineTip}</p>
-            <div className="mt-3 rounded-lg bg-white border border-stone-200 px-4 py-3">
-              <p className="text-[10px] tracking-[0.2em] text-stone-400 mb-1.5">二人で伝える言葉</p>
-              <p className="text-sm text-sumi font-medium italic leading-relaxed">「{compat.prayTogether}」</p>
+          <section className="rounded-xl p-5" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
+            <p className="text-[10px] tracking-[0.2em] font-bold mb-2" style={{ color: "rgba(201,155,77,0.8)" }}>一緒に参拝するなら</p>
+            <p className="text-sm leading-relaxed mb-3" style={{ color: "rgba(220,202,168,0.82)" }}>{compat.shrineTip}</p>
+            <div className="mt-3 rounded-lg px-4 py-3" style={{ background: "rgba(201,155,77,0.07)", border: "1px solid rgba(201,155,77,0.15)" }}>
+              <p className="text-[10px] tracking-[0.2em] mb-1.5" style={{ color: "rgba(220,202,168,0.5)" }}>二人で伝える言葉</p>
+              <p className="text-sm font-medium italic leading-relaxed" style={{ color: "#fff7e6" }}>「{compat.prayTogether}」</p>
             </div>
           </section>
 
@@ -240,7 +240,7 @@ export default function CompatClient() {
             <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`}
               target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full bg-black px-4 py-2 text-sm font-bold text-white transition hover:bg-sumi active:scale-95"
+              className="inline-flex items-center gap-1.5 rounded-full bg-black px-4 py-2 text-sm font-bold text-white transition hover:opacity-80 active:scale-95"
             >
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -249,15 +249,16 @@ export default function CompatClient() {
             </a>
             <button
               onClick={() => navigator.clipboard?.writeText(`${shareText} ${shareUrl}`)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-4 py-2 text-sm font-semibold text-sumi transition hover:bg-washi active:scale-95"
+              className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition active:scale-95"
+              style={{ border: "1px solid rgba(201,155,77,0.3)", background: "rgba(201,155,77,0.08)", color: "#fff7e6" }}
             >
-              📋 コピー
+              コピー
             </button>
           </div>
 
           {/* 逆パターンも見る */}
           {myElement !== theirElement && (
-            <div className="text-center text-xs text-sumi/50">
+            <div className="text-center text-xs" style={{ color: "rgba(220,202,168,0.55)" }}>
               逆（{theirElement}×{myElement}）も確認できます
               <button
                 onClick={() => { const tmp = myElement; setMyElement(theirElement); setTheirElement(tmp); }}
@@ -272,7 +273,7 @@ export default function CompatClient() {
 
       {/* 未選択時のガイド */}
       {(!myElement || !theirElement) && (
-        <div className="rounded-xl border border-border bg-washi/60 p-4 text-center text-sm text-sumi/55">
+        <div className="rounded-xl p-4 text-center text-sm" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(28,17,8,0.5)", color: "rgba(220,202,168,0.6)" }}>
           {!myElement && !theirElement && "両方の属性を選ぶと相性が表示されます"}
           {myElement && !theirElement && "相手の属性を選んでください"}
           {!myElement && theirElement && "あなたの属性を選んでください"}
@@ -281,8 +282,8 @@ export default function CompatClient() {
 
       {/* 守護神社診断へ */}
       {!myElement && (
-        <div className="rounded-xl border border-vermilion/20 bg-vermilion/5 p-4 text-center">
-          <p className="text-xs text-sumi/60 mb-2">自分の属性がわからない方は</p>
+        <div className="rounded-xl p-4 text-center" style={{ border: "1px solid rgba(139,30,39,0.25)", background: "rgba(139,30,39,0.08)" }}>
+          <p className="text-xs mb-2" style={{ color: "rgba(220,202,168,0.65)" }}>自分の属性がわからない方は</p>
           <Link href="/diagnose" className="text-sm font-semibold text-vermilion-deep underline">
             守護神社診断で属性を調べる →
           </Link>
