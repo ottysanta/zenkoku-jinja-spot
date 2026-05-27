@@ -413,14 +413,31 @@ export default function SpotDetailPanel({ spot, userLocation, onClose }: Props) 
             </p>
           )}
           {message ? (
-            <p
-              className={
-                "mt-2 text-xs " +
-                (message.kind === "ok" ? "text-moss" : "text-vermilion")
-              }
-            >
-              {message.text}
-            </p>
+            <div className="mt-2">
+              <p
+                className={
+                  "text-xs " +
+                  (message.kind === "ok" ? "text-moss" : "text-vermilion")
+                }
+              >
+                {message.text}
+              </p>
+              {message.kind === "ok" && (
+                <div className="mt-2 flex items-center justify-between gap-2 rounded-md px-3 py-2"
+                  style={{ background: "rgba(201,155,77,0.07)", border: "1px solid rgba(201,155,77,0.25)" }}>
+                  <p className="text-[10px]" style={{ color: "rgba(220,202,168,0.7)" }}>
+                    Googleログインで端末同期できます
+                  </p>
+                  <Link
+                    href="/signin?callbackUrl=/me"
+                    className="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold"
+                    style={{ background: "rgba(201,155,77,0.18)", color: "#C99B4D" }}
+                  >
+                    ログイン
+                  </Link>
+                </div>
+              )}
+            </div>
           ) : null}
         </section>
 

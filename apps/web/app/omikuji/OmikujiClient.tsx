@@ -474,6 +474,25 @@ export default function OmikujiClient() {
         </a>
       </section>
 
+      {/* マイページ保存誘導 */}
+      <div className="rounded-xl px-4 py-3 flex items-center gap-3"
+        style={{ border: "1px solid rgba(201,155,77,0.25)", background: "rgba(28,17,8,0.7)" }}>
+        <span style={{ fontSize: "1.5rem", lineHeight: 1, flexShrink: 0 }}>📜</span>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-bold mb-0.5" style={{ color: "#fff7e6" }}>おみくじ履歴をマイページで管理</p>
+          <p className="text-[11px]" style={{ color: "rgba(220,202,168,0.6)" }}>
+            Googleログインで過去の結果をどこでも確認
+          </p>
+        </div>
+        <Link
+          href="/signin?callbackUrl=/me"
+          className="shrink-0 rounded-full px-3 py-1.5 text-xs font-bold text-white transition hover:opacity-90"
+          style={{ background: "linear-gradient(135deg, #4285f4, #34a853)", boxShadow: "0 2px 6px rgba(66,133,244,0.3)" }}
+        >
+          ログイン
+        </Link>
+      </div>
+
       {/* 他の診断へ */}
       <div className="flex justify-center gap-4 text-sm">
         <Link href="/diagnose" className="text-vermilion-deep underline hover:no-underline">

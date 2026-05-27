@@ -672,6 +672,27 @@ export default async function ShrineDetailPage({
               ) : null}
 
               <BookmarkButtons spotId={shrine.id} />
+
+              {/* ログインして参拝記録を残す */}
+              <div className="mt-3 rounded-lg px-3 py-3"
+                style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(28,17,8,0.5)" }}>
+                <p className="text-[11px] mb-2" style={{ color: "rgba(220,202,168,0.6)" }}>
+                  ⛩ 参拝記録・ブックマークをどの端末でも確認するには
+                </p>
+                <Link
+                  href="/signin?callbackUrl=/me"
+                  className="flex w-full items-center justify-center gap-2 rounded-full py-2 text-xs font-semibold text-white transition hover:opacity-90"
+                  style={{ background: "linear-gradient(135deg, #4285f4 0%, #34a853 100%)" }}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+                    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                  </svg>
+                  Googleでログイン / 会員登録
+                </Link>
+                <p className="mt-1.5 text-center text-[10px]" style={{ color: "rgba(220,202,168,0.35)" }}>
+                  無料・30秒で登録
+                </p>
+              </div>
             </div>
           </aside>
         </div>

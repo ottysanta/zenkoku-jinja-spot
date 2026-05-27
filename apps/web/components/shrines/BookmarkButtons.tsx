@@ -8,6 +8,7 @@
  * - API: /api/bookmarks (GET で状態 + カウント, POST で追加/削除)
  */
 import { useEffect, useState, useTransition } from "react";
+import Link from "next/link";
 import { getClientId } from "@/lib/client-id";
 
 type State = {
@@ -25,6 +26,8 @@ export default function BookmarkButtons({
 }) {
   const [state, setState] = useState<State | null>(null);
   const [pending, startTransition] = useTransition();
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
+  const [showNudge, setShowNudge] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -35,14 +38,17 @@ export default function BookmarkButtons({
         if (alive && data) setState(data);
       })
       .catch(() => {});
-    return () => {
-      alive = false;
-    };
+    fetch("/api/auth/session")
+      .then((r) => r.json())
+      .then((d) => { if (alive) setLoggedIn(Boolean(d?.user?.email)); })
+      .catch(() => { if (alive) setLoggedIn(false); });
+    return () => { alive = false; };
   }, [spotId]);
 
   function toggle(kind: "want" | "like") {
     if (!state) return;
     const isActive = state[kind];
+    if (!isActive && loggedIn === false) setShowNudge(true);
     // optimistic
     setState((prev) =>
       prev
@@ -82,43 +88,64 @@ export default function BookmarkButtons({
     "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition " +
     (active
       ? "border-vermilion-deep bg-vermilion-deep text-white hover:opacity-90 "
-      : "border-border bg-white text-sumi hover:bg-kinari ") +
+      : "border-shrine-gold/30 text-kinari/80 hover:border-shrine-gold/55 ") +
     (pending ? "opacity-70" : "");
 
   return (
     <div
-      className={compact ? "flex items-center gap-2" : "my-3 flex flex-wrap items-center gap-2"}
+      className={compact ? "flex items-center gap-2" : "my-3 flex flex-col gap-2"}
       role="group"
       aria-label="この神社の保存状態"
     >
-      <button
-        type="button"
-        onClick={() => toggle("want")}
-        disabled={pending || !state}
-        aria-pressed={state?.want ?? false}
-        className={btn(state?.want ?? false)}
-        title="行きたい（後で参拝したい）"
-      >
-        <span aria-hidden="true">{state?.want ? "📌" : "📍"}</span>
-        <span>行きたい</span>
-        {state ? (
-          <span className="ml-0.5 text-[10px] opacity-80">{state.counts.want}</span>
-        ) : null}
-      </button>
-      <button
-        type="button"
-        onClick={() => toggle("like")}
-        disabled={pending || !state}
-        aria-pressed={state?.like ?? false}
-        className={btn(state?.like ?? false)}
-        title="いいね（気になった・保存）"
-      >
-        <span aria-hidden="true">{state?.like ? "❤" : "♡"}</span>
-        <span>いいね</span>
-        {state ? (
-          <span className="ml-0.5 text-[10px] opacity-80">{state.counts.like}</span>
-        ) : null}
-      </button>
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          onClick={() => toggle("want")}
+          disabled={pending || !state}
+          aria-pressed={state?.want ?? false}
+          className={btn(state?.want ?? false)}
+          title="行きたい（後で参拝したい）"
+          style={!(state?.want) ? { background: "rgba(28,17,8,0.6)", borderColor: "rgba(201,155,77,0.3)" } : {}}
+        >
+          <span aria-hidden="true">{state?.want ? "📌" : "📍"}</span>
+          <span>行きたい</span>
+          {state ? (
+            <span className="ml-0.5 text-[10px] opacity-80">{state.counts.want}</span>
+          ) : null}
+        </button>
+        <button
+          type="button"
+          onClick={() => toggle("like")}
+          disabled={pending || !state}
+          aria-pressed={state?.like ?? false}
+          className={btn(state?.like ?? false)}
+          title="いいね（気になった・保存）"
+          style={!(state?.like) ? { background: "rgba(28,17,8,0.6)", borderColor: "rgba(201,155,77,0.3)" } : {}}
+        >
+          <span aria-hidden="true">{state?.like ? "❤" : "♡"}</span>
+          <span>いいね</span>
+          {state ? (
+            <span className="ml-0.5 text-[10px] opacity-80">{state.counts.like}</span>
+          ) : null}
+        </button>
+      </div>
+
+      {/* ログイン誘導ナッジ（初回ブックマーク後・未ログイン時） */}
+      {showNudge && (
+        <div className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5"
+          style={{ background: "rgba(201,155,77,0.08)", border: "1px solid rgba(201,155,77,0.3)" }}>
+          <p className="text-[11px]" style={{ color: "rgba(220,202,168,0.75)" }}>
+            📱 ログインするとどの端末でも確認できます
+          </p>
+          <Link
+            href="/signin?callbackUrl=/me"
+            className="shrink-0 rounded-full px-3 py-1 text-[11px] font-semibold transition hover:opacity-90"
+            style={{ background: "rgba(201,155,77,0.2)", border: "1px solid rgba(201,155,77,0.5)", color: "#C99B4D" }}
+          >
+            ログイン
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
