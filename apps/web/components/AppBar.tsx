@@ -11,14 +11,14 @@ import { useRouter, usePathname } from "next/navigation";
 import { routing } from "../i18n/routing";
 import TextSizeSwitcher from "./TextSizeSwitcher";
 
-const NAV_ITEMS: Array<{ href: "/" | "/map" | "/search" | "/learn" | "/offerings" | "/me" | "/submit-shrine"; label: string; icon: string }> = [
-  { href: "/", label: "ホーム", icon: "🏠" },
-  { href: "/map", label: "地図", icon: "🗺" },
-  { href: "/search", label: "一覧", icon: "≣" },
-  { href: "/learn", label: "学ぶ", icon: "📖" },
-  { href: "/offerings", label: "奉納", icon: "🙏" },
-  { href: "/me", label: "マイページ", icon: "👤" },
-  { href: "/submit-shrine", label: "神社の掲載申請", icon: "📝" },
+const NAV_ITEMS: Array<{ href: "/" | "/map" | "/search" | "/learn" | "/offerings" | "/me" | "/submit-shrine"; label: string }> = [
+  { href: "/", label: "ホーム" },
+  { href: "/map", label: "地図" },
+  { href: "/search", label: "一覧" },
+  { href: "/learn", label: "学ぶ" },
+  { href: "/offerings", label: "奉納" },
+  { href: "/me", label: "マイページ" },
+  { href: "/submit-shrine", label: "神社の掲載申請" },
 ];
 
 export default function AppBar() {
@@ -71,7 +71,14 @@ export default function AppBar() {
       }}
     >
       <Link href="/" className="flex items-center gap-2">
-        <span className="text-lg">⛩</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C99B4D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M3 9h18" />
+          <path d="M5 9V6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+          <path d="M12 5V3" />
+          <path d="M7 9v12" />
+          <path d="M17 9v12" />
+          <path d="M9 21h6" />
+        </svg>
         <span className="font-serif font-bold" style={{ color: "#C99B4D", fontSize: "0.95rem", letterSpacing: "0.05em" }}>全国神社スポット</span>
       </Link>
 
@@ -107,9 +114,6 @@ export default function AppBar() {
                       (pathname === item.href ? "bg-night-100 font-semibold text-shrine-gold" : "")
                     }
                   >
-                    <span className="w-5 text-center" aria-hidden="true">
-                      {item.icon}
-                    </span>
                     <span>{item.label}</span>
                   </Link>
                 </li>
