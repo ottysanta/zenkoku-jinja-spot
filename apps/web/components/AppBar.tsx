@@ -29,6 +29,19 @@ export default function AppBar() {
   const [, startTransition] = useTransition();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [loginState, setLoginState] = useState<"unknown" | "guest" | "user">("unknown");
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/session").then((r) => r.json()).then((data) => {
+      if (data?.user?.email) {
+        setLoginState("user");
+        setUserName(data.user.name || data.user.email);
+      } else {
+        setLoginState("guest");
+      }
+    }).catch(() => setLoginState("guest"));
+  }, []);
 
   useEffect(() => {
     if (!menuOpen) return; // メニューが閉じているときは outside-click ハンドラ不要
@@ -87,6 +100,29 @@ export default function AppBar() {
         <div className="hidden md:block">
           <TextSizeSwitcher />
         </div>
+        {/* ログイン状態表示 */}
+        {loginState === "guest" && (
+          <Link
+            href={`/signin?callbackUrl=${encodeURIComponent(pathname)}`}
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition hover:opacity-90"
+            style={{ background: "rgba(201,155,77,0.15)", border: "1px solid rgba(201,155,77,0.45)", color: "#C99B4D" }}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+            ログイン
+          </Link>
+        )}
+        {loginState === "user" && (
+          <Link
+            href="/me"
+            className="hidden sm:inline-flex items-center justify-center rounded-full text-xs font-bold text-white transition hover:opacity-90"
+            style={{ width: "28px", height: "28px", background: "rgba(201,155,77,0.7)", flexShrink: 0 }}
+            title={userName ?? "マイページ"}
+          >
+            {(userName ?? "？").charAt(0).toUpperCase()}
+          </Link>
+        )}
       <div ref={menuRef} className="relative">
         <button
           type="button"
@@ -119,6 +155,22 @@ export default function AppBar() {
                 </li>
               ))}
             </ul>
+            {/* ログイン誘導（未ログイン時） */}
+            {loginState === "guest" && (
+              <div className="border-t border-shrine-gold/20 px-3 py-2.5">
+                <Link
+                  href={`/signin?callbackUrl=${encodeURIComponent(pathname)}`}
+                  className="flex w-full items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold justify-center"
+                  style={{ background: "rgba(201,155,77,0.15)", border: "1px solid rgba(201,155,77,0.4)", color: "#C99B4D" }}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+                    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                  </svg>
+                  Googleでログイン / 会員登録
+                </Link>
+                <p className="mt-1.5 text-center text-[10px]" style={{ color: "rgba(220,202,168,0.4)" }}>ブックマーク・参拝記録を同期</p>
+              </div>
+            )}
             {/* モバイル向け: メニュー内に文字サイズ切替 */}
             <div className="border-t border-shrine-gold/20 px-3 py-2 md:hidden">
               <p className="mb-1 text-[11px] text-kinari/70">文字サイズ</p>

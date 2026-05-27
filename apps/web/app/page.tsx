@@ -325,6 +325,27 @@ export default async function HomePage() {
               >
                 今日のおみくじを引く
               </Link>
+
+              <Link
+                href="/map"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "15px 22px",
+                  background: "transparent",
+                  border: "1px solid rgba(201,155,77,0.35)",
+                  borderRadius: "3px",
+                  color: "rgba(220,202,168,0.7)",
+                  fontSize: "0.85rem",
+                  fontWeight: 500,
+                  letterSpacing: "0.03em",
+                  textDecoration: "none",
+                  minHeight: "52px",
+                }}
+              >
+                🗺 地図で探す
+              </Link>
             </div>
 
             {/* サマリバッジ */}

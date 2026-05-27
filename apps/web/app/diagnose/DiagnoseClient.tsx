@@ -676,6 +676,25 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         </div>
       </div>
 
+      {/* ── マイページ保存誘導 ──────────────────────────────────────────────── */}
+      <div className="rounded-xl px-5 py-4 flex items-center gap-4"
+        style={{ border: "1px solid rgba(201,155,77,0.25)", background: "rgba(28,17,8,0.7)" }}>
+        <div style={{ fontSize: "2rem", lineHeight: 1, flexShrink: 0 }}>📌</div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-bold mb-0.5" style={{ color: "#fff7e6" }}>診断結果をマイページに保存</p>
+          <p className="text-[11px] leading-relaxed" style={{ color: "rgba(220,202,168,0.6)" }}>
+            ブックマーク・参拝記録をどの端末でも確認できます
+          </p>
+        </div>
+        <Link
+          href="/signin?callbackUrl=/me"
+          className="shrink-0 rounded-full px-4 py-2 text-xs font-bold text-white transition hover:opacity-90"
+          style={{ background: "linear-gradient(135deg, #4285f4, #34a853)", boxShadow: "0 2px 8px rgba(66,133,244,0.35)" }}
+        >
+          Googleでログイン
+        </Link>
+      </div>
+
       <div className="text-center">
         <button onClick={reset} className="text-sm underline hover:opacity-80 transition" style={{ color: "rgba(220,202,168,0.5)" }}>
           もう一度診断する
