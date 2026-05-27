@@ -5,23 +5,13 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
-  Heart,
-  TrendingUp,
-  BookOpen,
-  Leaf,
-  Shield,
-  DollarSign,
-  Car,
-  Trophy,
   Compass,
   ScrollText,
   ScanLine,
   RefreshCw,
   HelpCircle,
-  Users,
-  MessageSquare,
+  BookOpen,
   Send,
-  MapPin,
 } from "lucide-react";
 import {
   searchSpots,
@@ -59,16 +49,16 @@ const BENEFIT_PRESETS = [
   { name: "勝負運",   emoji: "⚔" },
 ];
 
-/* ご利益 → lucide-react アイコンのマッピング */
-const BENEFIT_ICON: Record<string, React.ReactNode> = {
-  "縁結び":   <Heart   size={22} strokeWidth={1.5} />,
-  "商売繁盛": <TrendingUp size={22} strokeWidth={1.5} />,
-  "合格祈願": <BookOpen  size={22} strokeWidth={1.5} />,
-  "健康":     <Leaf     size={22} strokeWidth={1.5} />,
-  "厄除け":   <Shield   size={22} strokeWidth={1.5} />,
-  "金運":     <DollarSign size={22} strokeWidth={1.5} />,
-  "交通安全": <Car      size={22} strokeWidth={1.5} />,
-  "勝負運":   <Trophy   size={22} strokeWidth={1.5} />,
+/* ご利益 → GPT生成アイコン画像のマッピング */
+const BENEFIT_IMG: Record<string, string> = {
+  "縁結び":   "/assets/shrine/icons/57efda59-2701-44b0-98a0-0590eeada950.png",
+  "商売繁盛": "/assets/shrine/icons/f65e1cc4-3b43-4d8a-8762-9c6042c4e57a.png",
+  "合格祈願": "/assets/shrine/icons/c8012f0f-36e7-4b51-ab89-2535f2c189cf.png",
+  "健康":     "/assets/shrine/icons/95ee1947-1fcb-4fa0-9b6c-9bf2e3cc57ec.png",
+  "厄除け":   "/assets/shrine/icons/98569539-627a-488c-8369-d5a19b20f9fe.png",
+  "金運":     "/assets/shrine/icons/b8a8bb71-8a6a-47c0-b754-dd0f26dbca8c.png",
+  "交通安全": "/assets/shrine/icons/1f359d9c-8344-4f3a-adeb-4c45653153f5.png",
+  "勝負運":   "/assets/shrine/icons/c74f512b-c102-4961-baaf-84cfacfa5e81.png",
 };
 
 /* ─── 型定義 ─── */
@@ -533,27 +523,40 @@ export default async function HomePage() {
             <Link href="/search" style={{ fontSize: "0.75rem", color: "#dea84a", textDecoration: "underline" }}>詳しく探す →</Link>
           </div>
 
-          {/* アイコングリッド：スマホ4列、PC 8列 */}
-          <ul className="grid grid-cols-4 gap-x-4 gap-y-6 lg:grid-cols-8">
+          {/* アイコングリッド：スマホ2列、タブレット4列、PC 8列 */}
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
             {BENEFIT_PRESETS.map((b) => (
               <li key={b.name}>
                 <Link
                   href={`/search?benefit=${encodeURIComponent(b.name)}`}
-                  className="shrine-benefit-btn flex flex-col items-center gap-2"
+                  className="shrine-benefit-btn flex flex-col items-center gap-3"
                   style={{ textDecoration: "none" }}
                 >
-                  {/* 円形アイコン */}
+                  {/* 円形アイコン（GPT生成画像） */}
                   <div style={{
-                    width: "60px", height: "60px", borderRadius: "50%",
+                    width: "72px", height: "72px", borderRadius: "50%",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "rgba(30,8,12,0.72)",
-                    border: "1.5px solid rgba(201,155,77,0.5)",
-                    color: "rgba(230,210,170,0.9)",
+                    background: "linear-gradient(145deg, rgba(28,8,14,0.92) 0%, rgba(18,5,10,0.95) 100%)",
+                    border: "1px solid rgba(201,155,77,0.55)",
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,155,77,0.12)",
                     flexShrink: 0,
+                    overflow: "hidden",
+                    position: "relative",
                   }}>
-                    {BENEFIT_ICON[b.name]}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={BENEFIT_IMG[b.name]}
+                      alt={b.name}
+                      loading="lazy"
+                      style={{
+                        width: "58px", height: "58px",
+                        objectFit: "contain",
+                        objectPosition: "center",
+                        filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.4))",
+                      }}
+                    />
                   </div>
-                  <span style={{ color: "rgba(240,220,180,0.9)", fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.04em", textAlign: "center" }}>
+                  <span style={{ color: "rgba(240,220,180,0.88)", fontSize: "0.73rem", fontWeight: 500, letterSpacing: "0.06em", textAlign: "center", lineHeight: 1.4 }}>
                     {b.name}
                   </span>
                 </Link>

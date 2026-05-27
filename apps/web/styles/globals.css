@@ -67,12 +67,17 @@ h1, h2, h3, h4 {
   border-color: rgba(201,155,77,0.55) !important;
 }
 .shrine-benefit-btn {
-  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease;
 }
 .shrine-benefit-btn:hover {
-  border-color: rgba(201,155,77,0.95) !important;
-  background: rgba(30,10,15,0.85) !important;
-  box-shadow: 0 0 18px rgba(201,155,77,0.22);
+  transform: translateY(-3px);
+}
+.shrine-benefit-btn:hover > div:first-child {
+  border-color: rgba(201,155,77,0.9) !important;
+  box-shadow: 0 0 20px rgba(201,155,77,0.3), 0 4px 16px rgba(0,0,0,0.55), inset 0 1px 0 rgba(201,155,77,0.2) !important;
+}
+.shrine-benefit-btn:hover > span {
+  color: rgba(240,220,180,1) !important;
 }
 .shrine-sub-card {
   transition: transform 0.25s ease, border-color 0.25s ease;
