@@ -51,14 +51,14 @@ const BENEFIT_PRESETS = [
 
 /* ご利益 → GPT生成アイコン画像のマッピング（背景除去済み proc_ 版） */
 const BENEFIT_IMG: Record<string, string> = {
-  "縁結び":   "/assets/shrine/icons/proc_57efda59-2701-44b0-98a0-0590eeada950.png",
-  "商売繁盛": "/assets/shrine/icons/proc_f65e1cc4-3b43-4d8a-8762-9c6042c4e57a.png",
-  "合格祈願": "/assets/shrine/icons/proc_c8012f0f-36e7-4b51-ab89-2535f2c189cf.png",
-  "健康":     "/assets/shrine/icons/proc_95ee1947-1fcb-4fa0-9b6c-9bf2e3cc57ec.png",
-  "厄除け":   "/assets/shrine/icons/proc_98569539-627a-488c-8369-d5a19b20f9fe.png",
-  "金運":     "/assets/shrine/icons/proc_b8a8bb71-8a6a-47c0-b754-dd0f26dbca8c.png",
-  "交通安全": "/assets/shrine/icons/proc_1f359d9c-8344-4f3a-adeb-4c45653153f5.png",
-  "勝負運":   "/assets/shrine/icons/proc_c74f512b-c102-4961-baaf-84cfacfa5e81.png",
+  "縁結び":   "/assets/shrine/icons/proc_57efda59-2701-44b0-98a0-0590eeada950.webp",
+  "商売繁盛": "/assets/shrine/icons/proc_f65e1cc4-3b43-4d8a-8762-9c6042c4e57a.webp",
+  "合格祈願": "/assets/shrine/icons/proc_c8012f0f-36e7-4b51-ab89-2535f2c189cf.webp",
+  "健康":     "/assets/shrine/icons/proc_95ee1947-1fcb-4fa0-9b6c-9bf2e3cc57ec.webp",
+  "厄除け":   "/assets/shrine/icons/proc_98569539-627a-488c-8369-d5a19b20f9fe.webp",
+  "金運":     "/assets/shrine/icons/proc_b8a8bb71-8a6a-47c0-b754-dd0f26dbca8c.webp",
+  "交通安全": "/assets/shrine/icons/proc_1f359d9c-8344-4f3a-adeb-4c45653153f5.webp",
+  "勝負運":   "/assets/shrine/icons/proc_c74f512b-c102-4961-baaf-84cfacfa5e81.webp",
 };
 
 /* ─── 型定義 ─── */
@@ -225,7 +225,7 @@ export default async function HomePage() {
             /* 下部を引き締める */
             "linear-gradient(to top, rgba(6,4,3,0.88) 0%, rgba(6,4,3,0.2) 30%, transparent 60%)",
             /* 神社写真 */
-            "url('/assets/shrine/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8826%E6%97%A5%2019_31_07%20(1).png')",
+            "url('/assets/shrine/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8826%E6%97%A5%2019_31_07%20(1).webp')",
           ].join(","),
           backgroundSize: "cover",
           backgroundPosition: "center 28%",
@@ -290,13 +290,13 @@ export default async function HomePage() {
                   gap: "8px",
                   padding: "15px 32px",
                   background: "linear-gradient(135deg, #9b2029 0%, #7a1520 60%, #5e1019 100%)",
-                  border: "1px solid rgba(201,155,77,0.5)",
+                  border: "1px solid rgba(201,155,77,0.75)",
                   borderRadius: "3px",
                   color: "#fff",
                   fontSize: "0.9rem",
                   fontWeight: 700,
                   letterSpacing: "0.05em",
-                  boxShadow: "0 4px 28px rgba(139,30,39,0.55), inset 0 1px 0 rgba(255,255,255,0.08)",
+                  boxShadow: "0 4px 28px rgba(139,30,39,0.55), 0 0 0 1px rgba(201,155,77,0.2), inset 0 1px 0 rgba(255,255,255,0.12)",
                   textDecoration: "none",
                   minHeight: "52px",
                 }}
@@ -386,7 +386,7 @@ export default async function HomePage() {
                 </div>
                 <p style={{ color: "#C99B4D", fontSize: "0.57rem", letterSpacing: "0.3em", fontWeight: 700, marginBottom: "8px" }}>{card.en}</p>
                 <h3 className="font-serif" style={{ color: "#fff7e6", fontSize: "1rem", marginBottom: "10px", letterSpacing: "0.04em" }}>{card.ja}</h3>
-                <p style={{ color: "rgba(220,202,168,0.6)", fontSize: "0.78rem", lineHeight: 1.8, marginBottom: "16px", flex: 1 }}>{card.desc}</p>
+                <p style={{ color: "rgba(220,202,168,0.78)", fontSize: "0.78rem", lineHeight: 1.8, marginBottom: "16px", flex: 1 }}>{card.desc}</p>
                 <span style={{
                   display: "inline-flex", alignItems: "center",
                   padding: "5px 14px", borderRadius: "3px", fontSize: "0.75rem", fontWeight: 600,
@@ -484,7 +484,7 @@ export default async function HomePage() {
                     )}
                     <div style={{ padding: "8px 10px" }}>
                       <p className="line-clamp-1" style={{ color: "#fff7e6", fontSize: "0.75rem", fontWeight: 600, marginBottom: "2px" }}>{s.name}</p>
-                      <p className="line-clamp-1" style={{ color: "rgba(220,202,168,0.45)", fontSize: "0.68rem" }}>{s.prefecture ?? "—"}</p>
+                      <p className="line-clamp-1" style={{ color: "rgba(220,202,168,0.6)", fontSize: "0.68rem" }}>{s.prefecture ?? "—"}</p>
                     </div>
                   </Link>
                 </li>
@@ -504,7 +504,7 @@ export default async function HomePage() {
           backgroundImage: [
             "linear-gradient(to bottom, rgba(6,4,3,0.92) 0%, transparent 15%, transparent 85%, rgba(6,4,3,0.92) 100%)",
             "linear-gradient(135deg, rgba(52,8,14,0.97) 0%, rgba(85,12,22,0.93) 50%, rgba(52,8,14,0.97) 100%)",
-            "url('/assets/shrine/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8826%E6%97%A5%2019_31_08%20(2).png')",
+            "url('/assets/shrine/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8826%E6%97%A5%2019_31_08%20(2).webp')",
           ].join(","),
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -614,11 +614,11 @@ export default async function HomePage() {
 
                     {/* テキストエリア */}
                     <div style={{ padding: "12px 14px 16px", flex: 1, display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px solid rgba(201,155,77,0.18)" }}>
-                      <p className="line-clamp-1" style={{ color: "rgba(220,202,168,0.5)", fontSize: "0.72rem" }}>
+                      <p className="line-clamp-1" style={{ color: "rgba(220,202,168,0.65)", fontSize: "0.72rem" }}>
                         {[s.prefecture, s.shrine_type, s.shrine_rank].filter(Boolean).join(" / ") || "—"}
                       </p>
                       {s.description ? (
-                        <p className="line-clamp-2" style={{ color: "rgba(220,202,168,0.65)", fontSize: "0.78rem", lineHeight: 1.75 }}>
+                        <p className="line-clamp-2" style={{ color: "rgba(220,202,168,0.78)", fontSize: "0.78rem", lineHeight: 1.75 }}>
                           {s.description.slice(0, 65)}{s.description.length > 65 ? "…" : ""}
                         </p>
                       ) : null}
@@ -685,7 +685,7 @@ export default async function HomePage() {
               </ul>
             );
           })()}
-          <p style={{ marginTop: "12px", fontSize: "0.72rem", color: "rgba(220,202,168,0.38)" }}>
+          <p style={{ marginTop: "12px", fontSize: "0.72rem", color: "rgba(220,202,168,0.52)" }}>
             全 {totalPref} 都道府県 / {total.toLocaleString()} 社をカバー
           </p>
         </section>

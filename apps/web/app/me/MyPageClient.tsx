@@ -62,12 +62,12 @@ const ELEMENT_STYLE: Record<string, { bg: string }> = {
 };
 
 const FORTUNE_META: Record<string, { emoji: string; colorClass: string }> = {
-  大吉: { emoji: "🌟", colorClass: "text-amber-700" },
-  吉:   { emoji: "✨", colorClass: "text-green-700" },
-  中吉: { emoji: "🌸", colorClass: "text-blue-600" },
-  小吉: { emoji: "🍀", colorClass: "text-purple-700" },
-  末吉: { emoji: "🌿", colorClass: "text-slate-600" },
-  凶:   { emoji: "🌑", colorClass: "text-red-700" },
+  大吉: { emoji: "🌟", colorClass: "text-amber-400" },
+  吉:   { emoji: "✨", colorClass: "text-green-400" },
+  中吉: { emoji: "🌸", colorClass: "text-blue-400" },
+  小吉: { emoji: "🍀", colorClass: "text-purple-400" },
+  末吉: { emoji: "🌿", colorClass: "text-slate-400" },
+  凶:   { emoji: "🌑", colorClass: "text-red-400" },
 };
 
 /** 閲覧履歴を LocalStorage に保持（既存の Export を維持する） */
@@ -182,23 +182,24 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
     <main className="mx-auto max-w-5xl px-4 py-6 md:py-8">
       <header className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="font-serif text-2xl md:text-3xl">マイページ</h1>
-          <p className="mt-1 text-xs text-sumi/60">
+          <h1 className="font-serif text-2xl md:text-3xl" style={{ color: "#fff7e6" }}>マイページ</h1>
+          <p className="mt-1 text-xs" style={{ color: "rgba(220,202,168,0.6)" }}>
             閲覧履歴・行きたい・いいね・参拝記録をまとめて確認できます。
           </p>
           {loggedIn ? (
-            <p className="mt-1 text-[12px] text-moss">
+            <p className="mt-1 text-[12px]" style={{ color: "#6ee7a0" }}>
               ✓ <b>{displayName}</b> でサインイン中
-              <span className="ml-2 text-[10px] text-sumi/50">
+              <span className="ml-2 text-[10px]" style={{ color: "rgba(220,202,168,0.45)" }}>
                 （端末をまたいでデータが同期されます）
               </span>
             </p>
           ) : (
-            <p className="mt-1 text-[12px] text-sumi/70">
+            <p className="mt-1 text-[12px]" style={{ color: "rgba(220,202,168,0.65)" }}>
               端末紐付けの匿名アカウントで表示中。
               <Link
                 href="/signin?callbackUrl=/me"
-                className="ml-1 text-vermilion-deep underline"
+                className="ml-1 underline"
+                style={{ color: "#e07070" }}
               >
                 Google でサインインする
               </Link>
@@ -206,7 +207,7 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
             </p>
           )}
           {clientId && !loggedIn ? (
-            <p className="mt-1 text-[10px] font-mono text-sumi/40">
+            <p className="mt-1 text-[10px] font-mono" style={{ color: "rgba(220,202,168,0.35)" }}>
               client_id: {clientId.slice(0, 14)}…
             </p>
           ) : null}
@@ -215,29 +216,29 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
 
       {/* 守護タイプバッジ */}
       {profile ? (
-        <div className="mb-5 flex items-center gap-3 rounded-xl border border-vermilion/20 bg-vermilion/5 px-4 py-3">
+        <div className="mb-5 flex items-center gap-3 rounded-xl px-4 py-3" style={{ border: "1px solid rgba(139,30,39,0.35)", background: "rgba(139,30,39,0.1)" }}>
           <span className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-xl font-bold text-white shadow ${ELEMENT_STYLE[profile.element]?.bg ?? "bg-sumi/40"}`}>
             {profile.zodiac || profile.element}
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] tracking-[0.2em] text-vermilion-deep font-semibold">守護属性</p>
-            <p className="text-sm font-semibold text-sumi">{profile.element}属性</p>
+            <p className="text-[10px] tracking-[0.2em] font-semibold" style={{ color: "#e07070" }}>守護属性</p>
+            <p className="text-sm font-semibold" style={{ color: "#fff7e6" }}>{profile.element}属性</p>
           </div>
-          <Link href="/diagnose" className="shrink-0 text-xs text-vermilion-deep underline hover:no-underline">
+          <Link href="/diagnose" className="shrink-0 text-xs underline hover:no-underline" style={{ color: "#e07070" }}>
             再診断 →
           </Link>
         </div>
       ) : (
-        <div className="mb-5 flex items-center justify-between gap-3 rounded-xl border border-dashed border-border bg-washi/60 px-4 py-3">
-          <p className="text-xs text-sumi/60">守護神社診断をするとあなたの属性・タイプが表示されます</p>
-          <Link href="/diagnose" className="shrink-0 rounded-full bg-vermilion px-3 py-1.5 text-xs font-semibold text-white hover:bg-vermilion-deep">
+        <div className="mb-5 flex items-center justify-between gap-3 rounded-xl px-4 py-3" style={{ border: "1px dashed rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.5)" }}>
+          <p className="text-xs" style={{ color: "rgba(220,202,168,0.58)" }}>守護神社診断をするとあなたの属性・タイプが表示されます</p>
+          <Link href="/diagnose" className="shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold text-white" style={{ background: "linear-gradient(135deg, #9b2029, #7a1520)" }}>
             診断する →
           </Link>
         </div>
       )}
 
       {/* タブ */}
-      <nav className="mb-4 flex flex-wrap gap-1 border-b border-border">
+      <nav className="mb-4 flex flex-wrap gap-1" style={{ borderBottom: "1px solid rgba(201,155,77,0.2)" }}>
         {(
           [
             { key: "recent", label: "閲覧履歴", icon: "🕘" },
@@ -251,12 +252,10 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
             key={t.key}
             type="button"
             onClick={() => setTab(t.key)}
-            className={
-              "flex items-center gap-1 border-b-2 px-3 py-2 text-sm transition " +
-              (tab === t.key
-                ? "border-vermilion bg-vermilion/5 font-semibold text-vermilion-deep"
-                : "border-transparent text-sumi/70 hover:text-sumi")
-            }
+            className="flex items-center gap-1 border-b-2 px-3 py-2 text-sm transition"
+            style={tab === t.key
+              ? { borderColor: "#9b2029", background: "rgba(139,30,39,0.08)", fontWeight: 600, color: "#e07070" }
+              : { borderColor: "transparent", color: "rgba(220,202,168,0.6)" }}
           >
             <span>{t.icon}</span>
             <span>{t.label}</span>
@@ -265,7 +264,7 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
       </nav>
 
       {error ? (
-        <div className="mb-3 rounded-md border border-border bg-kinari px-3 py-2 text-xs text-sumi/80">
+        <div className="mb-3 rounded-md px-3 py-2 text-xs" style={{ border: "1px solid rgba(139,30,39,0.4)", background: "rgba(139,30,39,0.1)", color: "rgba(220,202,168,0.78)" }}>
           {error}
         </div>
       ) : null}
@@ -344,30 +343,32 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
             {checkins.map((c) => (
               <li
                 key={c.id}
-                className="flex items-start justify-between gap-3 rounded-md border border-border bg-washi p-3 text-sm"
+                className="flex items-start justify-between gap-3 rounded-md p-3 text-sm"
+                style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}
               >
                 <div className="min-w-0 flex-1">
                   <Link
                     href={`/shrines/${spotSlug({ id: c.spot_id, slug: c.slug })}`}
-                    className="font-semibold text-sumi hover:underline"
+                    className="font-semibold hover:underline"
+                    style={{ color: "#fff7e6" }}
                   >
                     {c.spot_name || `神社 #${c.spot_id}`}
                   </Link>
                   {c.prefecture ? (
-                    <span className="ml-2 text-[11px] text-sumi/60">{c.prefecture}</span>
+                    <span className="ml-2 text-[11px]" style={{ color: "rgba(220,202,168,0.55)" }}>{c.prefecture}</span>
                   ) : null}
                   {c.comment ? (
-                    <p className="mt-1 whitespace-pre-wrap text-[12px] text-sumi/80">
+                    <p className="mt-1 whitespace-pre-wrap text-[12px]" style={{ color: "rgba(220,202,168,0.78)" }}>
                       {c.comment}
                     </p>
                   ) : null}
                   {c.wish_type ? (
-                    <span className="mt-1 inline-block rounded-full border border-vermilion/40 bg-vermilion/10 px-2 py-0.5 text-[10px] text-vermilion-deep">
+                    <span className="mt-1 inline-block rounded-full px-2 py-0.5 text-[10px]" style={{ border: "1px solid rgba(201,155,77,0.3)", background: "rgba(139,30,39,0.18)", color: "#C99B4D" }}>
                       {wishLabel(c.wish_type)}
                     </span>
                   ) : null}
                 </div>
-                <span className="shrink-0 text-[11px] text-sumi/50">
+                <span className="shrink-0 text-[11px]" style={{ color: "rgba(220,202,168,0.45)" }}>
                   {formatRelative(c.created_at)}
                 </span>
               </li>
@@ -378,11 +379,12 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
 
       {tab === "omikuji" ? (
         omikujiHistory.length === 0 ? (
-          <div className="rounded-md border border-dashed border-border bg-washi/60 p-6 text-center">
-            <p className="mb-3 text-sm text-sumi/70">まだおみくじの記録がありません。</p>
+          <div className="rounded-md p-6 text-center" style={{ border: "1px dashed rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.5)" }}>
+            <p className="mb-3 text-sm" style={{ color: "rgba(220,202,168,0.65)" }}>まだおみくじの記録がありません。</p>
             <Link
               href="/omikuji"
-              className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600"
+              className="inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold text-white"
+              style={{ background: "linear-gradient(135deg, #b8861a, #9a6e10)" }}
             >
               📜 今日のおみくじを引く
             </Link>
@@ -390,18 +392,18 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
         ) : (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <p className="text-xs text-sumi/50">過去 {omikujiHistory.length} 件の記録</p>
-              <Link href="/omikuji" className="text-xs text-vermilion-deep underline hover:no-underline">今日のおみくじ →</Link>
+              <p className="text-xs" style={{ color: "rgba(220,202,168,0.45)" }}>過去 {omikujiHistory.length} 件の記録</p>
+              <Link href="/omikuji" className="text-xs underline hover:no-underline" style={{ color: "#e07070" }}>今日のおみくじ →</Link>
             </div>
             <ul className="space-y-2">
               {omikujiHistory.map((r) => {
-                const meta = FORTUNE_META[r.fortune] ?? { emoji: "📜", colorClass: "text-sumi" };
+                const meta = FORTUNE_META[r.fortune] ?? { emoji: "📜", colorClass: "text-slate-400" };
                 return (
-                  <li key={r.date} className="flex items-center gap-3 rounded-md border border-border bg-washi px-4 py-3">
+                  <li key={r.date} className="flex items-center gap-3 rounded-md px-4 py-3" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
                     <span className="text-2xl">{meta.emoji}</span>
                     <div className="flex-1">
                       <p className={`text-lg font-bold font-serif ${meta.colorClass}`}>{r.fortune}</p>
-                      <p className="text-[11px] text-sumi/50">{r.date}</p>
+                      <p className="text-[11px]" style={{ color: "rgba(220,202,168,0.45)" }}>{r.date}</p>
                     </div>
                   </li>
                 );
@@ -411,7 +413,7 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
         )
       ) : null}
 
-      <aside className="mt-10 rounded-md border border-dashed border-border bg-washi/60 p-4 text-xs text-sumi/70">
+      <aside className="mt-10 rounded-md p-4 text-xs" style={{ border: "1px dashed rgba(201,155,77,0.25)", background: "rgba(28,17,8,0.5)", color: "rgba(220,202,168,0.6)" }}>
         <p>
           ※ 現在はブックマーク・参拝は端末（またはサインインしたアカウント）単位で保存されます。
           別端末で同じ Google アカウントにサインインすると、行きたい・いいねは同期されます。
@@ -423,7 +425,7 @@ export default function MyPageClient({ user }: { user?: SessionUser }) {
 
 function EmptyState({ text }: { text: string }) {
   return (
-    <div className="rounded-md border border-dashed border-border bg-washi/60 p-6 text-center text-sm text-sumi/70">
+    <div className="rounded-md p-6 text-center text-sm" style={{ border: "1px dashed rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.5)", color: "rgba(220,202,168,0.62)" }}>
       {text}
     </div>
   );
@@ -431,7 +433,7 @@ function EmptyState({ text }: { text: string }) {
 
 function LoadingState() {
   return (
-    <div className="flex items-center justify-center rounded-md border border-border bg-washi/60 p-8 text-xs text-sumi/60">
+    <div className="flex items-center justify-center rounded-md p-8 text-xs" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "rgba(28,17,8,0.5)", color: "rgba(220,202,168,0.55)" }}>
       <span
         className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-vermilion/40 border-t-vermilion-deep"
         role="status"
@@ -457,23 +459,24 @@ function ShrineCard({
   return (
     <Link
       href={href}
-      className="flex h-full flex-col overflow-hidden rounded-md border border-border bg-washi transition hover:shadow-md"
+      className="shrine-card flex h-full flex-col overflow-hidden rounded-md transition"
+      style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)", textDecoration: "none" }}
     >
       {photoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={photoUrl} alt={name} loading="lazy" className="h-28 w-full object-cover" />
       ) : (
-        <div className="flex h-16 w-full items-center justify-center bg-kinari text-[10px] text-sumi/40">
+        <div className="flex h-16 w-full items-center justify-center text-[10px]" style={{ background: "#241309", color: "rgba(220,202,168,0.35)" }}>
           ⛩ 写真なし
         </div>
       )}
       <div className="flex-1 p-3">
-        <p className="line-clamp-1 text-sm font-semibold text-sumi">{name}</p>
+        <p className="line-clamp-1 text-sm font-semibold" style={{ color: "#fff7e6" }}>{name}</p>
         {meta ? (
-          <p className="mt-0.5 line-clamp-1 text-[11px] text-sumi/60">{meta}</p>
+          <p className="mt-0.5 line-clamp-1 text-[11px]" style={{ color: "rgba(220,202,168,0.58)" }}>{meta}</p>
         ) : null}
         {subtle ? (
-          <p className="mt-1 text-[10px] text-sumi/40">{subtle}</p>
+          <p className="mt-1 text-[10px]" style={{ color: "rgba(220,202,168,0.38)" }}>{subtle}</p>
         ) : null}
       </div>
     </Link>

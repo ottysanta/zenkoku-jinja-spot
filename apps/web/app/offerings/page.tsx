@@ -113,12 +113,12 @@ export default function OfferingsIndexPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      <header className="mb-8 border-b border-border pb-6">
-        <p className="mb-2 text-[0.72rem] tracking-[0.28em] text-vermilion-deep">
+      <header className="mb-8 pb-6" style={{ borderBottom: "1px solid rgba(201,155,77,0.2)" }}>
+        <p className="mb-2 text-[0.72rem] tracking-[0.28em]" style={{ color: "#C99B4D" }}>
           OFFERINGS
         </p>
-        <h1 className="font-serif text-3xl md:text-4xl">気持ちを届ける</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-sumi/75">
+        <h1 className="font-serif text-3xl md:text-4xl" style={{ color: "#fff7e6" }}>気持ちを届ける</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed" style={{ color: "rgba(220,202,168,0.78)" }}>
           遠方からでも、神社へ感謝や決意を届けたい。この想いに応えるために、当サイトでは
           「志納金の取り次ぎサービス」を運営しています。弊社が事業収益として受け取るので
           はなく、皆さまからお預かりした志納金は、受付対応の神社へまとめてお届けする仕組みです。
@@ -127,15 +127,16 @@ export default function OfferingsIndexPage() {
 
       {/* なぜ取り次ぐのか */}
       <section className="mb-10">
-        <h2 className="mb-3 font-serif text-xl">なぜオンライン取り次ぎをするのか</h2>
+        <h2 className="mb-3 font-serif text-xl" style={{ color: "#fff7e6" }}>なぜオンライン取り次ぎをするのか</h2>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
           {WHY_US.map((c) => (
             <div
               key={c.title}
-              className="rounded-md border border-border bg-washi p-4"
+              className="rounded-md p-4"
+              style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}
             >
-              <h3 className="font-serif text-base">{c.title}</h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-sumi/80">
+              <h3 className="font-serif text-base" style={{ color: "#fff7e6" }}>{c.title}</h3>
+              <p className="mt-2 text-[13px] leading-relaxed" style={{ color: "rgba(220,202,168,0.78)" }}>
                 {c.body}
               </p>
             </div>
@@ -144,24 +145,25 @@ export default function OfferingsIndexPage() {
       </section>
 
       {/* お金の流れ */}
-      <section className="mb-10 rounded-md border border-vermilion/30 bg-vermilion/5 p-5">
-        <h2 className="mb-1 font-serif text-xl text-vermilion-deep">
+      <section className="mb-10 rounded-md p-5" style={{ border: "1px solid rgba(139,30,39,0.4)", background: "rgba(139,30,39,0.08)" }}>
+        <h2 className="mb-1 font-serif text-xl" style={{ color: "#e07070" }}>
           志納金の流れ（お金の透明性）
         </h2>
-        <p className="mb-4 text-xs text-sumi/70">
+        <p className="mb-4 text-xs" style={{ color: "rgba(220,202,168,0.7)" }}>
           「当サイトがお金を集めて終わり」ではなく、神社へ届くまでの全工程を公開します。
         </p>
         <ol className="space-y-3">
           {HOW_IT_WORKS_STEPS.map((s) => (
             <li
               key={s.no}
-              className="rounded-md border border-border bg-white p-4"
+              className="rounded-md p-4"
+              style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}
             >
               <div className="flex items-baseline gap-3">
-                <span className="font-mono text-xs text-vermilion-deep">{s.no}</span>
-                <h3 className="font-serif text-base">{s.title}</h3>
+                <span className="font-mono text-xs" style={{ color: "#e07070" }}>{s.no}</span>
+                <h3 className="font-serif text-base" style={{ color: "#fff7e6" }}>{s.title}</h3>
               </div>
-              <p className="mt-1.5 text-[13px] leading-relaxed text-sumi/80">
+              <p className="mt-1.5 text-[13px] leading-relaxed" style={{ color: "rgba(220,202,168,0.78)" }}>
                 {s.body}
               </p>
             </li>
@@ -171,49 +173,51 @@ export default function OfferingsIndexPage() {
 
       {/* 受付対象条件 */}
       <section className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="rounded-md border border-moss/30 bg-moss/5 p-4">
-          <h2 className="mb-2 font-serif text-base text-moss">受付対象の条件</h2>
-          <ul className="space-y-1.5 text-[13px] text-sumi/90">
+        <div className="rounded-md p-4" style={{ border: "1px solid rgba(100,160,100,0.3)", background: "rgba(50,100,60,0.12)" }}>
+          <h2 className="mb-2 font-serif text-base" style={{ color: "#6ee7a0" }}>受付対象の条件</h2>
+          <ul className="space-y-1.5 text-[13px]" style={{ color: "rgba(220,202,168,0.85)" }}>
             {ACCEPTED_CONDITIONS.map((c) => (
               <li key={c} className="flex gap-2">
-                <span className="text-moss">✓</span>
+                <span style={{ color: "#6ee7a0" }}>✓</span>
                 <span>{c}</span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="rounded-md border border-border bg-kinari p-4">
-          <h2 className="mb-2 font-serif text-base text-sumi">受付対象外となるケース</h2>
-          <ul className="space-y-1.5 text-[13px] text-sumi/90">
+        <div className="rounded-md p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
+          <h2 className="mb-2 font-serif text-base" style={{ color: "#fff7e6" }}>受付対象外となるケース</h2>
+          <ul className="space-y-1.5 text-[13px]" style={{ color: "rgba(220,202,168,0.78)" }}>
             {NOT_ACCEPTED_REASONS.map((c) => (
               <li key={c} className="flex gap-2">
-                <span className="text-sumi/50">—</span>
+                <span style={{ color: "rgba(220,202,168,0.4)" }}>—</span>
                 <span>{c}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-3 text-[11px] text-sumi/60">
+          <p className="mt-3 text-[11px]" style={{ color: "rgba(220,202,168,0.5)" }}>
             ※ 受付対象外の神社でも、詳細ページから公式サイトや現地参拝先のご案内を行っています。
           </p>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="mb-10 rounded-md border border-border bg-washi p-5">
-        <h2 className="mb-2 font-serif text-base">まず神社を探す</h2>
-        <p className="mb-4 text-[13px] text-sumi/80">
+      <section className="mb-10 rounded-md p-5" style={{ border: "1px solid rgba(201,155,77,0.25)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
+        <h2 className="mb-2 font-serif text-base" style={{ color: "#fff7e6" }}>まず神社を探す</h2>
+        <p className="mb-4 text-[13px]" style={{ color: "rgba(220,202,168,0.78)" }}>
           志納は、神社を決めてから詳細ページで手続きいただく流れです。全国 27,000 社以上の神社が検索できます。
         </p>
         <div className="flex flex-wrap gap-2">
           <Link
             href="/map"
-            className="inline-flex min-h-[40px] items-center rounded-md border border-vermilion bg-vermilion px-5 py-2 text-sm font-semibold text-white hover:bg-vermilion-deep"
+            className="inline-flex min-h-[40px] items-center rounded-md px-5 py-2 text-sm font-semibold text-white"
+            style={{ background: "linear-gradient(135deg, #9b2029, #7a1520)", border: "1px solid rgba(201,155,77,0.5)" }}
           >
             🗺 地図で探す
           </Link>
           <Link
             href="/search"
-            className="inline-flex min-h-[40px] items-center rounded-md border border-border bg-white px-5 py-2 text-sm font-semibold text-sumi hover:bg-kinari"
+            className="inline-flex min-h-[40px] items-center rounded-md px-5 py-2 text-sm font-semibold"
+            style={{ border: "1px solid rgba(201,155,77,0.4)", background: "rgba(28,17,8,0.6)", color: "#C99B4D" }}
           >
             ≣ 一覧で探す
           </Link>
@@ -222,15 +226,16 @@ export default function OfferingsIndexPage() {
 
       {/* FAQ */}
       <section className="mb-10">
-        <h2 className="mb-3 font-serif text-xl">よくあるご質問</h2>
+        <h2 className="mb-3 font-serif text-xl" style={{ color: "#fff7e6" }}>よくあるご質問</h2>
         <dl className="space-y-3">
           {FAQS.map((f) => (
             <div
               key={f.q}
-              className="rounded-md border border-border bg-white p-4"
+              className="rounded-md p-4"
+              style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}
             >
-              <dt className="font-serif text-[14px] text-sumi">Q. {f.q}</dt>
-              <dd className="mt-1.5 text-[13px] leading-relaxed text-sumi/80">
+              <dt className="font-serif text-[14px]" style={{ color: "#fff7e6" }}>Q. {f.q}</dt>
+              <dd className="mt-1.5 text-[13px] leading-relaxed" style={{ color: "rgba(220,202,168,0.78)" }}>
                 A. {f.a}
               </dd>
             </div>
@@ -239,16 +244,16 @@ export default function OfferingsIndexPage() {
       </section>
 
       {/* 神社関係者向け */}
-      <section className="mb-10 rounded-md border border-dashed border-border bg-washi/60 p-5 text-[13px] text-sumi/80">
-        <h2 className="mb-2 font-serif text-base text-sumi">神社関係者の方へ</h2>
+      <section className="mb-10 rounded-md p-5 text-[13px]" style={{ border: "1px dashed rgba(201,155,77,0.3)", background: "rgba(28,17,8,0.5)", color: "rgba(220,202,168,0.78)" }}>
+        <h2 className="mb-2 font-serif text-base" style={{ color: "#fff7e6" }}>神社関係者の方へ</h2>
         <p className="leading-relaxed">
           当サイトに掲載の神社で、オンライン受付の開設・情報訂正・削除をご希望の場合は、
           掲載情報の訂正申請フォームまたは運営連絡先までご連絡ください。受付対応は
-          <b>宗教法人登録 + 法人口座 + 書面同意</b>のセットを確認した上で開始します。
+          <b style={{ color: "#C99B4D" }}>宗教法人登録 + 法人口座 + 書面同意</b>のセットを確認した上で開始します。
         </p>
       </section>
 
-      <footer className="border-t border-border pt-4 text-[11px] text-sumi/50">
+      <footer className="pt-4 text-[11px]" style={{ borderTop: "1px solid rgba(201,155,77,0.2)", color: "rgba(220,202,168,0.45)" }}>
         本ページの仕組み・料率は予告なく更新されることがあります。最新の条件は申込画面および
         利用規約をご確認ください。本サイトは志納金の「取り次ぎ」に徹し、収益化を目的とした
         集金は行いません。
