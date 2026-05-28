@@ -187,7 +187,7 @@ export default function KihogakuPage() {
                 地図で吉方位の神社を探す →
               </Link>
               <Link
-                href="/diagnose/unmei"
+                href="/kantei"
                 style={{
                   display: "block", padding: "14px", textAlign: "center",
                   border: "1px solid rgba(201,155,77,0.35)", borderRadius: "12px",

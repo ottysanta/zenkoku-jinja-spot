@@ -191,7 +191,7 @@ const CONTENT_CARDS = [
     iconColor: "#6aab8a",
   },
   {
-    href: "/diagnose/unmei" as const,
+    href: "/kantei" as const,
     en: "AI FORTUNE READING",
     ja: "運命鑑定（AI）",
     desc: "生年月日を入力するだけ。AIが四柱推命・六星占術をもとに宿命・恋愛・仕事・今後の運気を容赦なく鑑定。",
