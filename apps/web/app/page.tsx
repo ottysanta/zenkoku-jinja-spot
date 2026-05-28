@@ -387,7 +387,7 @@ export default async function HomePage() {
               <Link
                 key={card.href}
                 href={card.href}
-                className="flex flex-col"
+                className="shrine-content-card flex flex-col"
                 style={{
                   padding: "24px",
                   minHeight: "205px",
@@ -396,17 +396,6 @@ export default async function HomePage() {
                   borderRadius: "16px",
                   boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
                   textDecoration: "none",
-                  transition: "transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.55)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(0,0,0,0.6)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.28)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 24px rgba(0,0,0,0.5)";
                 }}
               >
                 {/* アイコン */}
@@ -451,10 +440,8 @@ export default async function HomePage() {
                 <li key={s.id}>
                   <Link
                     href={`/shrines/${spotSlug({ id: s.id, slug: s.slug })}`}
-                    className="group relative block overflow-hidden"
-                    style={{ height: "280px", borderRadius: "16px", border: "1px solid rgba(201,155,77,0.28)", display: "block", textDecoration: "none", background: "linear-gradient(135deg,#1b1009,#2a1710)", transition: "border-color 0.3s ease" }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.6)"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.28)"; }}
+                    className="shrine-spotlight-card group relative block overflow-hidden"
+                    style={{ height: "280px", borderRadius: "16px", border: "1px solid rgba(201,155,77,0.28)", display: "block", textDecoration: "none", background: "linear-gradient(135deg,#1b1009,#2a1710)" }}
                   >
                     {s.photo_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -512,10 +499,8 @@ export default async function HomePage() {
                 <li key={s.id}>
                   <Link
                     href={`/shrines/${spotSlug({ id: s.id, slug: s.slug })}`}
-                    className="group block overflow-hidden"
-                    style={{ background: "#1e1009", border: "1px solid rgba(201,155,77,0.22)", borderRadius: "12px", textDecoration: "none", transition: "border-color 0.25s ease" }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.5)"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.22)"; }}
+                    className="shrine-sub-card group block overflow-hidden"
+                    style={{ background: "#1e1009", border: "1px solid rgba(201,155,77,0.22)", borderRadius: "12px", textDecoration: "none" }}
                   >
                     {s.photo_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -572,10 +557,8 @@ export default async function HomePage() {
               <li key={b.name}>
                 <Link
                   href={`/search?benefit=${encodeURIComponent(b.name)}`}
-                  className="flex flex-col items-center gap-3"
-                  style={{ textDecoration: "none", transition: "transform 0.25s ease" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+                  className="shrine-benefit-btn flex flex-col items-center gap-3"
+                  style={{ textDecoration: "none" }}
                 >
                   {/* 円形アイコン */}
                   <div style={{
@@ -626,22 +609,13 @@ export default async function HomePage() {
                 <li key={s.id}>
                   <Link
                     href={`/shrines/${spotSlug({ id: s.id, slug: s.slug })}`}
-                    className="group flex flex-col overflow-hidden h-full"
+                    className="shrine-featured-card group flex flex-col overflow-hidden h-full"
                     style={{
                       background: "#1a0d06",
                       border: "1px solid rgba(201,155,77,0.26)",
                       borderRadius: "16px",
                       boxShadow: "0 4px 28px rgba(0,0,0,0.55)",
                       textDecoration: "none",
-                      transition: "border-color 0.3s ease, box-shadow 0.3s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.6)";
-                      (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 36px rgba(0,0,0,0.65)";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.26)";
-                      (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 28px rgba(0,0,0,0.55)";
                     }}
                   >
                     {/* 写真 */}
@@ -714,7 +688,7 @@ export default async function HomePage() {
                     <li key={r.prefecture}>
                       <Link
                         href={`/search?prefecture=${encodeURIComponent(r.prefecture)}`}
-                        className="relative block overflow-hidden"
+                        className="shrine-pref-item relative block overflow-hidden"
                         style={{
                           padding: "8px 12px",
                           minHeight: "40px",
@@ -724,10 +698,7 @@ export default async function HomePage() {
                           border: "1px solid rgba(201,155,77,0.18)",
                           borderRadius: "8px",
                           textDecoration: "none",
-                          transition: "background 0.15s ease",
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = "#2a100b")}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = "#170b06")}
                       >
                         <span
                           aria-hidden="true"

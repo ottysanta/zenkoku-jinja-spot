@@ -60,11 +60,38 @@ h1, h2, h3, h4 {
   border-color: rgba(201,155,77,0.6) !important;
 }
 .shrine-pref-item {
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 .shrine-pref-item:hover {
-  background: #2e1812 !important;
+  background: #2a100b !important;
+  border-color: rgba(201,155,77,0.45) !important;
+}
+
+/* 注目神社カード */
+.shrine-featured-card {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.shrine-featured-card:hover {
+  border-color: rgba(201,155,77,0.6) !important;
+  box-shadow: 0 8px 36px rgba(0,0,0,0.65) !important;
+}
+
+/* コンテンツカード（診断系）*/
+.shrine-content-card {
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.shrine-content-card:hover {
+  transform: translateY(-4px);
   border-color: rgba(201,155,77,0.55) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6) !important;
+}
+
+/* スポットライトカード */
+.shrine-spotlight-card {
+  transition: border-color 0.3s ease;
+}
+.shrine-spotlight-card:hover {
+  border-color: rgba(201,155,77,0.6) !important;
 }
 .shrine-benefit-btn {
   transition: transform 0.25s ease;
