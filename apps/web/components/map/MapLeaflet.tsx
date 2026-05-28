@@ -304,6 +304,23 @@ export default function MapLeaflet() {
     }
   }
 
+  function placeUserMarker(lat: number, lng: number) {
+    const L = window.L;
+    const map = mapRef.current;
+    if (!L || !map) return;
+    if (userMarkerRef.current) {
+      try { userMarkerRef.current.remove(); } catch {}
+    }
+    const icon = L.divIcon({
+      className: "user-pin",
+      html: '<span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:#2563eb;border:3px solid #fff;box-shadow:0 0 0 2px #2563eb"></span>',
+      iconSize: [22, 22],
+      iconAnchor: [11, 11],
+    });
+    userMarkerRef.current = L.marker([lat, lng], { icon }).addTo(map);
+    map.flyTo([lat, lng], 12, { duration: 0.8 });
+  }
+
   function handleLocate() {
     if (!navigator.geolocation) {
       setLocError("この端末では位置情報が使えません");
@@ -311,37 +328,40 @@ export default function MapLeaflet() {
     }
     setLocating(true);
     setLocError(null);
+
+    // Step1: 低精度（ネットワーク）で素早く取得
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setLocating(false);
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         setUserCoords({ lat, lng });
-        const L = window.L;
-        const map = mapRef.current;
-        if (L && map) {
-          if (userMarkerRef.current) {
-            try { userMarkerRef.current.remove(); } catch {}
-          }
-          const icon = L.divIcon({
-            className: "user-pin",
-            html: '<span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:#2563eb;border:3px solid #fff;box-shadow:0 0 0 2px #2563eb"></span>',
-            iconSize: [22, 22],
-            iconAnchor: [11, 11],
-          });
-          userMarkerRef.current = L.marker([lat, lng], { icon }).addTo(map);
-          map.flyTo([lat, lng], 12, { duration: 0.8 });
-        }
-      },
-      (err) => {
-        setLocating(false);
-        setLocError(
-          err.code === 1
-            ? "位置情報の利用が許可されていません"
-            : "位置情報の取得に失敗しました"
+        placeUserMarker(lat, lng);
+
+        // Step2: バックグラウンドで高精度に上書き（失敗しても無視）
+        navigator.geolocation.getCurrentPosition(
+          (pos2) => {
+            const lat2 = pos2.coords.latitude;
+            const lng2 = pos2.coords.longitude;
+            setUserCoords({ lat: lat2, lng: lng2 });
+            placeUserMarker(lat2, lng2);
+          },
+          () => { /* 高精度失敗は無視 */ },
+          { enableHighAccuracy: true, maximumAge: 0, timeout: 15_000 }
         );
       },
-      { enableHighAccuracy: true, maximumAge: 60_000, timeout: 10_000 }
+      (err) => {
+        // 低精度も失敗した場合
+        setLocating(false);
+        if (err.code === 1) {
+          setLocError("位置情報の利用が許可されていません。ブラウザの設定から許可してください。");
+        } else if (err.code === 3) {
+          setLocError("位置情報の取得がタイムアウトしました。もう一度お試しください。");
+        } else {
+          setLocError("位置情報を取得できませんでした。ブラウザや端末の設定を確認してください。");
+        }
+      },
+      { enableHighAccuracy: false, maximumAge: 60_000, timeout: 8_000 }
     );
   }
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import MapLeaflet from "@/components/map/MapLeaflet";
+import MapClient from "./MapClient";
 
 export const metadata: Metadata = {
   title: "神社を地図で探す",
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function MapPage() {
   return (
     <main className="h-[calc(100dvh-2.5rem)] bg-washi">
-      <MapLeaflet />
+      <MapClient />
     </main>
   );
 }

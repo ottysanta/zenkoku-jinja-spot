@@ -29,7 +29,7 @@ import {
 import { spotSlug } from "@/lib/api";
 import ReactionButtons from "@/components/checkins/ReactionButtons";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600; // 1時間ISRキャッシュ
 
 export const metadata: Metadata = {
   title: "全国神社スポット — Shrine Map of Japan",
@@ -125,17 +125,17 @@ function SectionHeader({
   en, ja, right,
 }: { en: string; ja: string; right?: React.ReactNode }) {
   return (
-    <div className="mb-10">
-      <p style={{ color: "#C99B4D", fontSize: "0.58rem", letterSpacing: "0.42em", fontWeight: 700, marginBottom: "8px", textTransform: "uppercase" }}>
+    <div className="mb-12">
+      <p style={{ color: "#C99B4D", fontSize: "0.62rem", letterSpacing: "0.44em", fontWeight: 700, marginBottom: "10px", textTransform: "uppercase" }}>
         {en}
       </p>
       <div className="flex items-baseline justify-between">
-        <h2 className="font-serif" style={{ color: "#fff7e6", fontSize: "1.45rem", letterSpacing: "0.05em" }}>
+        <h2 className="font-serif" style={{ color: "#fff7e6", fontSize: "1.65rem", letterSpacing: "0.05em" }}>
           {ja}
         </h2>
         {right}
       </div>
-      <div style={{ marginTop: "12px", height: "1px", background: "linear-gradient(to right, rgba(201,155,77,0.6), rgba(201,155,77,0.1) 60%, transparent)" }} />
+      <div style={{ marginTop: "14px", height: "1px", background: "linear-gradient(to right, rgba(201,155,77,0.65), rgba(201,155,77,0.12) 65%, transparent)" }} />
     </div>
   );
 }
@@ -209,7 +209,7 @@ export default async function HomePage() {
   const offeringShrineCount = countOfferingShrines();
 
   return (
-    <div style={{ background: "linear-gradient(175deg,#06040300%,#0c070445%,#150c0780%,#0c0704100%)", minHeight: "100vh" }}>
+    <div style={{ background: "linear-gradient(180deg, #050302 0%, #120905 35%, #0e0804 65%, #050302 100%)", minHeight: "100vh" }}>
 
       {/* ═══════════════════════════════════════════
           HERO
@@ -217,25 +217,25 @@ export default async function HomePage() {
       <section
         className="relative overflow-hidden"
         style={{
-          minHeight: "clamp(480px,65vh,660px)",
-          backgroundColor: "#06040",
+          minHeight: "clamp(560px, 72vh, 760px)",
+          backgroundColor: "#060402",
           backgroundImage: [
-            /* 左から右への黒グラデ（神社を右に見せる） */
-            "linear-gradient(105deg, rgba(6,4,3,0.97) 0%, rgba(6,4,3,0.90) 30%, rgba(6,4,3,0.55) 58%, rgba(6,4,3,0.18) 100%)",
-            /* 下部を引き締める */
-            "linear-gradient(to top, rgba(6,4,3,0.88) 0%, rgba(6,4,3,0.2) 30%, transparent 60%)",
+            /* 左側: 文字読める黒グラデ / 右側: 神社の明るさを残す */
+            "linear-gradient(100deg, rgba(5,3,2,0.97) 0%, rgba(5,3,2,0.88) 28%, rgba(5,3,2,0.55) 52%, rgba(5,3,2,0.15) 72%, rgba(5,3,2,0.05) 100%)",
+            /* 下部グラデ: 次セクションに自然につなぐ */
+            "linear-gradient(to top, rgba(5,3,2,0.96) 0%, rgba(5,3,2,0.5) 18%, transparent 45%)",
             /* 神社写真 */
             "url('/assets/shrine/ChatGPT%20Image%202026%E5%B9%B45%E6%9C%8826%E6%97%A5%2019_31_07%20(1).webp')",
           ].join(","),
           backgroundSize: "cover",
-          backgroundPosition: "center 28%",
+          backgroundPosition: "60% 28%",
         }}
       >
         {/* 上端ライン */}
         <div style={{ position: "absolute", inset: "0 0 auto 0", height: "1px", background: "linear-gradient(to right, transparent 0%, rgba(201,155,77,0.55) 40%, rgba(201,155,77,0.55) 60%, transparent 100%)" }} />
 
-        <div className="mx-auto max-w-6xl px-6 md:px-12" style={{ paddingTop: "clamp(80px,12vh,120px)", paddingBottom: "clamp(64px,10vh,100px)" }}>
-          <div style={{ maxWidth: "580px" }}>
+        <div className="mx-auto max-w-[1220px] px-6 md:px-12" style={{ paddingTop: "clamp(96px,14vh,140px)", paddingBottom: "clamp(80px,12vh,120px)" }}>
+          <div style={{ maxWidth: "520px" }}>
 
             {/* キャッチフレーズラベル */}
             <div className="flex items-center gap-3 mb-6">
@@ -250,10 +250,10 @@ export default async function HomePage() {
               className="font-serif"
               style={{
                 color: "#fff7e6",
-                fontSize: "clamp(2.1rem, 5vw, 3.6rem)",
-                lineHeight: 1.22,
+                fontSize: "clamp(2.6rem, 5vw, 4rem)",
+                lineHeight: 1.28,
                 letterSpacing: "0.04em",
-                marginBottom: "20px",
+                marginBottom: "22px",
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 wordBreak: "auto-phrase" as any,
                 overflowWrap: "break-word",
@@ -271,11 +271,11 @@ export default async function HomePage() {
 
             {/* サブコピー */}
             <p style={{
-              color: "rgba(240,226,198,0.85)",
-              fontSize: "0.9rem",
-              lineHeight: 2.0,
-              fontWeight: 300,
-              marginBottom: "40px",
+              color: "#d8c7a5",
+              fontSize: "clamp(0.94rem, 1.5vw, 1rem)",
+              lineHeight: 1.9,
+              fontWeight: 400,
+              marginBottom: "44px",
               letterSpacing: "0.03em",
             }}>
               生年月日から五行属性・干支・誕生数を診断。縁深い守護神社と、神様からのメッセージをお届けします。
@@ -377,43 +377,56 @@ export default async function HomePage() {
       {/* ═══════════════════════════════════════════
           ページ本体
       ═══════════════════════════════════════════ */}
-      <main className="mx-auto max-w-6xl px-5 md:px-8">
+      <main className="mx-auto max-w-[1220px] px-5 md:px-10">
 
         {/* ─── 神社体験コンテンツ ─── */}
-        <section style={{ paddingTop: "80px", paddingBottom: "80px" }}>
+        <section style={{ paddingTop: "100px", paddingBottom: "100px", borderTop: "1px solid rgba(201,155,77,0.18)" }}>
           <SectionHeader en="CONTENTS" ja="神社体験コンテンツ" />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {CONTENT_CARDS.map((card) => (
               <Link
                 key={card.href}
                 href={card.href}
-                className="shrine-card flex flex-col"
+                className="flex flex-col"
                 style={{
-                  padding: "22px 18px",
-                  background: "linear-gradient(145deg, #1e1108 0%, #170d06 100%)",
+                  padding: "24px",
+                  minHeight: "205px",
+                  background: "linear-gradient(145deg, #1b0f08 0%, #251208 100%)",
                   border: "1px solid rgba(201,155,77,0.28)",
-                  borderRadius: "14px",
-                  boxShadow: "0 2px 20px rgba(0,0,0,0.45)",
+                  borderRadius: "16px",
+                  boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
                   textDecoration: "none",
+                  transition: "transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.55)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(0,0,0,0.6)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.28)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 24px rgba(0,0,0,0.5)";
                 }}
               >
                 {/* アイコン */}
                 <div style={{
-                  width: "44px", height: "44px", borderRadius: "10px", marginBottom: "16px",
+                  width: "48px", height: "48px", borderRadius: "12px", marginBottom: "18px",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   background: `${card.iconColor}18`,
                   border: `1px solid ${card.iconColor}40`,
                   color: card.iconColor,
+                  flexShrink: 0,
                 }}>
                   {card.icon}
                 </div>
-                <p style={{ color: "#C99B4D", fontSize: "0.57rem", letterSpacing: "0.3em", fontWeight: 700, marginBottom: "8px" }}>{card.en}</p>
-                <h3 className="font-serif" style={{ color: "#fff7e6", fontSize: "1rem", marginBottom: "10px", letterSpacing: "0.04em" }}>{card.ja}</h3>
-                <p style={{ color: "rgba(220,202,168,0.78)", fontSize: "0.78rem", lineHeight: 1.8, marginBottom: "16px", flex: 1 }}>{card.desc}</p>
+                <p style={{ color: "#C99B4D", fontSize: "0.62rem", letterSpacing: "0.14em", fontWeight: 700, marginBottom: "8px", textTransform: "uppercase" }}>{card.en}</p>
+                <h3 className="font-serif" style={{ color: "#fff7e6", fontSize: "1.1rem", marginBottom: "10px", letterSpacing: "0.04em" }}>{card.ja}</h3>
+                <p style={{ color: "rgba(220,202,168,0.8)", fontSize: "0.84rem", lineHeight: 1.75, marginBottom: "18px", flex: 1 }}>{card.desc}</p>
                 <span style={{
                   display: "inline-flex", alignItems: "center",
-                  padding: "5px 14px", borderRadius: "3px", fontSize: "0.75rem", fontWeight: 600,
-                  background: "rgba(201,155,77,0.1)", border: "1px solid rgba(201,155,77,0.35)",
+                  padding: "7px 16px", borderRadius: "4px", fontSize: "0.78rem", fontWeight: 600,
+                  background: "rgba(201,155,77,0.1)", border: "1px solid rgba(201,155,77,0.38)",
                   color: "#C99B4D", width: "fit-content",
                 }}>
                   {card.cta} →
@@ -425,19 +438,23 @@ export default async function HomePage() {
 
         {/* ─── 注目の神社 ─── */}
         {spotlight.length > 0 ? (
-          <section style={{ paddingBottom: "80px" }}>
-            <SectionHeader
-              en="SPOTLIGHT"
-              ja="注目の神社"
-              right={<span style={{ fontSize: "0.72rem", color: "rgba(220,202,168,0.45)" }}>訪問ごとに更新</span>}
-            />
-            <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <section style={{ paddingBottom: "100px", borderTop: "1px solid rgba(201,155,77,0.18)" }}>
+            <div style={{ paddingTop: "100px" }}>
+              <SectionHeader
+                en="SPOTLIGHT"
+                ja="注目の神社"
+                right={<span style={{ fontSize: "0.75rem", color: "rgba(220,202,168,0.45)" }}>訪問ごとに更新</span>}
+              />
+            </div>
+            <ul className="grid grid-cols-2 gap-5 md:grid-cols-4">
               {spotlight.map((s) => (
                 <li key={s.id}>
                   <Link
                     href={`/shrines/${spotSlug({ id: s.id, slug: s.slug })}`}
-                    className="shrine-card-sm group relative block overflow-hidden"
-                    style={{ aspectRatio: "3/4", borderRadius: "14px", border: "1px solid rgba(201,155,77,0.28)", display: "block", textDecoration: "none" }}
+                    className="group relative block overflow-hidden"
+                    style={{ height: "280px", borderRadius: "16px", border: "1px solid rgba(201,155,77,0.28)", display: "block", textDecoration: "none", background: "linear-gradient(135deg,#1b1009,#2a1710)", transition: "border-color 0.3s ease" }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.6)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.28)"; }}
                   >
                     {s.photo_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -446,19 +463,19 @@ export default async function HomePage() {
                         alt={s.name}
                         loading="lazy"
                         style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.6s ease" }}
-                        className="group-hover:scale-105"
+                        className="group-hover:scale-[1.04]"
                       />
                     ) : (
                       <div style={{ width: "100%", height: "100%", background: "linear-gradient(135deg,#1b1009,#2a1710)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <ToriiSVG size={48} />
+                        <ToriiSVG size={56} />
                       </div>
                     )}
                     <div style={{
-                      position: "absolute", inset: "auto 0 0 0", padding: "20px 14px 14px",
-                      background: "linear-gradient(to top, rgba(6,4,3,0.95) 0%, rgba(6,4,3,0.65) 50%, transparent 100%)",
+                      position: "absolute", inset: "auto 0 0 0", padding: "40px 16px 18px",
+                      background: "linear-gradient(to top, rgba(5,3,2,0.97) 0%, rgba(5,3,2,0.7) 50%, transparent 100%)",
                     }}>
-                      <p style={{ color: "#fff7e6", fontSize: "0.85rem", fontWeight: 600, marginBottom: "2px" }} className="line-clamp-1">{s.name}</p>
-                      <p style={{ color: "rgba(220,202,168,0.65)", fontSize: "0.7rem" }}>
+                      <p style={{ color: "#fff7e6", fontSize: "0.95rem", fontWeight: 600, marginBottom: "4px" }} className="line-clamp-1">{s.name}</p>
+                      <p style={{ color: "rgba(220,202,168,0.6)", fontSize: "0.75rem" }}>
                         {[s.prefecture, s.shrine_type].filter(Boolean).join(" · ")}
                       </p>
                     </div>
@@ -472,42 +489,45 @@ export default async function HomePage() {
         {/* ─── オンライン志納 ─── */}
         {offeringShrines.length > 0 ? (
           <section style={{
-            marginBottom: "80px", padding: "28px 28px",
-            background: "linear-gradient(145deg, #1e1108 0%, #170d06 100%)",
+            marginBottom: "100px", padding: "32px",
+            background: "linear-gradient(145deg, #1b0f08 0%, #251208 100%)",
             border: "1px solid rgba(201,155,77,0.28)", borderRadius: "16px",
+            borderTop: "1px solid rgba(201,155,77,0.18)",
           }}>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px", paddingBottom: "16px", borderBottom: "1px solid rgba(201,155,77,0.2)" }}>
-              <h2 className="font-serif" style={{ color: "#fff7e6", fontSize: "1.25rem", display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "22px", paddingBottom: "18px", borderBottom: "1px solid rgba(201,155,77,0.2)" }}>
+              <h2 className="font-serif" style={{ color: "#fff7e6", fontSize: "1.35rem", display: "flex", alignItems: "center", gap: "12px" }}>
                 オンライン志納 受付中
-                <span style={{ fontSize: "0.7rem", fontWeight: 600, padding: "3px 10px", background: "rgba(30,80,50,0.6)", color: "#6ee7a0", borderRadius: "3px", fontFamily: "sans-serif" }}>
+                <span style={{ fontSize: "0.72rem", fontWeight: 600, padding: "4px 12px", background: "rgba(30,80,50,0.6)", color: "#6ee7a0", borderRadius: "4px", fontFamily: "sans-serif" }}>
                   {offeringShrineCount} 社
                 </span>
               </h2>
-              <Link href="/offerings/shrines" style={{ fontSize: "0.75rem", color: "#C99B4D", textDecoration: "underline" }}>すべて見る →</Link>
+              <Link href="/offerings/shrines" style={{ fontSize: "0.78rem", color: "#C99B4D", textDecoration: "underline" }}>すべて見る →</Link>
             </div>
-            <p style={{ fontSize: "0.8rem", color: "rgba(220,202,168,0.55)", marginBottom: "20px", lineHeight: 1.7 }}>
+            <p style={{ fontSize: "0.84rem", color: "rgba(220,202,168,0.6)", marginBottom: "24px", lineHeight: 1.75 }}>
               全国 {total.toLocaleString()} 社のうち、宗教法人登録・受付同意が確認できた
               <b style={{ color: "#C99B4D" }}> {offeringShrineCount} 社</b> のみオンライン志納に対応しています。
             </p>
-            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
+            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
               {offeringShrines.slice(0, 6).map((s) => (
                 <li key={s.id}>
                   <Link
                     href={`/shrines/${spotSlug({ id: s.id, slug: s.slug })}`}
-                    className="shrine-sub-card block overflow-hidden"
-                    style={{ background: "#241309", border: "1px solid rgba(201,155,77,0.25)", borderRadius: "10px", textDecoration: "none" }}
+                    className="group block overflow-hidden"
+                    style={{ background: "#1e1009", border: "1px solid rgba(201,155,77,0.22)", borderRadius: "12px", textDecoration: "none", transition: "border-color 0.25s ease" }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.5)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.22)"; }}
                   >
                     {s.photo_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={s.photo_url} alt={s.name} loading="lazy" style={{ height: "80px", width: "100%", objectFit: "cover" }} />
+                      <img src={s.photo_url} alt={s.name} loading="lazy" style={{ height: "96px", width: "100%", objectFit: "cover", transition: "transform 0.4s ease" }} className="group-hover:scale-[1.04]" />
                     ) : (
-                      <div style={{ height: "80px", background: "#1b1009", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <ToriiSVG size={32} />
+                      <div style={{ height: "96px", background: "#1b1009", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <ToriiSVG size={36} />
                       </div>
                     )}
-                    <div style={{ padding: "8px 10px" }}>
-                      <p className="line-clamp-1" style={{ color: "#fff7e6", fontSize: "0.75rem", fontWeight: 600, marginBottom: "2px" }}>{s.name}</p>
-                      <p className="line-clamp-1" style={{ color: "rgba(220,202,168,0.6)", fontSize: "0.68rem" }}>{s.prefecture ?? "—"}</p>
+                    <div style={{ padding: "10px 12px" }}>
+                      <p className="line-clamp-1" style={{ color: "#fff7e6", fontSize: "0.78rem", fontWeight: 600, marginBottom: "2px" }}>{s.name}</p>
+                      <p className="line-clamp-1" style={{ color: "rgba(220,202,168,0.55)", fontSize: "0.7rem" }}>{s.prefecture ?? "—"}</p>
                     </div>
                   </Link>
                 </li>
@@ -537,34 +557,35 @@ export default async function HomePage() {
         <div style={{ position: "absolute", inset: "0 0 auto 0", height: "1px", background: "linear-gradient(to right, transparent, rgba(201,155,77,0.35), transparent)" }} />
         <div style={{ position: "absolute", inset: "auto 0 0 0", height: "1px", background: "linear-gradient(to right, transparent, rgba(201,155,77,0.35), transparent)" }} />
 
-        <div className="mx-auto max-w-6xl px-5 md:px-8" style={{ paddingTop: "72px", paddingBottom: "72px" }}>
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "36px" }}>
+        <div className="mx-auto max-w-[1220px] px-5 md:px-10" style={{ paddingTop: "96px", paddingBottom: "96px", minHeight: "320px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "44px" }}>
             <div>
-              <p style={{ color: "#dea84a", fontSize: "0.58rem", letterSpacing: "0.42em", fontWeight: 700, marginBottom: "6px", textTransform: "uppercase" }}>BENEFITS</p>
-              <h2 className="font-serif" style={{ color: "#fff7e6", fontSize: "1.45rem", letterSpacing: "0.05em" }}>ご利益から探す</h2>
+              <p style={{ color: "#dea84a", fontSize: "0.62rem", letterSpacing: "0.44em", fontWeight: 700, marginBottom: "8px", textTransform: "uppercase" }}>BENEFITS</p>
+              <h2 className="font-serif" style={{ color: "#fff7e6", fontSize: "1.65rem", letterSpacing: "0.05em" }}>ご利益から探す</h2>
             </div>
-            <Link href="/search" style={{ fontSize: "0.75rem", color: "#dea84a", textDecoration: "underline" }}>詳しく探す →</Link>
+            <Link href="/search" style={{ fontSize: "0.78rem", color: "#dea84a", textDecoration: "underline" }}>詳しく探す →</Link>
           </div>
 
-          {/* アイコングリッド：スマホ2列、タブレット4列、PC 8列 */}
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+          {/* アイコングリッド：スマホ4列、PC 8列 */}
+          <ul className="grid grid-cols-4 gap-6 lg:grid-cols-8">
             {BENEFIT_PRESETS.map((b) => (
               <li key={b.name}>
                 <Link
                   href={`/search?benefit=${encodeURIComponent(b.name)}`}
-                  className="shrine-benefit-btn flex flex-col items-center gap-3"
-                  style={{ textDecoration: "none" }}
+                  className="flex flex-col items-center gap-3"
+                  style={{ textDecoration: "none", transition: "transform 0.25s ease" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
                 >
-                  {/* 円形アイコン（GPT生成画像） */}
+                  {/* 円形アイコン */}
                   <div style={{
-                    width: "72px", height: "72px", borderRadius: "50%",
+                    width: "84px", height: "84px", borderRadius: "50%",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "linear-gradient(145deg, rgba(28,8,14,0.92) 0%, rgba(18,5,10,0.95) 100%)",
-                    border: "1px solid rgba(201,155,77,0.55)",
-                    boxShadow: "0 2px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,155,77,0.12)",
+                    background: "linear-gradient(145deg, #1c0910 0%, #160707 100%)",
+                    border: "1.5px solid rgba(230,185,94,0.55)",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(230,185,94,0.15), 0 0 12px rgba(201,155,77,0.12)",
                     flexShrink: 0,
                     overflow: "hidden",
-                    position: "relative",
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -572,14 +593,15 @@ export default async function HomePage() {
                       alt={b.name}
                       loading="lazy"
                       style={{
-                        width: "58px", height: "58px",
+                        width: "52px", height: "52px",
                         objectFit: "contain",
                         objectPosition: "center",
-                        filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.4))",
+                        filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5)) brightness(1.05)",
+                        mixBlendMode: "luminosity",
                       }}
                     />
                   </div>
-                  <span style={{ color: "rgba(240,220,180,0.88)", fontSize: "0.73rem", fontWeight: 500, letterSpacing: "0.06em", textAlign: "center", lineHeight: 1.4 }}>
+                  <span style={{ color: "rgba(240,220,175,0.9)", fontSize: "0.82rem", fontWeight: 500, letterSpacing: "0.05em", textAlign: "center", lineHeight: 1.4 }}>
                     {b.name}
                   </span>
                 </Link>
@@ -589,70 +611,78 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <main className="mx-auto max-w-6xl px-5 md:px-8">
+      <main className="mx-auto max-w-[1220px] px-5 md:px-10">
 
         {/* ─── 特集神社カード ─── */}
         {featured.length > 0 ? (
-          <section style={{ paddingTop: "80px", paddingBottom: "80px" }}>
+          <section style={{ paddingTop: "100px", paddingBottom: "100px", borderTop: "1px solid rgba(201,155,77,0.18)" }}>
             <SectionHeader
               en="FEATURED"
               ja="特集神社"
-              right={<Link href="/search" style={{ fontSize: "0.75rem", color: "#C99B4D", textDecoration: "underline" }}>もっと見る →</Link>}
+              right={<Link href="/search" style={{ fontSize: "0.78rem", color: "#C99B4D", textDecoration: "underline" }}>もっと見る →</Link>}
             />
-            <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {featured.map((s) => (
                 <li key={s.id}>
                   <Link
                     href={`/shrines/${spotSlug({ id: s.id, slug: s.slug })}`}
-                    className="shrine-card group flex flex-col overflow-hidden h-full"
+                    className="group flex flex-col overflow-hidden h-full"
                     style={{
-                      background: "linear-gradient(175deg,#1e1108,#170d06)",
-                      border: "1px solid rgba(201,155,77,0.28)",
-                      borderRadius: "14px",
-                      boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
+                      background: "#1a0d06",
+                      border: "1px solid rgba(201,155,77,0.26)",
+                      borderRadius: "16px",
+                      boxShadow: "0 4px 28px rgba(0,0,0,0.55)",
                       textDecoration: "none",
+                      transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.6)";
+                      (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 36px rgba(0,0,0,0.65)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,155,77,0.26)";
+                      (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 28px rgba(0,0,0,0.55)";
                     }}
                   >
-                    {/* 写真（大きく） */}
-                    <div className="relative overflow-hidden" style={{ height: "200px", flexShrink: 0 }}>
+                    {/* 写真 */}
+                    <div className="relative overflow-hidden" style={{ height: "195px", flexShrink: 0 }}>
                       {s.photo_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={s.photo_url}
                           alt={s.name}
                           loading="lazy"
-                          style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.7s ease", filter: "brightness(0.92) contrast(1.05)" }}
-                          className="group-hover:scale-105"
+                          style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.7s ease" }}
+                          className="group-hover:scale-[1.04]"
                         />
                       ) : (
-                        <div style={{ width: "100%", height: "100%", background: "#241309", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ width: "100%", height: "100%", background: "linear-gradient(135deg,#1e1009,#2a1710)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                           <ToriiSVG size={56} />
                         </div>
                       )}
-                      {/* 写真上の名前オーバーレイ */}
-                      <div style={{ position: "absolute", inset: "auto 0 0 0", padding: "28px 14px 12px", background: "linear-gradient(to top, rgba(23,13,6,1) 0%, rgba(23,13,6,0.7) 45%, transparent 100%)" }}>
-                        <h3 className="line-clamp-1 font-serif" style={{ color: "#fff7e6", fontSize: "0.95rem", letterSpacing: "0.04em" }}>{s.name}</h3>
+                      <div style={{ position: "absolute", inset: "auto 0 0 0", padding: "40px 16px 14px", background: "linear-gradient(to top, rgba(13,7,3,1) 0%, rgba(13,7,3,0.75) 45%, transparent 100%)" }}>
+                        <h3 className="line-clamp-1 font-serif" style={{ color: "#fff7e6", fontSize: "1rem", letterSpacing: "0.04em" }}>{s.name}</h3>
                       </div>
                     </div>
 
                     {/* テキストエリア */}
-                    <div style={{ padding: "12px 14px 16px", flex: 1, display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px solid rgba(201,155,77,0.18)" }}>
-                      <p className="line-clamp-1" style={{ color: "rgba(220,202,168,0.65)", fontSize: "0.72rem" }}>
+                    <div style={{ padding: "14px 16px 18px", flex: 1, display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px solid rgba(201,155,77,0.15)" }}>
+                      <p className="line-clamp-1" style={{ color: "rgba(220,202,168,0.6)", fontSize: "0.75rem" }}>
                         {[s.prefecture, s.shrine_type, s.shrine_rank].filter(Boolean).join(" / ") || "—"}
                       </p>
                       {s.description ? (
-                        <p className="line-clamp-2" style={{ color: "rgba(220,202,168,0.78)", fontSize: "0.78rem", lineHeight: 1.75 }}>
-                          {s.description.slice(0, 65)}{s.description.length > 65 ? "…" : ""}
+                        <p className="line-clamp-3" style={{ color: "rgba(220,202,168,0.82)", fontSize: "0.82rem", lineHeight: 1.75 }}>
+                          {s.description.slice(0, 80)}{s.description.length > 80 ? "…" : ""}
                         </p>
                       ) : null}
                       {s.benefits.length > 0 ? (
                         <div style={{ marginTop: "auto", display: "flex", flexWrap: "wrap", gap: "5px", paddingTop: "8px" }}>
                           {s.benefits.slice(0, 3).map((b) => (
                             <span key={b} style={{
-                              fontSize: "0.68rem", padding: "2px 8px",
-                              background: "rgba(139,30,39,0.22)",
-                              border: "1px solid rgba(201,155,77,0.3)",
-                              borderRadius: "3px", color: "#C99B4D",
+                              fontSize: "0.7rem", padding: "3px 9px",
+                              background: "rgba(100,20,25,0.35)",
+                              border: "1px solid rgba(201,155,77,0.32)",
+                              borderRadius: "4px", color: "#C99B4D",
                             }}>
                               {b}
                             </span>
@@ -684,22 +714,28 @@ export default async function HomePage() {
                     <li key={r.prefecture}>
                       <Link
                         href={`/search?prefecture=${encodeURIComponent(r.prefecture)}`}
-                        className="shrine-pref-item relative block overflow-hidden"
+                        className="relative block overflow-hidden"
                         style={{
-                          padding: "10px 12px",
-                          background: "linear-gradient(145deg,#1e1108,#170d06)",
-                          border: "1px solid rgba(201,155,77,0.28)",
+                          padding: "8px 12px",
+                          minHeight: "40px",
+                          display: "flex",
+                          alignItems: "center",
+                          background: "#170b06",
+                          border: "1px solid rgba(201,155,77,0.18)",
                           borderRadius: "8px",
                           textDecoration: "none",
+                          transition: "background 0.15s ease",
                         }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = "#2a100b")}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = "#170b06")}
                       >
                         <span
                           aria-hidden="true"
-                          style={{ position: "absolute", inset: "0 auto 0 0", width: `${pct}%`, background: "rgba(139,30,39,0.16)", borderRadius: "8px 0 0 8px" }}
+                          style={{ position: "absolute", inset: "0 auto 0 0", width: `${pct}%`, background: "rgba(139,30,39,0.14)", borderRadius: "8px 0 0 8px" }}
                         />
-                        <span style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "6px" }}>
-                          <span style={{ color: "#d8c7a5", fontSize: "0.82rem", fontWeight: 500 }} className="truncate">{r.prefecture}</span>
-                          <span style={{ color: "#C99B4D", fontSize: "0.72rem", fontWeight: 700, flexShrink: 0 }}>{r.count.toLocaleString()}</span>
+                        <span style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "6px", width: "100%" }}>
+                          <span style={{ color: "#d8c7a5", fontSize: "0.84rem", fontWeight: 500 }} className="truncate">{r.prefecture}</span>
+                          <span style={{ color: "#C99B4D", fontSize: "0.76rem", fontWeight: 700, flexShrink: 0 }}>{r.count.toLocaleString()}</span>
                         </span>
                       </Link>
                     </li>
@@ -715,7 +751,7 @@ export default async function HomePage() {
 
         {/* ─── 注目ユーザー ─── */}
         {topUsers.length > 0 ? (
-          <section style={{ paddingBottom: "80px" }}>
+          <section style={{ paddingBottom: "88px", paddingTop: "88px", borderTop: "1px solid rgba(201,155,77,0.12)" }}>
             <SectionHeader
               en="COMMUNITY"
               ja="注目の参拝者"
@@ -724,9 +760,9 @@ export default async function HomePage() {
             <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
               {topUsers.map((u, i) => (
                 <li key={u.client_id} style={{
-                  display: "flex", gap: "12px", padding: "16px",
+                  display: "flex", gap: "12px", padding: "20px",
                   background: "linear-gradient(145deg,#1e1108,#170d06)",
-                  border: "1px solid rgba(201,155,77,0.25)", borderRadius: "12px",
+                  border: "1px solid rgba(201,155,77,0.25)", borderRadius: "14px",
                 }}>
                   <div style={{
                     width: "40px", height: "40px", borderRadius: "50%", flexShrink: 0,
@@ -756,7 +792,7 @@ export default async function HomePage() {
 
         {/* ─── 最近の参拝コメント ─── */}
         {recentComments.length > 0 ? (
-          <section style={{ paddingBottom: "80px" }}>
+          <section style={{ paddingBottom: "88px", paddingTop: "88px", borderTop: "1px solid rgba(201,155,77,0.12)" }}>
             <SectionHeader
               en="VOICES"
               ja="最近の参拝コメント"
@@ -765,9 +801,9 @@ export default async function HomePage() {
             <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {recentComments.map((r) => (
                 <li key={r.id} style={{
-                  display: "flex", justifyContent: "space-between", gap: "12px", padding: "16px",
+                  display: "flex", justifyContent: "space-between", gap: "12px", padding: "20px",
                   background: "linear-gradient(145deg,#1e1108,#170d06)",
-                  border: "1px solid rgba(201,155,77,0.25)", borderRadius: "12px",
+                  border: "1px solid rgba(201,155,77,0.25)", borderRadius: "14px",
                 }}>
                   <div style={{ minWidth: 0 }}>
                     <Link
@@ -800,9 +836,9 @@ export default async function HomePage() {
             </ul>
           </section>
         ) : (
-          <section style={{ paddingBottom: "80px" }}>
+          <section style={{ paddingBottom: "88px", paddingTop: "88px", borderTop: "1px solid rgba(201,155,77,0.12)" }}>
             <SectionHeader en="VOICES" ja="最近の参拝コメント" />
-            <p style={{ padding: "20px", border: "1px dashed rgba(201,155,77,0.25)", background: "linear-gradient(145deg,#1e1108,#170d06)", borderRadius: "12px", fontSize: "0.82rem", color: "rgba(220,202,168,0.45)" }}>
+            <p style={{ padding: "20px", border: "1px dashed rgba(201,155,77,0.25)", background: "linear-gradient(145deg,#1e1108,#170d06)", borderRadius: "14px", fontSize: "0.82rem", color: "rgba(220,202,168,0.45)" }}>
               まだ参拝コメントがありません。<Link href="/map" style={{ color: "#C99B4D", textDecoration: "underline" }}>地図</Link>から参拝した神社にチェックインしてみましょう。
             </p>
           </section>
@@ -810,7 +846,7 @@ export default async function HomePage() {
 
         {/* ─── 新着神社 ─── */}
         {latest.length > 0 ? (
-          <section style={{ paddingBottom: "80px" }}>
+          <section style={{ paddingBottom: "88px", paddingTop: "88px", borderTop: "1px solid rgba(201,155,77,0.12)" }}>
             <SectionHeader
               en="NEW ARRIVALS"
               ja="新しく追加された神社"
@@ -822,7 +858,7 @@ export default async function HomePage() {
                   <Link
                     href={`/shrines/${spotSlug({ id: s.id, slug: s.slug })}`}
                     className="shrine-sub-card block overflow-hidden"
-                    style={{ background: "linear-gradient(145deg,#1e1108,#170d06)", border: "1px solid rgba(201,155,77,0.28)", borderRadius: "12px", textDecoration: "none" }}
+                    style={{ background: "linear-gradient(145deg,#1e1108,#170d06)", border: "1px solid rgba(201,155,77,0.28)", borderRadius: "14px", textDecoration: "none" }}
                   >
                     {s.photo_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -844,7 +880,7 @@ export default async function HomePage() {
         ) : null}
 
         {/* ─── 学ぶ / 気持ちを届ける ─── */}
-        <section className="grid grid-cols-1 gap-4 md:grid-cols-2" style={{ paddingBottom: "80px" }}>
+        <section className="grid grid-cols-1 gap-4 md:grid-cols-2" style={{ paddingBottom: "88px", paddingTop: "88px", borderTop: "1px solid rgba(201,155,77,0.12)" }}>
           {[
             { href: "/learn" as const, en: "LEARN", ja: "神社を学ぶ", desc: "参拝マナー・御朱印・祭神系譜・社格などの基礎知識。", icon: <BookOpen size={20} strokeWidth={1.4} /> },
             { href: "/offerings" as const, en: "OFFERINGS", ja: "気持ちを届ける", desc: "遠方からでも神社に感謝・決意を届けられるオンライン奉納。", icon: <Send size={20} strokeWidth={1.4} /> },
@@ -854,7 +890,7 @@ export default async function HomePage() {
               href={card.href}
               className="shrine-sub-card block"
               style={{
-                padding: "28px 28px",
+                padding: "32px 28px",
                 background: "linear-gradient(145deg,#1e1108,#170d06)",
                 border: "1px solid rgba(201,155,77,0.28)",
                 borderRadius: "14px",
@@ -872,7 +908,7 @@ export default async function HomePage() {
         </section>
 
         {/* フッター */}
-        <footer style={{ paddingTop: "24px", paddingBottom: "40px", textAlign: "center", borderTop: "1px solid rgba(201,155,77,0.18)", color: "rgba(220,202,168,0.35)", fontSize: "0.75rem" }}>
+        <footer style={{ paddingTop: "32px", paddingBottom: "48px", textAlign: "center", borderTop: "1px solid rgba(201,155,77,0.3)", color: "rgba(220,202,168,0.35)", fontSize: "0.75rem" }}>
           <p>Shrine Map of Japan · 参拝の記録と支援の場</p>
         </footer>
       </main>

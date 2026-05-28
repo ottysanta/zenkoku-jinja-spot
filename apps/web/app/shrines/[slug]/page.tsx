@@ -27,6 +27,7 @@ import {
   spotsBySameDeity,
   recentCheckins,
 } from "@/lib/shrine-db";
+import { resolveDeities } from "@/lib/deity-info";
 
 export const dynamic = "force-dynamic";
 
@@ -147,6 +148,7 @@ export default async function ShrineDetailPage({
 
   const benefits = parseBenefits(shrine.benefits);
   const highlights = parseHighlights(shrine.highlights);
+  const deityCards = resolveDeities(shrine.deity);
   const specs: Array<{ label: string; value: string }> = [];
   if (shrine.shrine_type) specs.push({ label: "区分", value: shrine.shrine_type });
   if (shrine.shrine_rank) specs.push({ label: "社格", value: shrine.shrine_rank });
@@ -182,9 +184,12 @@ export default async function ShrineDetailPage({
     });
   }
   if (shrine.deity) {
+    const deityDesc = deityCards.length > 0
+      ? deityCards.map((d) => `${d.name}（${d.reading}）は${d.domain}を司る神で、${d.description}`).join(" また、")
+      : `${shrine.name}の御祭神は「${shrine.deity}」です。`;
     faqEntries.push({
       q: `${shrine.name}の御祭神はどなたですか？`,
-      a: `${shrine.name}の御祭神は「${shrine.deity}」です。`,
+      a: deityDesc,
     });
   }
   if (benefits.length > 0) {
@@ -417,15 +422,92 @@ export default async function ShrineDetailPage({
               </section>
             ) : null}
 
-            {/* 祭神 */}
+            {/* 御祭神 */}
             {shrine.deity ? (
-              <section className="mb-6 rounded-md p-4" style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}>
-                <h2 className="mb-2 text-xs font-semibold tracking-wide text-vermilion-deep">
+              <section className="mb-6">
+                <h2 className="mb-3 text-xs font-semibold tracking-wide text-vermilion-deep">
                   御祭神
                 </h2>
-                <p className="whitespace-pre-wrap text-[14px]" style={{ color: "rgba(220,202,168,0.88)" }}>
-                  {shrine.deity}
-                </p>
+
+                {/* 知識ベースにある祭神はリッチカード表示 */}
+                {deityCards.length > 0 ? (
+                  <div className="space-y-3">
+                    {deityCards.map((d) => (
+                      <div
+                        key={d.name}
+                        className="rounded-xl p-4"
+                        style={{ border: "1px solid rgba(201,155,77,0.25)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div
+                            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-2xl"
+                            style={{ background: "rgba(139,30,39,0.15)", border: "1px solid rgba(139,30,39,0.3)" }}
+                          >
+                            {d.icon}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-baseline gap-2">
+                              <p className="font-serif text-base font-semibold" style={{ color: "#fff7e6" }}>
+                                {d.name}
+                              </p>
+                              <p className="text-[11px]" style={{ color: "rgba(220,202,168,0.5)" }}>
+                                {d.reading}
+                              </p>
+                            </div>
+                            <p className="mt-0.5 text-[11px] font-semibold" style={{ color: "rgba(201,155,77,0.85)" }}>
+                              {d.domain}
+                            </p>
+                          </div>
+                        </div>
+                        <p className="mt-3 text-[13px] leading-relaxed" style={{ color: "rgba(220,202,168,0.82)" }}>
+                          {d.description}
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-1.5">
+                          {d.benefits.map((b) => (
+                            <Link
+                              key={b}
+                              href={`/search?benefit=${encodeURIComponent(b)}`}
+                              className="rounded-full border border-vermilion/35 bg-vermilion/8 px-2.5 py-0.5 text-[11px] text-vermilion-deep hover:bg-vermilion/15 transition"
+                            >
+                              {b}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* 知識ベースに載っていない残りの祭神名を補足表示 */}
+                    {(() => {
+                      const knownNames = deityCards.flatMap((d) => d.aliases);
+                      const allNames = shrine.deity!
+                        .split(/[、,・\n\/]+/)
+                        .map((s) => s.trim())
+                        .filter(Boolean);
+                      const unknown = allNames.filter(
+                        (n) => !knownNames.some((k) => n.includes(k) || k.includes(n)),
+                      );
+                      return unknown.length > 0 ? (
+                        <div
+                          className="rounded-xl px-4 py-3 text-[13px]"
+                          style={{ border: "1px solid rgba(201,155,77,0.15)", background: "rgba(28,17,8,0.5)" }}
+                        >
+                          <span style={{ color: "rgba(220,202,168,0.5)" }}>その他の御祭神：</span>
+                          <span style={{ color: "rgba(220,202,168,0.82)" }}>{unknown.join("、")}</span>
+                        </div>
+                      ) : null;
+                    })()}
+                  </div>
+                ) : (
+                  /* 知識ベース未収録の場合はシンプルに表示 */
+                  <div
+                    className="rounded-xl p-4"
+                    style={{ border: "1px solid rgba(201,155,77,0.2)", background: "linear-gradient(145deg, #1e1108, #170d06)" }}
+                  >
+                    <p className="text-[14px] leading-relaxed" style={{ color: "rgba(220,202,168,0.88)" }}>
+                      {shrine.deity}
+                    </p>
+                  </div>
+                )}
               </section>
             ) : null}
 

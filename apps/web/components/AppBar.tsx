@@ -33,14 +33,17 @@ export default function AppBar() {
   const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/auth/session").then((r) => r.json()).then((data) => {
-      if (data?.user?.email) {
-        setLoginState("user");
-        setUserName(data.user.name || data.user.email);
-      } else {
-        setLoginState("guest");
-      }
-    }).catch(() => setLoginState("guest"));
+    fetch("/api/auth/session", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.user?.email) {
+          setLoginState("user");
+          setUserName(data.user.name || data.user.email);
+        } else {
+          setLoginState("guest");
+        }
+      })
+      .catch(() => setLoginState("guest"));
   }, []);
 
   useEffect(() => {
