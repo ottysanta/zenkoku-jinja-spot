@@ -291,7 +291,7 @@ export default function GuardianLP() {
         }}>縁</div>
 
         {/* Content */}
-        <div style={{ position: "relative", maxWidth: "460px", margin: "0 auto", width: "100%" }}>
+        <div style={{ position: "relative", maxWidth: "760px", margin: "0 auto", width: "100%" }}>
 
           {/* Badge */}
           <FadeUp delay={0.1}>
@@ -404,14 +404,14 @@ export default function GuardianLP() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 2 — 共感
       ══════════════════════════════════════════════════════ */}
-      <section style={{ padding: "88px 24px", background: C.dark }}>
-        <div style={{ maxWidth: "520px", margin: "0 auto" }}>
+      <section style={{ padding: "88px clamp(24px, 5vw, 80px)", background: C.dark }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <FadeUp>
             <SectionTag text="Does This Sound Familiar" />
-            <h2 style={{ fontSize: "clamp(1.4rem, 5.5vw, 1.9rem)", textAlign: "center", marginBottom: "12px", lineHeight: 1.55, fontWeight: 700 }}>
+            <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.1rem)", textAlign: "center", marginBottom: "12px", lineHeight: 1.55, fontWeight: 700 }}>
               こんなことを感じたことは<br />ありませんか
             </h2>
-            <p style={{ color: C.creamDim, fontSize: "0.84rem", textAlign: "center", lineHeight: 1.9, marginBottom: "36px" }}>
+            <p style={{ color: C.creamDim, fontSize: "0.95rem", textAlign: "center", lineHeight: 1.9, marginBottom: "36px" }}>
               一つでも思い当たることがあるなら、<br />この先を読み進めてください。
             </p>
           </FadeUp>
@@ -433,7 +433,7 @@ export default function GuardianLP() {
                     fontWeight: 700, opacity: 0.65,
                     paddingTop: "2px", minWidth: "18px",
                   }}>{String(i + 1).padStart(2, "0")}</span>
-                  <p style={{ color: C.creamDim, fontSize: "0.85rem", lineHeight: 1.85 }}>{w}</p>
+                  <p style={{ color: C.creamDim, fontSize: "0.93rem", lineHeight: 1.85 }}>{w}</p>
                 </div>
               </FadeUp>
             ))}
@@ -462,11 +462,11 @@ export default function GuardianLP() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 3 — WHY IT MATTERS
       ══════════════════════════════════════════════════════ */}
-      <section style={{ padding: "88px 24px", background: `linear-gradient(180deg, ${C.dark}, ${C.dark2})` }}>
-        <div style={{ maxWidth: "520px", margin: "0 auto" }}>
+      <section style={{ padding: "88px clamp(24px, 5vw, 80px)", background: `linear-gradient(180deg, ${C.dark}, ${C.dark2})` }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <FadeUp>
             <SectionTag text="Why It Matters" />
-            <h2 style={{ fontSize: "clamp(1.4rem, 5.5vw, 1.9rem)", textAlign: "center", marginBottom: "14px", lineHeight: 1.55, fontWeight: 700 }}>
+            <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.1rem)", textAlign: "center", marginBottom: "14px", lineHeight: 1.55, fontWeight: 700 }}>
               なぜ、守護神社を知ることが<br />大切なのか
             </h2>
             <p style={{ color: C.creamDim, fontSize: "0.85rem", lineHeight: 1.95, textAlign: "center", marginBottom: "32px" }}>
@@ -476,7 +476,7 @@ export default function GuardianLP() {
           </FadeUp>
 
           {/* Three shrine types */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "11px", marginBottom: "32px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "11px", marginBottom: "32px" }}>
             {SHRINES.map((shrine, i) => (
               <FadeUp key={i} delay={i * 0.08}>
                 <div style={{
@@ -498,7 +498,7 @@ export default function GuardianLP() {
                     {shrine.reading}
                   </p>
                   <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: C.cream, marginBottom: "9px" }}>{shrine.name}</h3>
-                  <p style={{ color: C.creamDim, fontSize: "0.81rem", lineHeight: 1.88 }}>{shrine.desc}</p>
+                  <p style={{ color: C.creamDim, fontSize: "0.9rem", lineHeight: 1.88 }}>{shrine.desc}</p>
                 </div>
               </FadeUp>
             ))}
@@ -510,7 +510,7 @@ export default function GuardianLP() {
               <p style={{ fontFamily: display, fontSize: "0.58rem", letterSpacing: "0.4em", color: C.gold, fontWeight: 600, marginBottom: "12px", textAlign: "center" }}>
                 陰陽五行思想とは
               </p>
-              <p style={{ color: C.creamDim, fontSize: "0.81rem", lineHeight: 1.9, marginBottom: "16px" }}>
+              <p style={{ color: C.creamDim, fontSize: "0.9rem", lineHeight: 1.9, marginBottom: "16px" }}>
                 中国に起源を持ち、日本の神道・暦・医学・建築に深く取り入れられてきた思想体系です。万物を五つのエネルギーに分類し、その相互作用で宇宙と人間の関係を読み解きます。
               </p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "6px" }}>
@@ -551,15 +551,15 @@ export default function GuardianLP() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 4 — SOLUTION
       ══════════════════════════════════════════════════════ */}
-      <section style={{ padding: "88px 24px", background: C.dark }}>
-        <div style={{ maxWidth: "520px", margin: "0 auto" }}>
+      <section style={{ padding: "88px clamp(24px, 5vw, 80px)", background: C.dark }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <FadeUp>
             <SectionTag text="Solution" />
-            <h2 style={{ fontSize: "clamp(1.4rem, 5.5vw, 1.9rem)", textAlign: "center", marginBottom: "12px", lineHeight: 1.55, fontWeight: 700 }}>
+            <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.1rem)", textAlign: "center", marginBottom: "12px", lineHeight: 1.55, fontWeight: 700 }}>
               守護神社診断が、<br />
               本来の「帰る場所」を教えます
             </h2>
-            <p style={{ color: C.creamDim, fontSize: "0.84rem", textAlign: "center", lineHeight: 1.9, marginBottom: "36px" }}>
+            <p style={{ color: C.creamDim, fontSize: "0.95rem", textAlign: "center", lineHeight: 1.9, marginBottom: "36px" }}>
               生年月日を入力するだけで、陰陽五行思想と産土信仰に基づいた体系的な分析により、縁の深い神社を全国31,247社のデータベースから特定します。
             </p>
           </FadeUp>
@@ -589,7 +589,7 @@ export default function GuardianLP() {
           </FadeUp>
 
           {/* Feature cards */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(330px, 1fr))", gap: "10px" }}>
             {FEATURES.map((f, i) => (
               <FadeUp key={i} delay={i * 0.06}>
                 <div style={{
@@ -605,7 +605,7 @@ export default function GuardianLP() {
                   }}>{String(i + 1).padStart(2, "0")}</div>
                   <div>
                     <h3 style={{ color: C.cream, fontSize: "0.87rem", fontWeight: 700, marginBottom: "5px" }}>{f.title}</h3>
-                    <p style={{ color: C.creamDim, fontSize: "0.79rem", lineHeight: 1.85 }}>{f.desc}</p>
+                    <p style={{ color: C.creamDim, fontSize: "0.9rem", lineHeight: 1.85 }}>{f.desc}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -619,7 +619,7 @@ export default function GuardianLP() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 5 — 実績
       ══════════════════════════════════════════════════════ */}
-      <section style={{ padding: "88px 24px", background: `linear-gradient(180deg, ${C.dark}, ${C.dark2})`, position: "relative", overflow: "hidden" }}>
+      <section style={{ padding: "88px clamp(24px, 5vw, 80px)", background: `linear-gradient(180deg, ${C.dark}, ${C.dark2})`, position: "relative", overflow: "hidden" }}>
         {/* Editorial number backdrop */}
         <div style={{
           position: "absolute", top: "50%", left: "50%",
@@ -629,10 +629,10 @@ export default function GuardianLP() {
           pointerEvents: "none", userSelect: "none", whiteSpace: "nowrap",
         }}>87,341</div>
 
-        <div style={{ maxWidth: "520px", margin: "0 auto", position: "relative" }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto", position: "relative" }}>
           <FadeUp>
             <SectionTag text="Track Record" />
-            <h2 style={{ fontSize: "clamp(1.4rem, 5.5vw, 1.9rem)", textAlign: "center", marginBottom: "40px", lineHeight: 1.55, fontWeight: 700 }}>
+            <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.1rem)", textAlign: "center", marginBottom: "40px", lineHeight: 1.55, fontWeight: 700 }}>
               このサービスが支持される理由
             </h2>
           </FadeUp>
@@ -671,17 +671,17 @@ export default function GuardianLP() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 6 — 体験者の声（チャット形式）
       ══════════════════════════════════════════════════════ */}
-      <section style={{ padding: "88px 24px", background: C.dark }}>
-        <div style={{ maxWidth: "520px", margin: "0 auto" }}>
+      <section style={{ padding: "88px clamp(24px, 5vw, 80px)", background: C.dark }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <FadeUp>
             <SectionTag text="Voices" />
-            <h2 style={{ fontSize: "clamp(1.4rem, 5.5vw, 1.9rem)", textAlign: "center", marginBottom: "44px", lineHeight: 1.55, fontWeight: 700 }}>
+            <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.1rem)", textAlign: "center", marginBottom: "44px", lineHeight: 1.55, fontWeight: 700 }}>
               守護神社診断を使った方の声
             </h2>
           </FadeUp>
 
           {/* Chat bubble testimonials */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "28px" }}>
             {VOICES.map((v, i) => (
               <FadeUp key={i} delay={i * 0.07}>
                 <div>
@@ -698,7 +698,7 @@ export default function GuardianLP() {
                         borderRadius: "4px 14px 14px 14px",
                       }}>
                         <p style={{ fontSize: "0.57rem", color: C.creamMute, marginBottom: "5px", letterSpacing: "0.1em" }}>診断前</p>
-                        <p style={{ color: C.creamDim, fontSize: "0.82rem", lineHeight: 1.82, fontStyle: "italic" }}>「{v.before}」</p>
+                        <p style={{ color: C.creamDim, fontSize: "0.92rem", lineHeight: 1.82, fontStyle: "italic" }}>「{v.before}」</p>
                       </div>
                     </div>
                   </div>
@@ -712,7 +712,7 @@ export default function GuardianLP() {
                         borderRadius: "14px 4px 14px 14px",
                       }}>
                         <p style={{ fontSize: "0.57rem", color: C.green, marginBottom: "5px", letterSpacing: "0.1em", opacity: 0.8 }}>診断後</p>
-                        <p style={{ color: C.creamDim, fontSize: "0.83rem", lineHeight: 1.88 }}>{v.after}</p>
+                        <p style={{ color: C.creamDim, fontSize: "0.93rem", lineHeight: 1.88 }}>{v.after}</p>
                       </div>
                     </div>
                   </div>
@@ -728,14 +728,14 @@ export default function GuardianLP() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 7 — CTA（診断へ）
       ══════════════════════════════════════════════════════ */}
-      <section ref={formRef} id="diagnose" style={{ padding: "88px 24px", background: `linear-gradient(180deg, ${C.dark}, ${C.dark2})` }}>
-        <div style={{ maxWidth: "520px", margin: "0 auto" }}>
+      <section ref={formRef} id="diagnose" style={{ padding: "88px clamp(24px, 5vw, 80px)", background: `linear-gradient(180deg, ${C.dark}, ${C.dark2})` }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <FadeUp>
             <SectionTag text="Free Diagnosis" />
             <h2 style={{ fontSize: "clamp(1.5rem, 5.5vw, 2rem)", textAlign: "center", marginBottom: "10px", lineHeight: 1.5, fontWeight: 700 }}>
               今すぐ、守護神社を知る
             </h2>
-            <p style={{ color: C.creamDim, fontSize: "0.84rem", textAlign: "center", lineHeight: 1.9, marginBottom: "32px" }}>
+            <p style={{ color: C.creamDim, fontSize: "0.95rem", textAlign: "center", lineHeight: 1.9, marginBottom: "32px" }}>
               登録不要・完全無料・生年月日のみで診断開始
             </p>
           </FadeUp>
@@ -795,11 +795,11 @@ export default function GuardianLP() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 8 — FAQ
       ══════════════════════════════════════════════════════ */}
-      <section style={{ padding: "88px 24px", background: C.dark }}>
-        <div style={{ maxWidth: "520px", margin: "0 auto" }}>
+      <section style={{ padding: "88px clamp(24px, 5vw, 80px)", background: C.dark }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <FadeUp>
             <SectionTag text="FAQ" />
-            <h2 style={{ fontSize: "clamp(1.4rem, 5.5vw, 1.9rem)", textAlign: "center", marginBottom: "40px", lineHeight: 1.55, fontWeight: 700 }}>
+            <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.1rem)", textAlign: "center", marginBottom: "40px", lineHeight: 1.55, fontWeight: 700 }}>
               よくある質問
             </h2>
           </FadeUp>
@@ -845,14 +845,14 @@ export default function GuardianLP() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 9 — LINE 登録オファー
       ══════════════════════════════════════════════════════ */}
-      <section style={{ padding: "88px 24px", background: `linear-gradient(180deg, ${C.dark}, ${C.dark2})` }}>
-        <div style={{ maxWidth: "520px", margin: "0 auto" }}>
+      <section style={{ padding: "88px clamp(24px, 5vw, 80px)", background: `linear-gradient(180deg, ${C.dark}, ${C.dark2})` }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <FadeUp>
             <SectionTag text="LINE Offer" color={C.green} />
-            <h2 style={{ fontSize: "clamp(1.4rem, 5.5vw, 1.9rem)", textAlign: "center", marginBottom: "12px", lineHeight: 1.55, fontWeight: 700 }}>
+            <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.1rem)", textAlign: "center", marginBottom: "12px", lineHeight: 1.55, fontWeight: 700 }}>
               診断後、LINEに登録すると届くもの
             </h2>
-            <p style={{ color: C.creamDim, fontSize: "0.84rem", textAlign: "center", lineHeight: 1.9, marginBottom: "30px" }}>
+            <p style={{ color: C.creamDim, fontSize: "0.95rem", textAlign: "center", lineHeight: 1.9, marginBottom: "30px" }}>
               守護神社を知ることは、スタートです。<br />
               LINEでは、あなたの属性に合わせた情報を継続してお届けします。
             </p>
@@ -929,7 +929,7 @@ export default function GuardianLP() {
           pointerEvents: "none", userSelect: "none",
         }}>守</div>
 
-        <div style={{ maxWidth: "480px", margin: "0 auto", textAlign: "center", position: "relative" }}>
+        <div style={{ maxWidth: "680px", margin: "0 auto", textAlign: "center", position: "relative" }}>
           <FadeUp>
             <div style={{
               display: "inline-block", padding: "5px 18px",
