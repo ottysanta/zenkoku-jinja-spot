@@ -448,18 +448,24 @@ export default function GuardianV2() {
             <FadeUp delay={0.1}>
               <h1 style={{
                 fontFamily:Fs, fontWeight:800, wordBreak:"keep-all",
-                fontSize:"clamp(2.7rem,8vw,5.2rem)",
-                lineHeight:1.4, letterSpacing:"0.01em", marginBottom:"30px",
+                fontSize:"clamp(2.4rem,6.5vw,4.6rem)",
+                lineHeight:1.45, letterSpacing:"0.01em", marginBottom:"16px",
               }}>
-                あなたを生涯<br/>守り続ける神社が、<br/>
-                <span style={{ color:C.goldL }}>すでに存在している。</span>
+                あなたを生涯守り続ける<br/>
+                神社が、すでに存在している。
               </h1>
+              <p style={{
+                fontFamily:Fs, fontSize:"clamp(1.1rem,2.4vw,1.3rem)",
+                color:C.goldL, letterSpacing:"0.04em", marginBottom:"28px",
+                fontWeight:600,
+              }}>— それが「守護神社」です。</p>
             </FadeUp>
 
             <FadeUp delay={0.18}>
               <p style={{
                 color:C.crDim, lineHeight:2.2, marginBottom:"34px",
-                fontSize:"clamp(1.08rem,2.4vw,1.22rem)", maxWidth:"480px",
+                fontSize:"clamp(1.05rem,2.2vw,1.18rem)", maxWidth:"480px",
+                wordBreak:"keep-all",
               }}>
                 生まれた土地、家系、今の暮らし——<br/>
                 生年月日だけで、あなたの守護神社3社がわかります。<br/>
@@ -855,7 +861,7 @@ export default function GuardianV2() {
             <div>
               <FadeUp>
                 <Tag t="Why It Matters"/>
-                <SH2 sx={{ marginBottom:"22px" }}>
+                <SH2 sx={{ marginBottom:"22px", wordBreak:"keep-all" }}>
                   守護神社を知った人に<br/>起きる5つの変化
                 </SH2>
               </FadeUp>
@@ -1144,7 +1150,7 @@ export default function GuardianV2() {
             </p>
           </FadeUp>
 
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))", gap:"24px" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(440px,1fr))", gap:"24px" }}>
             {VOICES.map((v,i)=>(
               <FadeUp key={i} delay={i*.1}>
                 <div className="g-hover" style={{
