@@ -38,10 +38,10 @@ const PX      = "clamp(24px, 6vw, 96px)";
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const WORRIES = [
-  "毎年初詣に行くのに、なんとなく気持ちが晴れないまま年を越している",
-  "神社は好きで定期的に参拝しているのに、「何かが足りない」という感覚が抜けない",
-  "有名なパワースポットを巡っているのに、生活の流れが変わらないと感じている",
-  "転職・結婚・引越しなど大切な決断の前に、どこへ手を合わせればよいかわからなかった",
+  "初詣くらいしか神社に行かないが、自分にとっての「縁のある神社」というものをよく知らないまま過ごしている",
+  "転職・結婚・引越しなど大切な決断の前に、どこかに手を合わせたいと思いながらどこへ行けばいいかわからなかった",
+  "産土神・氏神という言葉は聞いたことがあるが、自分にどう関係するのかよく知らなかった",
+  "特に信心深いわけではないが、もし自分と縁の深い神社があるなら知ってみたいと思っている",
   "みんなと同じ有名な神社か、近所の神社か。参拝先を選ぶ基準が見つからない",
   "神社で手を合わせるとき、自分が誰に何を届けているのか、よくわからないことがある",
   "「なんとなく気になる神社」と「本当に自分に合う神社」の違いを知らないまま、何年も過ぎた",
@@ -286,9 +286,9 @@ export default function GuardianLP() {
                 letterSpacing:"0.04em", marginBottom:"28px",
                 fontWeight:800, fontFamily:serif,
               }}>
-                あなたと最も縁の深い<br />
-                <span style={{ color:C.goldLight }}>「守護神社」</span>を<br />
-                知っていますか？
+                あなたは、自分を見守る<br />
+                <span style={{ color:C.goldLight }}>神社を知らないまま</span><br />
+                生きていませんか？
               </h1>
             </FadeUp>
 
@@ -302,18 +302,19 @@ export default function GuardianLP() {
                   color:C.creamDim, fontSize:"clamp(0.9rem,1.9vw,1.02rem)",
                   lineHeight:2.2, fontStyle:"italic",
                 }}>
-                  生まれた土地。<br />
-                  受け継いだ家系。<br />
-                  いま暮らしている場所。<br /><br />
-                  そのすべてには、あなたを静かに支えてきた<br />
-                  <em style={{ color:C.cream, fontStyle:"normal" }}>「見えないご縁」</em>があります。
+                  神社は好きじゃなくていい。<br />
+                  信仰心がなくていい。<br /><br />
+                  それでも、あなたの生まれた土地に、<br />
+                  家系に、今いる場所に、<br />
+                  <em style={{ color:C.cream, fontStyle:"normal" }}>静かに見守り続けている神社がある</em>かもしれません。
                 </p>
               </div>
             </FadeUp>
 
             <FadeUp delay={0.31}>
               <p style={{ color:C.creamDim, fontSize:"clamp(0.92rem,1.9vw,1.02rem)", lineHeight:1.95, marginBottom:"34px" }}>
-                生年月日から、あなたに縁の深い神社を無料で診断します。
+                「守護神社」とは、生まれや家系、暮らす土地に深く結びついた、あなただけの縁の神社です。<br />
+                生年月日から無料で調べることができます。
               </p>
             </FadeUp>
 
@@ -348,10 +349,10 @@ export default function GuardianLP() {
                   fontFamily:serif, marginBottom:"14px",
                 }}
               >
-                今すぐ守護神社を調べる
+                自分の守護神社を無料で調べる
               </button>
               <div style={{ display:"flex", gap:"14px", flexWrap:"wrap" }}>
-                {["登録不要","完全無料","生年月日だけ","約30秒で完了"].map(t=>(
+                {["登録不要","生年月日だけ","約30秒で完了"].map(t=>(
                   <span key={t} style={{ fontSize:"0.69rem", color:C.creamMute, display:"flex", alignItems:"center", gap:"4px" }}>
                     <span style={{ color:C.green, fontSize:"0.58rem" }}>✓</span> {t}
                   </span>
@@ -380,8 +381,8 @@ export default function GuardianLP() {
             <Tag text="Does This Sound Familiar" />
             <H2 style={{ textAlign:"center" }}>こんなことを感じたことは<br />ありませんか？</H2>
             <p style={{ color:C.creamDim, fontSize:"clamp(.92rem,1.9vw,1rem)", textAlign:"center", lineHeight:2, marginBottom:"10px" }}>
-              神社への想いはあるのに、なぜか満たされない。<br />
-              その感覚には、理由があるかもしれません。
+              神社に詳しくなくても、信仰心がなくても関係ありません。<br />
+              こうした感覚を持ったことのある方に、読んでいただきたいものがあります。
             </p>
             <p style={{ color:C.creamMute, fontSize:"0.84rem", textAlign:"center", lineHeight:1.8, marginBottom:"44px" }}>
               一つでも思い当たることがあるなら、この先を読み進めてください。
@@ -416,6 +417,50 @@ export default function GuardianLP() {
               </p>
             </div>
           </FadeUp>
+        </div>
+      </section>
+
+      <OrnamentLine />
+
+      {/* ══════════════════════════════════════════════════════
+          S02b  なぜ知る人が少なくなったのか
+      ══════════════════════════════════════════════════════ */}
+      <section style={{ ...SP, background:C.bg }}>
+        <div style={maxW}>
+          <FadeUp>
+            <Tag text="A Lost Connection" />
+            <H2 style={{ textAlign:"center" }}>なぜ今、自分の守護神社を<br />知る人が少なくなったのか</H2>
+          </FadeUp>
+
+          <div style={{ maxWidth:"720px", margin:"0 auto" }}>
+            <FadeUp delay={0.08}>
+              <p style={{ color:C.creamDim, fontSize:"clamp(.92rem,1.9vw,1rem)", lineHeight:2.2, marginBottom:"22px" }}>
+                産土神社・氏神神社・鎮守神社という考え方は、もともと日本人の生活に深く根づいていました。
+                人はどこかの土地に生まれ、その土地の神様に見守られながら育ち、今いる場所の神様に日々の暮らしを支えてもらうという、静かで自然な感覚です。
+              </p>
+              <p style={{ color:C.creamDim, fontSize:"clamp(.92rem,1.9vw,1rem)", lineHeight:2.2, marginBottom:"22px" }}>
+                しかし戦後の都市化と核家族化が進むにつれ、地域と家系のつながりは急速に薄れていきました。
+                生まれた土地を離れ、親の故郷も知らず、近所の神社の名前すら知らない——そうした暮らしが、いつしか「ふつう」になっていきました。
+              </p>
+            </FadeUp>
+
+            <FadeUp delay={0.14}>
+              <div style={{ padding:"26px 28px", background:C.goldFaint, border:`1px solid ${C.goldBorder}`, borderLeft:`3px solid ${C.gold}`, borderRadius:"12px", marginBottom:"22px" }}>
+                <p style={{ color:C.creamDim, fontSize:"clamp(.92rem,1.9vw,1rem)", lineHeight:2.2 }}>
+                  知らなくなったのは、あなたのせいではありません。<br />
+                  時代の変化が、その知識を届けにくくしたのです。
+                </p>
+              </div>
+            </FadeUp>
+
+            <FadeUp delay={0.2}>
+              <p style={{ color:C.creamDim, fontSize:"clamp(.92rem,1.9vw,1rem)", lineHeight:2.2 }}>
+                守護神社を知ることは、特別な信仰を持つことではありません。
+                自分がどんなルーツを持ち、どんな土地との縁の中に生きているかを、改めて確かめることです。
+                それは、静かに自分の足元を見つめ直すことと、よく似ています。
+              </p>
+            </FadeUp>
+          </div>
         </div>
       </section>
 
@@ -534,13 +579,14 @@ export default function GuardianLP() {
             <FadeUp delay={0.08}>
               <p style={{ color:C.creamDim, fontSize:"clamp(.92rem,1.9vw,1rem)", lineHeight:2.2, marginBottom:"22px" }}>
                 人は、自分ひとりで生きているようでいて、<br />
-                実はたくさんの土地や人の縁に支えられています。
+                実はたくさんの土地・家系・ご縁の中に生きています。<br />
+                そのルーツをたどることが、自分という人間を理解する入口になることがあります。
               </p>
               <p style={{ color:C.creamDim, fontSize:"clamp(.92rem,1.9vw,1rem)", lineHeight:2.2, marginBottom:"22px" }}>
                 なぜか心が落ち着く場所。<br />
                 何度も足を運びたくなる神社。<br />
                 人生の節目に不思議と導かれる土地。<br /><br />
-                そうした感覚には、あなた自身の運気やご縁が関係しているかもしれません。
+                そうした感覚には、あなた自身のルーツや縁が関係しているかもしれません。
               </p>
             </FadeUp>
 
