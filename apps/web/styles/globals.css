@@ -122,3 +122,41 @@ h1, h2, h3, h4 {
 
 /* 選択テキストの色 */
 ::selection { background: rgba(201,168,76,0.3); color: #F5EFE2; }
+
+/* ── /kantei ページ アニメーション ─────────────────────────── */
+@keyframes kantei-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+@keyframes kantei-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes kantei-floatUp {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes kantei-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes kantei-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(168,85,247,0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(168,85,247,0); }
+}
+.kantei-shimmer {
+  background: linear-gradient(90deg, #C99B4D 0%, #fff7e6 35%, #c084fc 60%, #C99B4D 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: kantei-shimmer 4s linear infinite;
+}
+.kantei-cta {
+  background-size: 200% 200% !important;
+  animation: kantei-gradient 3s ease infinite, kantei-glow 2.5s ease-in-out infinite;
+}
+.kantei-float-up {
+  animation: kantei-floatUp 0.5s ease-out forwards;
+}
