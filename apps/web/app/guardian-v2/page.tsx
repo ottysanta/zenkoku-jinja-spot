@@ -574,7 +574,7 @@ export default function GuardianV2() {
                     }}>{w.t}</p>
                   </div>
                   <p style={{
-                    color:C.crDim, fontSize:"clamp(0.95rem,2vw,1.02rem)", lineHeight:2.05,
+                    color:C.crDim, fontSize:"clamp(0.97rem,2vw,1.04rem)", lineHeight:2.1, wordBreak:"keep-all",
                   }}>{w.sub}</p>
                 </div>
               </FadeUp>
@@ -612,7 +612,7 @@ export default function GuardianV2() {
             <div style={{ maxWidth:"520px" }}>
               <FadeUp>
                 <Tag t="Why So Few People Know"/>
-                <SH2 sx={{ marginBottom:"28px" }}>
+                <SH2 sx={{ marginBottom:"28px", wordBreak:"keep-all" }}>
                   ほとんどの人が、<br/>守護神社を知らないまま生きている
                 </SH2>
               </FadeUp>
@@ -620,7 +620,7 @@ export default function GuardianV2() {
                 <FadeUp key={i} delay={i*.09}>
                   <p style={{
                     color:C.crDim, lineHeight:2.2, marginBottom:"24px",
-                    fontSize:"clamp(1.05rem,2.2vw,1.12rem)",
+                    fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all",
                   }}>{p}</p>
                 </FadeUp>
               ))}
@@ -1181,7 +1181,7 @@ export default function GuardianV2() {
                       「{v.pull}」
                     </p>
                   </div>
-                  <p style={{ color:C.crDim, fontSize:"clamp(0.95rem,2vw,1.02rem)", lineHeight:2.1, wordBreak:"keep-all" }}>{v.text}</p>
+                  <p style={{ color:C.crDim, fontSize:"clamp(0.97rem,2vw,1.05rem)", lineHeight:2.2, wordBreak:"keep-all" }}>{v.text}</p>
                 </div>
               </FadeUp>
             ))}
@@ -1471,8 +1471,7 @@ export default function GuardianV2() {
               <FadeUp>
                 <Tag t="Get Results on LINE" c={C.emFg}/>
                 <SH2 sx={{ marginBottom:"22px", wordBreak:"keep-all" }}>
-                  LINEで受け取ると、<br/>
-                  より深く・長く活かせます。
+                  LINEで受け取ると、<br/>守護神社がもっと深く活きる。
                 </SH2>
               </FadeUp>
               <FadeUp delay={0.08}>
