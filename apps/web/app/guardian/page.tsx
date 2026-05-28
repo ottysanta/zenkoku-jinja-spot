@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, type ReactNode, type CSSProperties } from "react";
 import Link from "next/link";
 
 // ── Color system ──────────────────────────────────────────────
@@ -146,9 +146,9 @@ function useInView(threshold = 0.12) {
 // ── Sub-components ────────────────────────────────────────────
 
 function FadeUp({ children, delay = 0, style: extraStyle = {} }: {
-  children: React.ReactNode;
+  children: ReactNode;
   delay?: number;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }) {
   const { ref, inView } = useInView();
   return (
