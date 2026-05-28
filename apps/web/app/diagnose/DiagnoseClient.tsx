@@ -126,6 +126,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         em: data.zodiac.emoji,
         lp: String(data.lifePathNumber),
       });
+      if (pref) params.set("pref", pref);
       window.history.replaceState(null, "", `/diagnose?${params.toString()}`);
     } catch {
       setError("診断中にエラーが発生しました。もう一度お試しください。");
@@ -446,6 +447,11 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
         <div className="rounded-xl p-3.5" style={DARK_CARD_SM}>
           <p className="text-[10px] font-bold tracking-wider mb-1.5" style={{ color: "rgba(220,202,168,0.55)" }}>あなたの人生テーマ</p>
           <p className="text-xs leading-relaxed italic" style={{ color: "rgba(220,202,168,0.75)" }}>「{numerologyData.lifeTheme}」</p>
+        </div>
+
+        <div className="rounded-xl p-3.5" style={{ background: "rgba(201,155,77,0.05)", border: "1px solid rgba(201,155,77,0.3)", borderRadius: "12px" }}>
+          <p className="text-[10px] font-bold tracking-wider mb-1.5" style={{ color: "#C99B4D" }}>✦ 誕生数{lifePathNumber}への守護神の言葉</p>
+          <p className="text-xs leading-relaxed" style={{ color: "rgba(220,202,168,0.82)" }}>「{numerologyData.shrineMessage}」</p>
         </div>
       </section>
 

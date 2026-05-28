@@ -347,7 +347,9 @@ export default function GuardianV2() {
     st.setAttribute("data-gv2","1");
     st.textContent = `
       html,body { overflow-x:hidden !important; max-width:100%; }
-      #__next, #__next > div { overflow-x:clip; }
+      *,*::before,*::after { box-sizing:border-box; }
+      h1,h2,h3,h4,h5,h6,p,span,li { overflow-wrap:break-word; word-break:normal; }
+      @media(max-width:768px){ .g-footer{ padding-bottom:calc(100px + env(safe-area-inset-bottom, 0px))!important; } }
       @keyframes gvZoom    { from{transform:scale(1.07)} to{transform:scale(1)} }
       @keyframes gvBreathe { 0%,100%{opacity:.02;transform:scale(1)} 50%{opacity:.06;transform:scale(1.012)} }
       @keyframes gvGlow    { 0%,100%{opacity:.06} 50%{opacity:.22} }
@@ -458,15 +460,16 @@ export default function GuardianV2() {
     <p style={{
       fontFamily:Fd, fontSize:"0.72rem", letterSpacing:"0.45em", color:c,
       textTransform:"uppercase", textAlign:"center", marginBottom:"18px",
-      borderBottom:`1px solid ${c}28`, display:"inline-block", paddingBottom:"7px",
-      left:"50%", position:"relative", transform:"translateX(-50%)",
+      borderBottom:`1px solid ${c}28`, display:"block", paddingBottom:"7px",
+      width:"fit-content", maxWidth:"100%", margin:"0 auto 18px",
+      overflowWrap:"break-word",
     }}>{t}</p>
   );
 
   const SH2 = ({children, sx={}}: {children:ReactNode; sx?:CSSProperties}) => (
     <h2 style={{
       fontFamily:Fs, fontSize:"clamp(2.2rem,5.5vw,3.5rem)", fontWeight:800,
-      lineHeight:1.5, wordBreak:"keep-all", ...sx,
+      lineHeight:1.5, ...sx,
     }}>{children}</h2>
   );
 
@@ -516,7 +519,7 @@ export default function GuardianV2() {
       {/* ── Sticky mobile CTA ──────────────────────────────────────────── */}
       <div className="g-sticky" style={{
         position:"fixed", bottom:0, left:0, right:0, zIndex:50,
-        padding:"10px 16px 14px",
+        padding:`10px 16px calc(14px + env(safe-area-inset-bottom, 0px))`,
         background:"rgba(3,5,10,.97)", borderTop:`1px solid ${C.gBd}`,
         alignItems:"center",
       }}>
@@ -584,7 +587,7 @@ export default function GuardianV2() {
           }}/>
         ))}
 
-        <div style={{ position:"relative", padding:`100px ${PX} 96px`, ...W }}>
+        <div style={{ position:"relative", padding:`clamp(72px,12vw,100px) ${PX} clamp(72px,10vw,96px)`, ...W }}>
           <div style={{ maxWidth:"580px" }}>
             <FadeUp delay={0.04}>
               <div style={{
@@ -600,7 +603,7 @@ export default function GuardianV2() {
 
             <FadeUp delay={0.1}>
               <h1 style={{
-                fontFamily:Fs, fontWeight:800, wordBreak:"keep-all",
+                fontFamily:Fs, fontWeight:800,
                 fontSize:"clamp(2.4rem,6.5vw,4.6rem)",
                 lineHeight:1.45, letterSpacing:"0.01em", marginBottom:"16px",
               }}>
@@ -618,7 +621,6 @@ export default function GuardianV2() {
               <p style={{
                 color:C.crDim, lineHeight:2.2, marginBottom:"34px",
                 fontSize:"clamp(1.05rem,2.2vw,1.18rem)", maxWidth:"480px",
-                wordBreak:"keep-all",
               }}>
                 生まれた土地、家系、今の暮らし——<br/>
                 生年月日だけで、あなたの守護神社3社がわかります。<br/>
@@ -672,7 +674,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S02  悩み — 2×3 グリッド
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ background:C.dark2, padding:`clamp(72px,10vw,120px) ${PX}` }}>
+      <section style={{ background:C.dark2, padding:`clamp(44px,10vw,120px) ${PX}` }}>
         <div style={W}>
           <FadeUp>
             <Tag t="Does This Sound Familiar"/>
@@ -728,7 +730,7 @@ export default function GuardianV2() {
                     }}>{w.t}</p>
                   </div>
                   <p style={{
-                    color:C.crDim, fontSize:"clamp(1rem,2.1vw,1.08rem)", lineHeight:2.3, wordBreak:"keep-all",
+                    color:C.crDim, fontSize:"clamp(1rem,2.1vw,1.08rem)", lineHeight:2.3,
                   }}>{w.sub}</p>
                 </div>
               </FadeUp>
@@ -741,10 +743,10 @@ export default function GuardianV2() {
               background:C.gFaint, border:`1px solid ${C.gBd}`,
               borderRadius:"14px", textAlign:"center",
             }}>
-              <p style={{ fontSize:"clamp(1.12rem,2.5vw,1.28rem)", lineHeight:2.1, color:C.cream, wordBreak:"keep-all", marginBottom:"20px" }}>
+              <p style={{ fontSize:"clamp(1.12rem,2.5vw,1.28rem)", lineHeight:2.1, color:C.cream, marginBottom:"20px" }}>
                 その答えの鍵のひとつが、あなたに縁の深い<strong style={{ color:C.goldL }}>「守護神社」</strong>にあります。
               </p>
-              <p style={{ fontSize:"clamp(1rem,2.1vw,1.1rem)", lineHeight:2.1, color:C.crDim, wordBreak:"keep-all" }}>
+              <p style={{ fontSize:"clamp(1rem,2.1vw,1.1rem)", lineHeight:2.1, color:C.crDim }}>
                 守護神社を知らないまま生きることは、<br/>
                 「自分の帰る場所」を知らないまま旅を続けるようなものです。<br/>
                 <span style={{color:C.cream}}>知ることで、迷いの質が変わります。</span>
@@ -766,7 +768,7 @@ export default function GuardianV2() {
             <div style={{ maxWidth:"520px" }}>
               <FadeUp>
                 <Tag t="Why So Few People Know"/>
-                <SH2 sx={{ marginBottom:"28px", wordBreak:"keep-all" }}>
+                <SH2 sx={{ marginBottom:"28px" }}>
                   ほとんどの人が、<br/>守護神社を知らないまま生きている
                 </SH2>
               </FadeUp>
@@ -774,7 +776,7 @@ export default function GuardianV2() {
                 <FadeUp key={i} delay={i*.09}>
                   <p style={{
                     color:C.crDim, lineHeight:2.2, marginBottom:"24px",
-                    fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all",
+                    fontSize:"clamp(1.05rem,2.2vw,1.12rem)",
                   }}>{p}</p>
                 </FadeUp>
               ))}
@@ -806,7 +808,7 @@ export default function GuardianV2() {
             }}>
               <p style={{
                 fontFamily:Fs, fontSize:"clamp(1rem,2.1vw,1.1rem)", lineHeight:2.0,
-                color:C.cream, wordBreak:"keep-all",
+                color:C.cream,
               }}>
                 「{WHY_UNKNOWN.quote}」
               </p>
@@ -840,7 +842,7 @@ export default function GuardianV2() {
             <p style={{
               fontFamily:Fs, fontSize:"clamp(1.5rem,4.8vw,3.0rem)", fontWeight:800,
               textAlign:"center", color:C.cream, marginTop:"10px",
-              textShadow:"0 2px 32px rgba(0,0,0,.8)", wordBreak:"keep-all",
+              textShadow:"0 2px 32px rgba(0,0,0,.8)",
             }}>
               あなたの縁は、知った瞬間から動き出す。
             </p>
@@ -879,12 +881,12 @@ export default function GuardianV2() {
                 </SH2>
               </FadeUp>
               <FadeUp delay={0.08}>
-                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"24px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all" }}>
+                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"24px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)" }}>
                   守護神社とは、あなたの生まれ・家系・現在地に縁のある神社のことです。有名な神社や話題のパワースポットではなく、<strong style={{color:C.cream}}>あなた自身と深くつながっているとされる場所</strong>です。
                 </p>
               </FadeUp>
               <FadeUp delay={0.14}>
-                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"32px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all" }}>
+                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"32px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)" }}>
                   産土・氏神・鎮守の3種の守護神社が、あなたの魂の根・家系・そして今の暮らしをそれぞれ守るとされています。この3つを知ることが、自分の縁を知ることへの第一歩です。
                 </p>
               </FadeUp>
@@ -896,7 +898,7 @@ export default function GuardianV2() {
                 }}>
                   <p style={{
                     fontFamily:Fs, fontSize:"clamp(1.05rem,2.3vw,1.15rem)", lineHeight:2.0,
-                    color:C.cream, wordBreak:"keep-all",
+                    color:C.cream,
                   }}>
                     「縁のある神社に気づいた人は、<br/>
                     迷ったとき・疲れたとき・決断のときに、<br/>
@@ -913,7 +915,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S04  三守護神社 — 画像背景カード
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(72px,10vw,120px) ${PX}` }}>
+      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(44px,10vw,120px) ${PX}` }}>
         <div style={{
           position:"absolute", inset:0,
           backgroundImage:`url('${IMG.threeShrineBg}')`,
@@ -929,7 +931,7 @@ export default function GuardianV2() {
             </SH2>
             <p style={{
               color:C.crDim, textAlign:"center", lineHeight:2.2, marginBottom:"60px",
-              fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all",
+              fontSize:"clamp(1.05rem,2.2vw,1.12rem)",
             }}>
               守護神社には3種類あり、それぞれ異なる役割を持っています。<br/>
               3つすべてを知ることで、あなたの「過去・現在・これから」を守る神社がそろいます。
@@ -976,7 +978,7 @@ export default function GuardianV2() {
                     <div style={{ fontFamily:Fs, fontSize:"clamp(1.5rem,3.4vw,2rem)", fontWeight:800, marginBottom:"6px" }}>{s.name}</div>
                     <div style={{ fontSize:"0.82rem", color:C.crMut, letterSpacing:"0.16em", marginBottom:"14px" }}>{s.rd}</div>
                     <p style={{ fontSize:"0.92rem", color:s.ac, letterSpacing:"0.04em", marginBottom:"18px", fontFamily:Fs, fontWeight:700 }}>{s.tag}</p>
-                    <p style={{ color:C.crDim, fontSize:"clamp(1rem,2vw,1.08rem)", lineHeight:2.15, wordBreak:"keep-all" }}>{s.desc}</p>
+                    <p style={{ color:C.crDim, fontSize:"clamp(1rem,2vw,1.08rem)", lineHeight:2.15 }}>{s.desc}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -1007,7 +1009,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S04.5  なぜ守護神社を知ることが人生のヒントになるのか
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ background:C.dark2, padding:`clamp(72px,10vw,120px) ${PX}` }}>
+      <section style={{ background:C.dark2, padding:`clamp(44px,10vw,120px) ${PX}` }}>
         <div style={{ ...W }}>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))", gap:"clamp(40px,7vw,80px)", alignItems:"center" }}>
 
@@ -1015,7 +1017,7 @@ export default function GuardianV2() {
             <div>
               <FadeUp>
                 <Tag t="Why It Matters"/>
-                <SH2 sx={{ marginBottom:"22px", wordBreak:"keep-all" }}>
+                <SH2 sx={{ marginBottom:"22px" }}>
                   守護神社を知った人に<br/>起きる5つの変化
                 </SH2>
               </FadeUp>
@@ -1057,7 +1059,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S04.6  この診断でわかること — 8アイテムグリッド
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(72px,10vw,120px) ${PX}` }}>
+      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(44px,10vw,120px) ${PX}` }}>
         <div style={{
           position:"absolute", inset:0,
           backgroundImage:`url('${IMG.raw10}')`,
@@ -1112,7 +1114,7 @@ export default function GuardianV2() {
                     fontFamily:Fs, fontSize:"clamp(1.05rem,2.2vw,1.12rem)", fontWeight:800,
                     color:C.cream, marginBottom:"12px",
                   }}>{item.t}</div>
-                  <p style={{ color:C.crDim, fontSize:"clamp(0.97rem,2vw,1.04rem)", lineHeight:2.0, wordBreak:"keep-all" }}>{item.d}</p>
+                  <p style={{ color:C.crDim, fontSize:"clamp(0.97rem,2vw,1.04rem)", lineHeight:2.0 }}>{item.d}</p>
                 </div>
               </FadeUp>
             ))}
@@ -1130,7 +1132,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S05  Quote panel
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(96px,14vw,160px) ${PX}` }}>
+      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(56px,14vw,160px) ${PX}` }}>
         <div style={{
           position:"absolute", inset:0,
           backgroundImage:`url('${IMG.quotePanelBg}')`,
@@ -1162,7 +1164,6 @@ export default function GuardianV2() {
               fontFamily:Fs, fontSize:"clamp(1.5rem,4vw,2.6rem)",
               letterSpacing:"0.04em", color:C.goldL, marginBottom:"30px",
               fontWeight:800, lineHeight:1.7, maxWidth:"700px", margin:"0 auto 30px",
-              wordBreak:"keep-all",
             }}>
               縁のある神社を知る人と、知らない人では<br/>
               人生の向き合い方が、静かに変わってゆく。
@@ -1170,7 +1171,7 @@ export default function GuardianV2() {
             <div style={{ width:"80px", height:"1px", background:C.gBd2, margin:"0 auto 30px" }}/>
             <p style={{
               color:C.crDim, fontSize:"clamp(1rem,2.2vw,1.12rem)", lineHeight:2.2,
-              maxWidth:"540px", margin:"0 auto", wordBreak:"keep-all",
+              maxWidth:"540px", margin:"0 auto",
             }}>
               あなたに縁の深い神社は、すでにそこに存在しています。<br/>
               あとは、知るか知らないか。その違いだけです。
@@ -1183,7 +1184,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S06  五行ロジック
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(72px,10vw,120px) ${PX}` }}>
+      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(44px,10vw,120px) ${PX}` }}>
         <div style={{
           position:"absolute", inset:0,
           backgroundImage:`url('${IMG.logicBg}')`,
@@ -1298,7 +1299,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S07  体験者の声 — testimonialsBg を背景に
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(72px,10vw,120px) ${PX}` }}>
+      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(44px,10vw,120px) ${PX}` }}>
         <div style={{
           position:"absolute", inset:0,
           backgroundImage:`url('${IMG.testimonialsBg}')`,
@@ -1345,11 +1346,11 @@ export default function GuardianV2() {
                     background:`${v.ic}0f`, borderLeft:`3px solid ${v.ic}88`,
                     borderRadius:"0 10px 10px 0", marginBottom:"20px",
                   }}>
-                    <p style={{ color:C.cream, fontFamily:Fs, fontSize:"clamp(0.98rem,2.1vw,1.06rem)", lineHeight:1.8, fontWeight:800, wordBreak:"keep-all" }}>
+                    <p style={{ color:C.cream, fontFamily:Fs, fontSize:"clamp(0.98rem,2.1vw,1.06rem)", lineHeight:1.8, fontWeight:800 }}>
                       「{v.pull}」
                     </p>
                   </div>
-                  <p style={{ color:C.crDim, fontSize:"clamp(0.97rem,2vw,1.05rem)", lineHeight:2.2, wordBreak:"keep-all" }}>{v.text}</p>
+                  <p style={{ color:C.crDim, fontSize:"clamp(0.97rem,2vw,1.05rem)", lineHeight:2.2 }}>{v.text}</p>
                 </div>
               </FadeUp>
             ))}
@@ -1394,7 +1395,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S08  FORM — formBg を背景に
       ════════════════════════════════════════════════════════════════ */}
-      <section ref={formRef} style={{ position:"relative", overflow:"hidden", padding:`clamp(72px,10vw,120px) ${PX}` }}>
+      <section ref={formRef} style={{ position:"relative", overflow:"hidden", padding:`clamp(44px,10vw,120px) ${PX}` }}>
         <div style={{
           position:"absolute", inset:0,
           backgroundImage:`url('${IMG.formBg}')`,
@@ -1413,7 +1414,6 @@ export default function GuardianV2() {
             <p style={{
               color:C.crDim, textAlign:"center", lineHeight:2.3,
               fontSize:"clamp(1.05rem,2.2vw,1.15rem)", maxWidth:"540px", margin:"0 auto 36px",
-              wordBreak:"keep-all",
             }}>
               生年月日を入れるだけ。約30秒で、あなたに縁の深い守護神社が分かります。<br/><br/>
               自分がどんな土地に支えられてきたのか。どの神社が今のあなたを見守っているのか。<br/>
@@ -1532,7 +1532,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S09  FAQ
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ background:C.dark2, padding:`clamp(72px,10vw,120px) ${PX}` }}>
+      <section style={{ background:C.dark2, padding:`clamp(44px,10vw,120px) ${PX}` }}>
         <div style={W}>
           <FadeUp>
             <Tag t="FAQ"/>
@@ -1574,7 +1574,7 @@ export default function GuardianV2() {
                   </button>
                   <div className={`g-faq-body${faq===i?" open":""}`}>
                     <div style={{ height:"1px", background:`linear-gradient(to right,${C.gBd},transparent)`, margin:"0 26px" }}/>
-                    <p style={{ padding:"20px 26px 26px", color:C.crDim, fontSize:"clamp(1rem,2vw,1.06rem)", lineHeight:2.2, wordBreak:"keep-all" }}>{f.a}</p>
+                    <p style={{ padding:"20px 26px 26px", color:C.crDim, fontSize:"clamp(1rem,2vw,1.06rem)", lineHeight:2.2 }}>{f.a}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -1587,7 +1587,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S10  LINE
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ background:C.ink, padding:`clamp(72px,10vw,120px) ${PX}` }}>
+      <section style={{ background:C.ink, padding:`clamp(44px,10vw,120px) ${PX}` }}>
         <div style={W}>
           <div style={{
             display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",
@@ -1657,7 +1657,7 @@ export default function GuardianV2() {
                 </SH2>
               </FadeUp>
               <FadeUp delay={0.06}>
-                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"24px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all" }}>
+                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"24px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)" }}>
                   「診断しただけ」で終わらせないために。<br/>
                   LINEで受け取ることで、あなたの守護神社が日常の中に生き続けます。
                 </p>
@@ -1686,7 +1686,7 @@ export default function GuardianV2() {
                       }}>
                         <div style={{ fontSize:"1.25rem", marginBottom:"7px" }}>{b.icon}</div>
                         <div style={{ fontFamily:Fs, fontSize:"0.92rem", fontWeight:800, color:C.cream, marginBottom:"5px", lineHeight:1.45 }}>{b.t}</div>
-                        <p style={{ color:C.crMut, fontSize:"0.8rem", lineHeight:1.75, wordBreak:"keep-all" as const }}>{b.d}</p>
+                        <p style={{ color:C.crMut, fontSize:"0.8rem", lineHeight:1.75 as const }}>{b.d}</p>
                       </div>
                     </FadeUp>
                   ))}
@@ -1701,7 +1701,7 @@ export default function GuardianV2() {
                   borderLeft:`3px solid rgba(6,199,85,.60)`,
                   borderRadius:"0 12px 12px 0", marginBottom:"26px",
                 }}>
-                  <p style={{ color:C.crDim, fontSize:"clamp(1rem,2vw,1.06rem)", lineHeight:2.0, wordBreak:"keep-all" }}>
+                  <p style={{ color:C.crDim, fontSize:"clamp(1rem,2vw,1.06rem)", lineHeight:2.0 }}>
                     「せっかく調べた縁をなくさないために」——<br/>
                     LINEで受け取るだけで、あなたの守護神社がずっと手元に残ります。
                   </p>
@@ -1747,7 +1747,7 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           S11  FINAL CTA
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(96px,14vw,160px) ${PX}` }}>
+      <section style={{ position:"relative", overflow:"hidden", padding:`clamp(56px,14vw,160px) ${PX}` }}>
         <div style={{
           position:"absolute", inset:0,
           backgroundImage:`url('${IMG.finalCtaBg}')`,
@@ -1777,7 +1777,7 @@ export default function GuardianV2() {
           <FadeUp>
             <Tag t="Begin Here" c={C.goldL}/>
             <h2 style={{
-              fontFamily:Fs, fontWeight:800, wordBreak:"keep-all",
+              fontFamily:Fs, fontWeight:800,
               fontSize:"clamp(2.4rem,6.5vw,4.2rem)",
               lineHeight:1.45, marginBottom:"26px",
               textShadow:"0 4px 32px rgba(0,0,0,.7)",
@@ -1791,7 +1791,7 @@ export default function GuardianV2() {
               color:C.crDim, lineHeight:2.3,
               fontSize:"clamp(1.08rem,2.3vw,1.18rem)",
               maxWidth:"540px", margin:"0 auto 56px",
-              wordBreak:"keep-all",
+              ,
             }}>
               生まれた土地。家族が受け継いできた土地。今、あなたが暮らしている場所。<br/><br/>
               そのすべてが、あなたの人生と静かにつながっています。<br/>
@@ -1838,7 +1838,7 @@ export default function GuardianV2() {
 
 
       {/* ── Footer ─────────────────────────────────────────────────────── */}
-      <footer style={{ background:C.ink, padding:`28px ${PX}`, borderTop:`1px solid rgba(201,155,77,.12)` }}>
+      <footer className="g-footer" style={{ background:C.ink, padding:`28px ${PX}`, borderTop:`1px solid rgba(201,155,77,.12)` }}>
         <div style={{
           maxWidth:"980px", margin:"0 auto",
           display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"12px",
