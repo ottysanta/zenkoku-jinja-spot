@@ -29,7 +29,7 @@ import {
 import { spotSlug } from "@/lib/api";
 import ReactionButtons from "@/components/checkins/ReactionButtons";
 
-export const revalidate = 3600; // 1時間ISRキャッシュ
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "全国神社スポット — Shrine Map of Japan",
