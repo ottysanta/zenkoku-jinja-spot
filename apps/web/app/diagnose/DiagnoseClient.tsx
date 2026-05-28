@@ -72,7 +72,7 @@ function StepIndicator({ step }: { step: number }) {
   );
 }
 
-type InitialParams = { year: string; month: string; day: string; worry: WorryKey };
+type InitialParams = { year: string; month: string; day: string; worry: WorryKey; prefecture?: string };
 
 function getDaysInMonth(year: string, month: string): number {
   if (!year || !month) return 31;
@@ -85,27 +85,30 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
   const years = Array.from({ length: currentYear - 1924 + 1 }, (_, i) => currentYear - i);
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
-  const [step, setStep]     = useState<"birth" | "worry" | "loading" | "result">("birth");
-  const [year, setYear]     = useState<string>(initialParams?.year ?? "");
-  const [month, setMonth]   = useState<string>(initialParams?.month ?? "");
-  const [day, setDay]       = useState<string>(initialParams?.day ?? "");
-  const [worry, setWorry]   = useState<WorryKey | null>(initialParams?.worry ?? null);
-  const [result, setResult] = useState<DiagnoseResult | null>(null);
-  const [error, setError]   = useState<string | null>(null);
+  const [step, setStep]         = useState<"birth" | "worry" | "loading" | "result">("birth");
+  const [year, setYear]         = useState<string>(initialParams?.year ?? "");
+  const [month, setMonth]       = useState<string>(initialParams?.month ?? "");
+  const [day, setDay]           = useState<string>(initialParams?.day ?? "");
+  const [worry, setWorry]       = useState<WorryKey | null>(initialParams?.worry ?? null);
+  const [prefecture, setPrefecture] = useState<string>(initialParams?.prefecture ?? "");
+  const [result, setResult]     = useState<DiagnoseResult | null>(null);
+  const [error, setError]       = useState<string | null>(null);
 
   // URLに結果パラメータがあれば自動フェッチ
   useEffect(() => {
     if (initialParams?.year && initialParams?.month && initialParams?.day && initialParams?.worry) {
-      void fetchResult(initialParams.year, initialParams.month, initialParams.day, initialParams.worry);
+      void fetchResult(initialParams.year, initialParams.month, initialParams.day, initialParams.worry, initialParams.prefecture);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function fetchResult(y: string, m: string, d: string, w: WorryKey) {
+  async function fetchResult(y: string, m: string, d: string, w: WorryKey, pref?: string) {
     setStep("loading");
     setError(null);
     try {
-      const res = await fetch(`/api/diagnose?year=${y}&month=${m}&day=${d}&worry=${w}`);
+      const apiParams = new URLSearchParams({ year: y, month: m, day: d, worry: w });
+      if (pref) apiParams.set("prefecture", pref);
+      const res = await fetch(`/api/diagnose?${apiParams.toString()}`);
       if (!res.ok) throw new Error();
       const data: DiagnoseResult = await res.json();
       setResult(data);
@@ -132,7 +135,7 @@ export default function DiagnoseClient({ initialParams }: { initialParams?: Init
 
   async function handleDiagnose(selectedWorry: WorryKey) {
     setWorry(selectedWorry);
-    await fetchResult(year, month, day, selectedWorry);
+    await fetchResult(year, month, day, selectedWorry, prefecture || undefined);
   }
 
   function reset() {

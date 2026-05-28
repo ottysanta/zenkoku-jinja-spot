@@ -149,7 +149,7 @@ const VOICES = [
 const FAQS = [
   { q:"診断に料金はかかりますか？",              a:"かかりません。診断の利用・結果の閲覧はすべて完全無料です。有料オプションや課金は一切ありません。" },
   { q:"登録や個人情報の入力は必要ですか？",      a:"不要です。メールアドレスや氏名などの個人情報は診断には必要ありません。LINEへの登録は任意です。" },
-  { q:"生年月日以外に必要な情報はありますか？",  a:"生年月日のみで診断できます。都道府県・性別は任意項目で、入力するとより詳細な結果が得られます。" },
+  { q:"生年月日以外に必要な情報はありますか？",  a:"生年月日のみで診断できます。都道府県を入力すると「鎮守神社（現住所の守護神社）」の絞り込みに使用されます。性別は任意です。" },
   { q:"診断結果はどこで受け取れますか？",        a:"診断終了後にWebページで確認できます。LINEに登録すると結果の保存・再確認が可能です。" },
   { q:"複数の神社が表示されるのはなぜですか？",  a:"産土・氏神・鎮守という3種類の守護神社がそれぞれ導き出されるためです。縁の深さに応じて複数提案します。" },
   { q:"本当に自分に合った神社が分かりますか？",  a:"数千年にわたって継承されてきた思想体系に基づいていますが、現代科学とは異なります。参拝先選びのヒントとしてご活用ください。" },
@@ -431,6 +431,16 @@ export default function GuardianV2() {
   function diagnose() {
     const p = new URLSearchParams();
     if(bday){ const[y,m,d]=bday.split("-"); if(y)p.set("year",y); if(m)p.set("month",m); if(d)p.set("day",d); }
+    if(thm && thm!=="全般"){
+      const worryMap: Record<string,string> = {
+        "仕事・事業":"work","人間関係":"work",
+        "恋愛・縁結び":"love",
+        "家族のこと":"family",
+        "その他":"self","健康":"self","金運":"self",
+      };
+      const w = worryMap[thm]; if(w) p.set("worry",w);
+    }
+    if(pref && pref!=="選択しない") p.set("pref", pref);
     router.push(`/diagnose?${p}`);
   }
 
@@ -1453,7 +1463,7 @@ export default function GuardianV2() {
               </div>
               <div style={{ marginBottom:"22px" }}>
                 <label style={{ display:"block", fontSize:"0.9rem", color:C.gold, letterSpacing:"0.06em", marginBottom:"10px", fontFamily:Fs, fontWeight:700 }}>
-                  現在の都道府県（任意）
+                  現在の都道府県（※鎮守神社の特定に使用）
                 </label>
                 <select
                   className="g-input" value={pref} onChange={e=>setPref(e.target.value)}

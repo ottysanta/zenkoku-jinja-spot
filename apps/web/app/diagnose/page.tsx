@@ -10,7 +10,7 @@ const DEFAULT_META = {
 
 // ─── 動的 OGP（URLに結果パラメータが含まれる場合） ────────────────────────
 type SearchParams = Promise<{
-  y?: string; m?: string; d?: string; w?: string;
+  y?: string; m?: string; d?: string; w?: string; pref?: string;
   t?: string; mod?: string; el?: string; em?: string; lp?: string;
 }>;
 
@@ -130,7 +130,7 @@ export default async function DiagnosePage(
 
   // URL に結果パラメータがあれば DiagnoseClient に渡して自動表示
   const initialParams = (p.y && p.m && p.d && p.w)
-    ? { year: p.y, month: p.m, day: p.d, worry: p.w as "work" | "love" | "family" | "self" }
+    ? { year: p.y, month: p.m, day: p.d, worry: p.w as "work" | "love" | "family" | "self", prefecture: p.pref }
     : undefined;
 
   return (

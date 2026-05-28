@@ -408,10 +408,11 @@ const WORRY_REASON: Record<WorryKey, string> = {
 };
 
 export async function GET(req: NextRequest) {
-  const year  = Number(req.nextUrl.searchParams.get("year")  ?? "");
-  const month = Number(req.nextUrl.searchParams.get("month") ?? "0");
-  const day   = Number(req.nextUrl.searchParams.get("day")   ?? "1");
-  const worry = (req.nextUrl.searchParams.get("worry") ?? "self") as WorryKey;
+  const year       = Number(req.nextUrl.searchParams.get("year")  ?? "");
+  const month      = Number(req.nextUrl.searchParams.get("month") ?? "0");
+  const day        = Number(req.nextUrl.searchParams.get("day")   ?? "1");
+  const worry      = (req.nextUrl.searchParams.get("worry") ?? "self") as WorryKey;
+  const prefecture = req.nextUrl.searchParams.get("prefecture") ?? undefined;
 
   const currentYear = new Date().getFullYear();
   if (!year || year < 1900 || year > currentYear) {
@@ -454,24 +455,46 @@ export async function GET(req: NextRequest) {
     }
   };
 
-  // 1st: 属性に紐づく守護神キーワードで検索
+  // 都道府県が指定されている場合、その県内で優先検索
+  const prefOpts = prefecture ? { prefecture } : {};
+
+  // 1st: 属性に紐づく守護神キーワードで検索（県内優先）
   for (const hint of elementData.deityHints) {
     if (pool.length >= 9) break;
-    addRows(searchSpots({ deity: hint, limit: 10 }).rows);
+    addRows(searchSpots({ deity: hint, limit: 10, ...prefOpts }).rows);
   }
 
-  // 2nd: まだ3社未満なら御利益キーワードで補完
-  if (pool.length < 3) {
+  // 2nd: まだ3社未満なら御利益キーワードで補完（県内）
+  if (pool.length < 3 && prefecture) {
     for (const benefit of elementData.benefits) {
       if (pool.length >= 9) break;
-      addRows(searchSpots({ benefit, limit: 10 }).rows);
+      addRows(searchSpots({ benefit, limit: 10, ...prefOpts }).rows);
     }
   }
 
-  // 写真付き優先でシャッフルして3社選ぶ
-  const withPhoto    = pool.filter((r) => r.photo_url);
-  const withoutPhoto = pool.filter((r) => !r.photo_url);
-  const candidates   = [...withPhoto, ...withoutPhoto].slice(0, 9);
+  // 3rd: 県内で3社揃わなければ全国から補完
+  if (pool.length < 3) {
+    for (const hint of elementData.deityHints) {
+      if (pool.length >= 9) break;
+      addRows(searchSpots({ deity: hint, limit: 10 }).rows);
+    }
+    if (pool.length < 3) {
+      for (const benefit of elementData.benefits) {
+        if (pool.length >= 9) break;
+        addRows(searchSpots({ benefit, limit: 10 }).rows);
+      }
+    }
+  }
+
+  // 写真付き優先でシャッフルして3社選ぶ（県内神社を先頭に）
+  const inPref       = prefecture ? pool.filter((r) => r.prefecture === prefecture) : [];
+  const outPref      = prefecture ? pool.filter((r) => r.prefecture !== prefecture) : pool;
+  const withPhotoIn  = inPref.filter((r) => r.photo_url);
+  const withoutPhotoIn = inPref.filter((r) => !r.photo_url);
+  const withPhotoOut = outPref.filter((r) => r.photo_url);
+  const withoutPhotoOut = outPref.filter((r) => !r.photo_url);
+  const ordered = [...withPhotoIn, ...withoutPhotoIn, ...withPhotoOut, ...withoutPhotoOut];
+  const candidates   = ordered.slice(0, 9);
   const selected     = candidates.sort(() => Math.random() - 0.5).slice(0, 3);
 
   const shrines = selected.map((r) => ({
