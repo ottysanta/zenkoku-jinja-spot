@@ -346,7 +346,8 @@ export default function GuardianV2() {
     const st = document.createElement("style");
     st.setAttribute("data-gv2","1");
     st.textContent = `
-      html,body { overflow-x:hidden; max-width:100%; }
+      html,body { overflow-x:hidden !important; max-width:100%; }
+      #__next, #__next > div { overflow-x:clip; }
       @keyframes gvZoom    { from{transform:scale(1.07)} to{transform:scale(1)} }
       @keyframes gvBreathe { 0%,100%{opacity:.02;transform:scale(1)} 50%{opacity:.06;transform:scale(1.012)} }
       @keyframes gvGlow    { 0%,100%{opacity:.06} 50%{opacity:.22} }
@@ -507,7 +508,7 @@ export default function GuardianV2() {
      RENDER
   ════════════════════════════════════════════════════════════════════════ */
   return (
-    <div style={{ background:C.ink, color:C.cream, minHeight:"100vh", fontFamily:Fs, WebkitFontSmoothing:"antialiased", overflowX:"hidden", maxWidth:"100vw" }}>
+    <div style={{ background:C.ink, color:C.cream, minHeight:"100vh", fontFamily:Fs, WebkitFontSmoothing:"antialiased" }}>
 
       {/* ── Global sakura petal overlay ────────────────────────────────── */}
       <SakuraPetals/>
