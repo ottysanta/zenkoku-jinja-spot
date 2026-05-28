@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  useRef, useState, useEffect,
+  useRef, useState, useEffect, useMemo,
   type ReactNode, type CSSProperties,
 } from "react";
 import Link from "next/link";
@@ -167,6 +167,135 @@ const PREFS  = [
   "福岡県","佐賀県","長崎県","熊本県","大分県","宮崎県","鹿児島県","沖縄県",
 ];
 
+/* ── Golden particle canvas ─────────────────────────────────────────────── */
+function ParticleCanvas() {
+  const cvRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const cv = cvRef.current; if (!cv) return;
+    const ctx = cv.getContext("2d"); if (!ctx) return;
+    const resize = () => { cv.width = cv.offsetWidth; cv.height = cv.offsetHeight; };
+    resize();
+    window.addEventListener("resize", resize);
+    const N = 80;
+    const pts = Array.from({length:N}, () => ({
+      x: Math.random() * cv.width,
+      y: Math.random() * cv.height,
+      r: Math.random() * 1.6 + 0.3,
+      vx: (Math.random()-.5) * 0.22,
+      vy: -(Math.random() * 0.28 + 0.08),
+      ph: Math.random() * Math.PI * 2,
+    }));
+    let af: number;
+    const draw = () => {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      const t = Date.now() * 0.001;
+      pts.forEach(p => {
+        p.x += p.vx + Math.sin(t * .4 + p.ph) * .12;
+        p.y += p.vy;
+        if (p.y < -8) { p.y = cv.height + 8; p.x = Math.random() * cv.width; }
+        if (p.x < -8) p.x = cv.width + 8;
+        if (p.x > cv.width + 8) p.x = -8;
+        const a = (Math.sin(t * .8 + p.ph) + 1) / 2 * .4 + .08;
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 7);
+        g.addColorStop(0, `rgba(235,205,130,${a})`);
+        g.addColorStop(.5, `rgba(201,155,77,${a * .3})`);
+        g.addColorStop(1, "transparent");
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 7, 0, Math.PI*2);
+        ctx.fillStyle = g; ctx.fill();
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(248,235,190,${a})`; ctx.fill();
+      });
+      af = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(af); window.removeEventListener("resize", resize); };
+  }, []);
+  return <canvas ref={cvRef} style={{ position:"absolute", inset:0, width:"100%", height:"100%", pointerEvents:"none", zIndex:2 }}/>;
+}
+
+/* ── Sakura petals (fixed, global) ─────────────────────────────────────── */
+const PETAL = "M8 1.5C8 1.5 11 4.5 10.5 8C10.5 8 13.5 6 15.5 8C15.5 8 13 11.5 10 11.5C10 11.5 12 14.5 10 15.5C10 15.5 8 12.5 8 10.5C8 10.5 5.5 13.5 3.5 12C3.5 12 5.5 9 5 8C5 8 2 8 1 6C1 6 4 5 5.5 7C5.5 7 5.5 1.5 8 1.5Z";
+function SakuraPetals() {
+  const petals = useMemo(() => Array.from({length:14}, (_,i) => ({
+    left: (i * 7.2 + Math.random() * 5) % 100,
+    dur: 13 + (i % 5) * 2.4,
+    delay: (i * 1.8) % 18,
+    size: 12 + (i % 4) * 3,
+    opacity: .10 + (i % 3) * .05,
+    dx: ((i % 3) - 1) * 80 + (Math.random() - .5) * 40,
+  })), []);
+  return (
+    <div style={{ position:"fixed", inset:0, pointerEvents:"none", zIndex:3, overflow:"hidden" }}>
+      {petals.map((p,i) => (
+        <div key={i} style={{
+          position:"absolute", top:"-8%", left:`${p.left}%`,
+          opacity: p.opacity,
+          animation:`gvSakura ${p.dur}s linear ${p.delay}s infinite`,
+          ["--dx" as any]: `${p.dx}px`,
+          width: p.size, height: p.size,
+        }}>
+          <svg viewBox="0 0 16 16" style={{width:"100%",height:"100%"}} fill="none">
+            <path d={PETAL} fill="#e8b8cc" opacity=".9"/>
+            <path d={PETAL} fill="url(#pg)" opacity=".5"/>
+            <defs><radialGradient id="pg"><stop stopColor="#fff" stopOpacity=".8"/><stop offset="1" stopColor="#f0a8c0" stopOpacity="0"/></radialGradient></defs>
+          </svg>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Animated number counter ────────────────────────────────────────────── */
+function AnimCounter({ from=0, to, suffix="" }: {from?:number; to:number; suffix?:string}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [n, setN] = useState(from);
+  const [started, setStarted] = useState(false);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setStarted(true); io.disconnect(); }}, {threshold:.2});
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!started) return;
+    const dur = 1800, step = 16;
+    const inc = (to - from) / (dur / step);
+    let cur = from;
+    const t = setInterval(() => {
+      cur = Math.min(cur + inc, to);
+      setN(Math.round(cur));
+      if (cur >= to) clearInterval(t);
+    }, step);
+    return () => clearInterval(t);
+  }, [started, from, to]);
+  return <span ref={ref}>{n.toLocaleString("ja-JP")}{suffix}</span>;
+}
+
+/* ── Japanese Mon (family crest) SVG watermark ──────────────────────────── */
+const MonWatermark = ({opacity=.06}: {opacity?:number}) => (
+  <svg viewBox="0 0 100 100" style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none",opacity}} aria-hidden="true">
+    <circle cx="50" cy="50" r="45" fill="none" stroke="#C99B4D" strokeWidth=".6"/>
+    <circle cx="50" cy="50" r="38" fill="none" stroke="#C99B4D" strokeWidth=".3"/>
+    {/* 三つ巴 (mitsudomoe) */}
+    {[0,120,240].map(deg=>(
+      <g key={deg} transform={`rotate(${deg},50,50)`}>
+        <path d="M50 50 C50 38,62 38,62 50 C62 61,50 61,50 50" fill="none" stroke="#C99B4D" strokeWidth=".8"/>
+        <circle cx="56" cy="44" r="5" fill="none" stroke="#C99B4D" strokeWidth=".6"/>
+      </g>
+    ))}
+  </svg>
+);
+
+/* ── Brush stroke SVG divider ───────────────────────────────────────────── */
+const BrushDivider = ({flip=false}: {flip?:boolean}) => (
+  <div style={{position:"relative",height:"48px",overflow:"hidden",pointerEvents:"none", transform:flip?"scaleX(-1)":"none"}}>
+    <svg viewBox="0 0 1200 48" preserveAspectRatio="none" style={{width:"100%",height:"100%"}} aria-hidden="true">
+      <path d="M0 24 C150 8,200 40,400 24 C550 10,650 38,800 20 C950 4,1050 36,1200 24" fill="none" stroke="rgba(201,155,77,0.18)" strokeWidth="1.5"/>
+      <path d="M0 28 C200 14,300 42,500 26 C700 10,900 38,1200 22" fill="none" stroke="rgba(201,155,77,0.08)" strokeWidth="0.8"/>
+    </svg>
+  </div>
+);
+
 /* ── Hooks / utilities ───────────────────────────────────────────────────── */
 function useInView(threshold = 0.05) {
   const ref = useRef<HTMLDivElement>(null);
@@ -227,6 +356,11 @@ export default function GuardianV2() {
       @keyframes gvPart    { 0%{transform:translateY(0) translateX(0);opacity:0} 20%{opacity:.6} 80%{opacity:.3} 100%{transform:translateY(-100px) translateX(22px);opacity:0} }
       @keyframes gvRotate  { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
       @keyframes gvFade    { 0%,100%{opacity:.15} 50%{opacity:.45} }
+      @keyframes gvSakura  { 0%{transform:translateY(-5vh) translateX(0) rotate(0deg) scale(1)} 25%{transform:translateY(30vh) translateX(var(--dx,40px)) rotate(120deg) scale(.85)} 50%{transform:translateY(60vh) translateX(calc(var(--dx,40px) * -0.6)) rotate(260deg) scale(1.05)} 75%{transform:translateY(85vh) translateX(var(--dx,40px)) rotate(400deg) scale(.9)} 100%{transform:translateY(105vh) translateX(0) rotate(540deg) scale(.7)} }
+      @keyframes gvCtaGlow { 0%,100%{box-shadow:0 10px 60px rgba(0,0,0,.85),0 0 50px rgba(201,155,77,.35)} 50%{box-shadow:0 10px 60px rgba(0,0,0,.85),0 0 90px rgba(201,155,77,.65),0 0 0 3px rgba(201,155,77,.20)} }
+      @keyframes gvHeadShimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
+      @keyframes gvStampIn  { 0%{transform:scale(2) rotate(-10deg);opacity:0} 60%{transform:scale(0.95) rotate(2deg);opacity:.18} 100%{transform:scale(1) rotate(0deg);opacity:.12} }
+      @keyframes gvMonSpin  { from{transform:rotate(0)} to{transform:rotate(360deg)} }
 
       .g-gold {
         background:linear-gradient(135deg,#6a4a10,#8a6220,#c99b4d,#8a6220,#6a4a10);
@@ -234,14 +368,15 @@ export default function GuardianV2() {
         position:relative; overflow:hidden; cursor:pointer;
         transition:transform .15s, box-shadow .2s, background-position .4s;
         border:none;
+        animation:gvCtaGlow 3.5s ease-in-out infinite;
       }
       .g-gold::after {
         content:''; position:absolute; inset:0;
-        background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+        background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
         background-size:200% 100%;
-        animation:gvShimmer 3.2s ease-in-out infinite;
+        animation:gvShimmer 2.8s ease-in-out infinite;
       }
-      .g-gold:hover { background-position:100% 0; box-shadow:0 14px 52px rgba(0,0,0,.8),0 0 44px rgba(201,155,77,.36)!important; }
+      .g-gold:hover { background-position:100% 0; box-shadow:0 14px 52px rgba(0,0,0,.8),0 0 80px rgba(201,155,77,.6)!important; transform:translateY(-2px); }
       .g-gold:active { transform:scale(.97)!important; }
 
       .g-line {
@@ -363,6 +498,9 @@ export default function GuardianV2() {
   return (
     <div style={{ background:C.ink, color:C.cream, minHeight:"100vh", fontFamily:Fs, WebkitFontSmoothing:"antialiased" }}>
 
+      {/* ── Global sakura petal overlay ────────────────────────────────── */}
+      <SakuraPetals/>
+
       {/* ── Sticky mobile CTA ──────────────────────────────────────────── */}
       <div className="g-sticky" style={{
         position:"fixed", bottom:0, left:0, right:0, zIndex:50,
@@ -419,6 +557,9 @@ export default function GuardianV2() {
           background:`radial-gradient(ellipse,rgba(100,80,180,.08) 0%,transparent 65%)`,
           pointerEvents:"none", animation:"gvGlow 12s ease-in-out 2s infinite",
         }}/>
+
+        {/* Canvas particle system */}
+        <ParticleCanvas/>
 
         {/* Floating gold particles */}
         {[...Array(12)].map((_,i)=>(
@@ -514,6 +655,7 @@ export default function GuardianV2() {
         </div>
       </section>
 
+      <BrushDivider/>
 
       {/* ════════════════════════════════════════════════════════════════
           S02  悩み — 2×3 グリッド
@@ -971,6 +1113,8 @@ export default function GuardianV2() {
       </section>
 
 
+      <BrushDivider flip={true}/>
+
       {/* ════════════════════════════════════════════════════════════════
           S05  Quote panel
       ════════════════════════════════════════════════════════════════ */}
@@ -981,6 +1125,10 @@ export default function GuardianV2() {
           backgroundSize:"cover", backgroundPosition:"center",
         }}/>
         <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.68)" }}/>
+        {/* Japanese mon watermark */}
+        <div style={{ position:"absolute", right:"5%", top:"50%", transform:"translateY(-50%)", width:"clamp(160px,25vw,280px)", aspectRatio:"1", pointerEvents:"none", opacity:.07 }}>
+          <MonWatermark opacity={1}/>
+        </div>
         {/* gold shine bar */}
         <div style={{
           position:"absolute", top:0, left:0, right:0, height:"2px",
@@ -1127,6 +1275,8 @@ export default function GuardianV2() {
       </section>
 
 
+      <BrushDivider/>
+
       {/* ════════════════════════════════════════════════════════════════
           S07  体験者の声 — testimonialsBg を背景に
       ════════════════════════════════════════════════════════════════ */}
@@ -1196,12 +1346,23 @@ export default function GuardianV2() {
               border:`1px solid ${C.gBd}`, borderRadius:"16px",
               background:"rgba(3,5,10,.82)",
             }}>
-              {[["31,247社","全国神社データベース"],["247,000名以上","累計診断人数"],["94.7%","「知ってよかった」の声"]].map(([n,l])=>(
-                <div key={l} style={{ textAlign:"center" }}>
-                  <div style={{ fontFamily:Fd, fontSize:"clamp(2rem,4.5vw,2.8rem)", fontWeight:700, color:C.goldL }}>{n}</div>
-                  <div style={{ fontSize:"0.82rem", color:C.crMut, letterSpacing:"0.06em", marginTop:"6px", fontFamily:Fs }}>{l}</div>
+              {([
+                { to:31247, suffix:"社", label:"全国神社データベース" },
+                { to:247000, suffix:"名以上", label:"累計診断人数" },
+              ] as {to:number;suffix:string;label:string}[]).map((s)=>(
+                <div key={s.label} style={{ textAlign:"center" }}>
+                  <div style={{ fontFamily:Fd, fontSize:"clamp(2rem,4.5vw,2.8rem)", fontWeight:700, color:C.goldL }}>
+                    <AnimCounter to={s.to} suffix={s.suffix}/>
+                  </div>
+                  <div style={{ fontSize:"0.82rem", color:C.crMut, letterSpacing:"0.06em", marginTop:"6px", fontFamily:Fs }}>{s.label}</div>
                 </div>
               ))}
+              <div style={{ textAlign:"center" }}>
+                <div style={{ fontFamily:Fd, fontSize:"clamp(2rem,4.5vw,2.8rem)", fontWeight:700, color:C.goldL }}>
+                  94.7%
+                </div>
+                <div style={{ fontSize:"0.82rem", color:C.crMut, letterSpacing:"0.06em", marginTop:"6px", fontFamily:Fs }}>「知ってよかった」の声</div>
+              </div>
             </div>
           </FadeUp>
         </div>
@@ -1519,6 +1680,8 @@ export default function GuardianV2() {
       </section>
 
 
+      <BrushDivider flip={true}/>
+
       {/* ════════════════════════════════════════════════════════════════
           S11  FINAL CTA
       ════════════════════════════════════════════════════════════════ */}
@@ -1537,6 +1700,10 @@ export default function GuardianV2() {
           color:C.gold, opacity:.025, lineHeight:1, pointerEvents:"none",
           animation:"gvBreathe 12s ease-in-out infinite",
         }}>守</div>
+        {/* Mon SVG left watermark */}
+        <div style={{ position:"absolute", left:"3%", top:"50%", transform:"translateY(-50%)", width:"clamp(100px,18vw,200px)", aspectRatio:"1", pointerEvents:"none", opacity:.05 }}>
+          <MonWatermark opacity={1}/>
+        </div>
         {/* horizontal gold line */}
         <div style={{
           position:"absolute", top:"50%", left:0, right:0,
