@@ -395,18 +395,18 @@ export default function GuardianV2() {
       .g-orb { animation:gvPulse 3.5s ease-in-out infinite; cursor:default; }
       .g-orb:hover { transform:scale(1.14)!important; }
 
-      .g-faq-body { max-height:0; overflow:hidden; opacity:0; transition:max-height .5s cubic-bezier(.4,0,.2,1), opacity .4s; }
-      .g-faq-body.open { max-height:320px; opacity:1; }
+      .g-faq-body { max-height:0; overflow:hidden; opacity:0; transition:max-height .55s cubic-bezier(.4,0,.2,1), opacity .45s; }
+      .g-faq-body.open { max-height:400px; opacity:1; }
 
       .g-input { transition:border-color .2s, box-shadow .2s; }
       .g-input:focus { border-color:rgba(201,155,77,.6)!important; box-shadow:0 0 0 3px rgba(201,155,77,.15); outline:none; }
 
-      .g-diag-card { transition:transform .3s, box-shadow .3s, border-color .3s; }
-      .g-diag-card:hover { transform:translateY(-4px); border-color:rgba(201,155,77,.4)!important; box-shadow:0 12px 40px rgba(0,0,0,.5)!important; }
+      .g-diag-card { transition:transform .35s, box-shadow .35s, border-color .35s; }
+      .g-diag-card:hover { transform:translateY(-7px); border-color:rgba(201,155,77,.55)!important; box-shadow:0 18px 52px rgba(0,0,0,.65),0 0 32px rgba(201,155,77,.15)!important; }
 
       /* worries grid cards */
-      .g-worry { transition:transform .25s, box-shadow .25s; }
-      .g-worry:hover { transform:translateY(-4px); box-shadow:0 16px 48px rgba(0,0,0,.55)!important; }
+      .g-worry { transition:transform .3s, box-shadow .3s; }
+      .g-worry:hover { transform:translateY(-6px); box-shadow:0 22px 60px rgba(0,0,0,.7),0 0 32px rgba(201,155,77,.13)!important; }
 
       .g-sticky { display:none; }
       @media(max-width:768px){
@@ -630,11 +630,11 @@ export default function GuardianV2() {
             <FadeUp delay={0.32}>
               <button onClick={toForm} className="g-gold" style={{
                 display:"flex", alignItems:"center", justifyContent:"center", gap:"10px",
-                padding:"22px 40px", borderRadius:"12px",
-                color:"#fff", fontSize:"clamp(1.05rem,2.5vw,1.18rem)",
+                padding:"26px 44px", borderRadius:"14px",
+                color:"#fff", fontSize:"clamp(1.08rem,2.6vw,1.22rem)",
                 fontWeight:800, letterSpacing:"0.1em", fontFamily:Fs,
-                width:"100%", maxWidth:"460px",
-                boxShadow:"0 8px 48px rgba(0,0,0,.75),0 0 40px rgba(201,155,77,.28)",
+                width:"100%", maxWidth:"480px",
+                boxShadow:"0 10px 56px rgba(0,0,0,.8),0 0 48px rgba(201,155,77,.32)",
               }}><Torii/>生年月日で守護神社を調べる（無料）</button>
               <p style={{ marginTop:"13px", color:C.crMut, fontSize:"0.8rem", letterSpacing:"0.04em" }}>
                 約30秒 ・ 登録不要 ・ 完全無料
@@ -685,12 +685,12 @@ export default function GuardianV2() {
             {WORRIES.map((w,i)=>(
               <FadeUp key={i} delay={i*.07}>
                 <div className="g-worry" style={{
-                  padding:"28px 26px",
-                  background:"rgba(3,5,10,.75)",
-                  border:`1px solid rgba(201,155,77,.12)`,
-                  borderTop:`2.5px solid ${w.c}88`,
-                  borderRadius:"14px",
-                  boxShadow:"0 6px 32px rgba(0,0,0,.45)",
+                  padding:"34px 30px",
+                  background:"linear-gradient(145deg,rgba(10,14,24,.90),rgba(4,6,12,.96))",
+                  border:`1px solid rgba(201,155,77,.08)`,
+                  borderTop:`3px solid ${w.c}aa`,
+                  borderRadius:"16px",
+                  boxShadow:`0 8px 44px rgba(0,0,0,.55),0 0 0 1px rgba(201,155,77,.05),0 0 20px ${w.c}0a`,
                   position:"relative", overflow:"hidden",
                 }}>
                   {/* accent corner glow */}
@@ -704,19 +704,19 @@ export default function GuardianV2() {
                     display:"flex", alignItems:"center", gap:"12px", marginBottom:"14px",
                   }}>
                     <div style={{
-                      width:"46px", height:"46px", borderRadius:"50%",
-                      background:`${w.c}18`, border:`2px solid ${w.c}66`,
+                      width:"54px", height:"54px", borderRadius:"50%",
+                      background:`${w.c}20`, border:`2px solid ${w.c}80`,
                       display:"flex", alignItems:"center", justifyContent:"center",
-                      fontFamily:Fs, fontSize:"1.15rem", fontWeight:800, color:w.c,
-                      flexShrink:0,
+                      fontFamily:Fs, fontSize:"1.25rem", fontWeight:800, color:w.c,
+                      flexShrink:0, boxShadow:`0 0 22px ${w.c}28`,
                     }}>{w.n}</div>
                     <p style={{
-                      fontFamily:Fs, fontSize:"clamp(1.05rem,2.2vw,1.15rem)", fontWeight:800,
-                      color:C.cream, lineHeight:1.5,
+                      fontFamily:Fs, fontSize:"clamp(1.08rem,2.3vw,1.18rem)", fontWeight:800,
+                      color:C.cream, lineHeight:1.55,
                     }}>{w.t}</p>
                   </div>
                   <p style={{
-                    color:C.crDim, fontSize:"clamp(0.97rem,2vw,1.04rem)", lineHeight:2.1, wordBreak:"keep-all",
+                    color:C.crDim, fontSize:"clamp(1rem,2.1vw,1.08rem)", lineHeight:2.3, wordBreak:"keep-all",
                   }}>{w.sub}</p>
                 </div>
               </FadeUp>
@@ -807,13 +807,13 @@ export default function GuardianV2() {
       {/* ════════════════════════════════════════════════════════════════
           PANORAMA STRIP  — ultra-wide raw-18 を全幅に
       ════════════════════════════════════════════════════════════════ */}
-      <div style={{ position:"relative", height:"clamp(220px,32vw,400px)", overflow:"hidden" }}>
+      <div style={{ position:"relative", height:"clamp(280px,36vw,460px)", overflow:"hidden" }}>
         <img src={IMG.introBg} alt="" style={{
           width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 32%", display:"block",
         }}/>
         <div style={{
           position:"absolute", inset:0,
-          background:"linear-gradient(to bottom,rgba(3,5,10,.78) 0%,rgba(3,5,10,.18) 45%,rgba(3,5,10,.78) 100%)",
+          background:"linear-gradient(to bottom,rgba(3,5,10,.72) 0%,rgba(3,5,10,.12) 42%,rgba(3,5,10,.72) 100%)",
         }}/>
         <div style={{
           position:"absolute", inset:0,
@@ -907,7 +907,7 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.threeShrineBg}')`,
           backgroundSize:"cover", backgroundPosition:"center",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.68)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.55)" }}/>
 
         <div style={{ ...W, position:"relative" }}>
           <FadeUp>
@@ -930,9 +930,9 @@ export default function GuardianV2() {
                 <div className="g-shrine" style={{
                   position:"relative", overflow:"hidden",
                   borderRadius:"18px",
-                  border:`1px solid ${s.ac}40`,
-                  boxShadow:"0 10px 48px rgba(0,0,0,.65)",
-                  minHeight:"460px",
+                  border:`1px solid ${s.ac}55`,
+                  boxShadow:`0 12px 56px rgba(0,0,0,.7),0 0 0 1px ${s.ac}22`,
+                  minHeight:"540px",
                   display:"flex", flexDirection:"column",
                 }}>
                   {/* Image background */}
@@ -944,7 +944,7 @@ export default function GuardianV2() {
                   {/* Gradient overlay */}
                   <div style={{
                     position:"absolute", inset:0,
-                    background:`linear-gradient(to bottom,rgba(3,5,10,.35) 0%,rgba(3,5,10,.72) 50%,rgba(3,5,10,.92) 100%)`,
+                    background:`linear-gradient(to bottom,rgba(3,5,10,.12) 0%,rgba(3,5,10,.55) 46%,rgba(3,5,10,.90) 100%)`,
                   }}/>
                   {/* Accent top border glow */}
                   <div style={{
@@ -961,10 +961,10 @@ export default function GuardianV2() {
                       marginBottom:"18px",
                       boxShadow:`0 0 24px ${s.ac}44`,
                     }}>{s.icon}</div>
-                    <div style={{ fontFamily:Fs, fontSize:"clamp(1.4rem,3.2vw,1.8rem)", fontWeight:800, marginBottom:"5px" }}>{s.name}</div>
-                    <div style={{ fontSize:"0.8rem", color:C.crMut, letterSpacing:"0.14em", marginBottom:"12px" }}>{s.rd}</div>
-                    <p style={{ fontSize:"0.88rem", color:s.ac, letterSpacing:"0.04em", marginBottom:"16px", fontFamily:Fs, fontWeight:700 }}>{s.tag}</p>
-                    <p style={{ color:C.crDim, fontSize:"clamp(0.95rem,2vw,1.05rem)", lineHeight:2.05 }}>{s.desc}</p>
+                    <div style={{ fontFamily:Fs, fontSize:"clamp(1.5rem,3.4vw,2rem)", fontWeight:800, marginBottom:"6px" }}>{s.name}</div>
+                    <div style={{ fontSize:"0.82rem", color:C.crMut, letterSpacing:"0.16em", marginBottom:"14px" }}>{s.rd}</div>
+                    <p style={{ fontSize:"0.92rem", color:s.ac, letterSpacing:"0.04em", marginBottom:"18px", fontFamily:Fs, fontWeight:700 }}>{s.tag}</p>
+                    <p style={{ color:C.crDim, fontSize:"clamp(1rem,2vw,1.08rem)", lineHeight:2.15, wordBreak:"keep-all" }}>{s.desc}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -1051,7 +1051,7 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.raw10}')`,
           backgroundSize:"cover", backgroundPosition:"center",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.72)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.62)" }}/>
 
         <div style={{ ...W, position:"relative" }}>
           <FadeUp>
@@ -1076,11 +1076,11 @@ export default function GuardianV2() {
             {DIAGNOSIS_ITEMS.map((item,i)=>(
               <FadeUp key={i} delay={i*.06}>
                 <div className="g-diag-card" style={{
-                  padding:"22px 20px",
-                  background:"rgba(3,5,10,.88)",
-                  border:`1px solid rgba(201,155,77,.14)`,
-                  borderRadius:"12px",
-                  boxShadow:"0 6px 28px rgba(0,0,0,.5)",
+                  padding:"28px 24px",
+                  background:"linear-gradient(145deg,rgba(8,12,22,.90),rgba(4,6,12,.95))",
+                  border:`1px solid rgba(201,155,77,.12)`,
+                  borderRadius:"14px",
+                  boxShadow:"0 8px 36px rgba(0,0,0,.55)",
                   position:"relative", overflow:"hidden",
                 }}>
                   <div style={{
@@ -1097,10 +1097,10 @@ export default function GuardianV2() {
                     marginBottom:"14px",
                   }}>{item.icon}</div>
                   <div style={{
-                    fontFamily:Fs, fontSize:"clamp(1rem,2.1vw,1.08rem)", fontWeight:800,
-                    color:C.cream, marginBottom:"10px",
+                    fontFamily:Fs, fontSize:"clamp(1.05rem,2.2vw,1.12rem)", fontWeight:800,
+                    color:C.cream, marginBottom:"12px",
                   }}>{item.t}</div>
-                  <p style={{ color:C.crDim, fontSize:"0.92rem", lineHeight:1.85 }}>{item.d}</p>
+                  <p style={{ color:C.crDim, fontSize:"clamp(0.97rem,2vw,1.04rem)", lineHeight:2.0, wordBreak:"keep-all" }}>{item.d}</p>
                 </div>
               </FadeUp>
             ))}
@@ -1124,7 +1124,7 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.quotePanelBg}')`,
           backgroundSize:"cover", backgroundPosition:"center",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.68)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.58)" }}/>
         {/* Japanese mon watermark */}
         <div style={{ position:"absolute", right:"5%", top:"50%", transform:"translateY(-50%)", width:"clamp(160px,25vw,280px)", aspectRatio:"1", pointerEvents:"none", opacity:.07 }}>
           <MonWatermark opacity={1}/>
@@ -1177,7 +1177,7 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.logicBg}')`,
           backgroundSize:"cover", backgroundPosition:"center",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.70)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.60)" }}/>
 
         <div style={{ ...W, position:"relative" }}>
           <FadeUp>
@@ -1202,12 +1202,12 @@ export default function GuardianV2() {
               {ELEMENTS.map((el,i)=>(
                 <div key={i} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"10px" }}>
                   <div className="g-orb" style={{
-                    width:"clamp(72px,13vw,110px)", height:"clamp(72px,13vw,110px)",
+                    width:"clamp(84px,14vw,120px)", height:"clamp(84px,14vw,120px)",
                     borderRadius:"50%",
-                    background:`radial-gradient(circle at 35% 35%,${el.c}65 0%,${el.c}28 50%,${el.c}08 100%)`,
-                    border:`2px solid ${el.c}66`,
+                    background:`radial-gradient(circle at 35% 35%,${el.c}70 0%,${el.c}32 50%,${el.c}0a 100%)`,
+                    border:`2.5px solid ${el.c}80`,
                     display:"flex", alignItems:"center", justifyContent:"center",
-                    fontFamily:Fs, fontSize:"clamp(1.7rem,4.2vw,2.5rem)", fontWeight:800, color:el.c,
+                    fontFamily:Fs, fontSize:"clamp(1.9rem,4.5vw,2.7rem)", fontWeight:800, color:el.c,
                     boxShadow:el.s,
                     animationDelay:`${i*.55}s`,
                   }}>{el.k}</div>
@@ -1253,16 +1253,22 @@ export default function GuardianV2() {
             ].map((l,i)=>(
               <FadeUp key={i} delay={i*.07}>
                 <div style={{
-                  padding:"22px 22px",
-                  background:"rgba(3,5,10,.86)",
-                  border:`1px solid ${l.c}33`, borderLeft:`3px solid ${l.c}`,
-                  borderRadius:"10px",
+                  padding:"28px 24px",
+                  background:"linear-gradient(145deg,rgba(8,12,22,.88),rgba(4,6,14,.94))",
+                  border:`1px solid ${l.c}28`, borderLeft:`4px solid ${l.c}`,
+                  borderRadius:"12px",
+                  boxShadow:`0 6px 32px rgba(0,0,0,.5),0 0 16px ${l.c}0a`,
                 }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"12px" }}>
-                    <span style={{ fontFamily:Fs, fontSize:"1.3rem", fontWeight:800, color:l.c }}>{l.el}</span>
-                    <span style={{ fontFamily:Fs, fontSize:"clamp(1rem,2.1vw,1.1rem)", fontWeight:800, color:C.cream }}>{l.t}</span>
+                  <div style={{ display:"flex", alignItems:"center", gap:"12px", marginBottom:"14px" }}>
+                    <div style={{
+                      width:"40px", height:"40px", borderRadius:"10px",
+                      background:`${l.c}18`, border:`1px solid ${l.c}44`,
+                      display:"flex", alignItems:"center", justifyContent:"center",
+                      fontFamily:Fs, fontSize:"1.3rem", fontWeight:800, color:l.c, flexShrink:0,
+                    }}>{l.el}</div>
+                    <span style={{ fontFamily:Fs, fontSize:"clamp(1.05rem,2.2vw,1.12rem)", fontWeight:800, color:C.cream }}>{l.t}</span>
                   </div>
-                  <p style={{ color:C.crDim, fontSize:"0.95rem", lineHeight:1.95 }}>{l.d}</p>
+                  <p style={{ color:C.crDim, fontSize:"clamp(1rem,2vw,1.05rem)", lineHeight:2.1 }}>{l.d}</p>
                 </div>
               </FadeUp>
             ))}
@@ -1286,7 +1292,7 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.testimonialsBg}')`,
           backgroundSize:"cover", backgroundPosition:"center",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.75)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.65)" }}/>
 
         <div style={{ ...W, position:"relative" }}>
           <FadeUp>
@@ -1304,11 +1310,11 @@ export default function GuardianV2() {
             {VOICES.map((v,i)=>(
               <FadeUp key={i} delay={i*.1}>
                 <div className="g-hover" style={{
-                  padding:"32px 28px",
-                  background:"rgba(3,5,10,.92)",
+                  padding:"36px 32px",
+                  background:"linear-gradient(145deg,rgba(10,14,24,.94),rgba(4,6,12,.97))",
                   border:`1px solid ${C.gBd}`,
-                  borderRadius:"18px",
-                  boxShadow:"0 8px 48px rgba(0,0,0,.65)",
+                  borderRadius:"20px",
+                  boxShadow:`0 10px 56px rgba(0,0,0,.7),0 0 0 1px rgba(201,155,77,.04)`,
                   height:"100%", boxSizing:"border-box",
                 }}>
                   {/* Avatar + label */}
@@ -1382,7 +1388,7 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.formBg}')`,
           backgroundSize:"cover", backgroundPosition:"center 38%",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.74)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.55)" }}/>
 
         <div style={{ ...W, position:"relative" }}>
           <FadeUp>
@@ -1426,11 +1432,11 @@ export default function GuardianV2() {
           <FadeUp delay={0.14}>
             <div style={{
               maxWidth:"560px", margin:"0 auto",
-              padding:"clamp(32px,5vw,52px)",
-              background:"rgba(3,5,10,.94)",
-              border:`1px solid ${C.gBd}`,
-              borderRadius:"20px",
-              boxShadow:"0 20px 72px rgba(0,0,0,.8),0 0 48px rgba(201,155,77,.10)",
+              padding:"clamp(36px,5.5vw,56px)",
+              background:"linear-gradient(160deg,rgba(16,22,36,.92),rgba(8,12,22,.95))",
+              border:`1px solid ${C.gBd2}`,
+              borderRadius:"24px",
+              boxShadow:"0 24px 80px rgba(0,0,0,.8),0 0 60px rgba(201,155,77,.14),0 0 0 1px rgba(201,155,77,.06)",
             }}>
               <div style={{ marginBottom:"22px" }}>
                 <label style={{ display:"block", fontSize:"0.9rem", color:C.gold, letterSpacing:"0.06em", marginBottom:"10px", fontFamily:Fs, fontWeight:700 }}>
@@ -1439,9 +1445,9 @@ export default function GuardianV2() {
                 <input
                   type="date" className="g-input" value={bday} onChange={e=>setBday(e.target.value)}
                   style={{
-                    width:"100%", padding:"15px 18px", boxSizing:"border-box",
-                    background:"rgba(255,255,255,.05)", border:`1px solid ${C.gBd}`,
-                    borderRadius:"10px", color:C.cream, fontSize:"1.05rem", fontFamily:Fs, colorScheme:"dark",
+                    width:"100%", padding:"18px 20px", boxSizing:"border-box",
+                    background:"rgba(255,255,255,.06)", border:`1px solid ${C.gBd}`,
+                    borderRadius:"12px", color:C.cream, fontSize:"1.08rem", fontFamily:Fs, colorScheme:"dark",
                   }}
                 />
               </div>
@@ -1452,9 +1458,9 @@ export default function GuardianV2() {
                 <select
                   className="g-input" value={pref} onChange={e=>setPref(e.target.value)}
                   style={{
-                    width:"100%", padding:"15px 18px", boxSizing:"border-box",
-                    background:"rgba(3,5,10,.92)", border:`1px solid ${C.gBd}`,
-                    borderRadius:"10px", color:C.cream, fontSize:"1.05rem", fontFamily:Fs,
+                    width:"100%", padding:"18px 20px", boxSizing:"border-box",
+                    background:"rgba(6,10,18,.92)", border:`1px solid ${C.gBd}`,
+                    borderRadius:"12px", color:C.cream, fontSize:"1.08rem", fontFamily:Fs,
                   }}
                 >
                   {PREFS.map(p=><option key={p}>{p}</option>)}
@@ -1493,16 +1499,18 @@ export default function GuardianV2() {
                 </div>
               </div>
               <button onClick={diagnose} className="g-gold" style={{
-                width:"100%", padding:"21px", borderRadius:"12px",
-                color:"#fff", fontSize:"clamp(1rem,2.4vw,1.12rem)", fontWeight:800,
+                width:"100%", padding:"24px", borderRadius:"14px",
+                color:"#fff", fontSize:"clamp(1.05rem,2.5vw,1.18rem)", fontWeight:800,
                 letterSpacing:"0.12em", fontFamily:Fs,
-                boxShadow:"0 8px 40px rgba(0,0,0,.7),0 0 28px rgba(201,155,77,.22)",
+                boxShadow:"0 10px 52px rgba(0,0,0,.75),0 0 40px rgba(201,155,77,.28)",
               }}>
                 <Torii/>　無料で守護神社を診断する
               </button>
-              <p style={{ textAlign:"center", marginTop:"14px", color:C.crMut, fontSize:"0.8rem", letterSpacing:"0.04em" }}>
-                今月すでに <span style={{color:C.goldL, fontWeight:700}}>3,200名以上</span> が診断済み ・ 完全無料 ・ 登録不要
-              </p>
+              <div style={{ textAlign:"center", marginTop:"16px", display:"flex", justifyContent:"center", gap:"18px", flexWrap:"wrap" }}>
+                {["✓ 完全無料","✓ 登録不要","✓ 生年月日だけ","✓ 約30秒"].map(t=>(
+                  <span key={t} style={{ color:C.crMut, fontSize:"0.82rem", letterSpacing:"0.04em" }}>{t}</span>
+                ))}
+              </div>
             </div>
           </FadeUp>
         </div>
@@ -1531,19 +1539,19 @@ export default function GuardianV2() {
             {FAQS.map((f,i)=>(
               <FadeUp key={i} delay={i*.04}>
                 <div style={{
-                  border:`1px solid ${faq===i?C.gBd2:"rgba(201,155,77,.15)"}`,
-                  borderRadius:"14px", overflow:"hidden",
-                  background:"rgba(3,5,10,.70)",
-                  transition:"border-color .2s",
+                  border:`1px solid ${faq===i?C.gBd2:"rgba(201,155,77,.14)"}`,
+                  borderRadius:"16px", overflow:"hidden",
+                  background: faq===i ? "linear-gradient(145deg,rgba(12,16,26,.92),rgba(6,8,16,.96))" : "rgba(6,8,14,.72)",
+                  transition:"border-color .25s, background .25s",
                 }}>
                   <button
                     onClick={()=>setFaq(faq===i?null:i)}
                     style={{
-                      width:"100%", padding:"22px 24px", background:"none", border:"none", cursor:"pointer",
+                      width:"100%", padding:"24px 26px", background:"none", border:"none", cursor:"pointer",
                       display:"flex", justifyContent:"space-between", alignItems:"center", gap:"16px", textAlign:"left",
                     }}
                   >
-                    <span style={{ color:C.cream, fontSize:"clamp(0.98rem,2vw,1.06rem)", fontFamily:Fs, fontWeight:700, lineHeight:1.6 }}>{f.q}</span>
+                    <span style={{ color:C.cream, fontSize:"clamp(1rem,2.1vw,1.1rem)", fontFamily:Fs, fontWeight:700, lineHeight:1.65 }}>{f.q}</span>
                     <span style={{
                       flexShrink:0, width:"28px", height:"28px", borderRadius:"50%",
                       background:C.gFaint, border:`1px solid ${C.gBd}`,
@@ -1553,7 +1561,8 @@ export default function GuardianV2() {
                     }}>+</span>
                   </button>
                   <div className={`g-faq-body${faq===i?" open":""}`}>
-                    <p style={{ padding:"0 24px 22px", color:C.crDim, fontSize:"clamp(0.95rem,1.95vw,1.02rem)", lineHeight:2.1 }}>{f.a}</p>
+                    <div style={{ height:"1px", background:`linear-gradient(to right,${C.gBd},transparent)`, margin:"0 26px" }}/>
+                    <p style={{ padding:"20px 26px 26px", color:C.crDim, fontSize:"clamp(1rem,2vw,1.06rem)", lineHeight:2.2, wordBreak:"keep-all" }}>{f.a}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -1575,7 +1584,7 @@ export default function GuardianV2() {
             {/* Phone mockup */}
             <FadeUp delay={0.05}>
               <div style={{ display:"flex", justifyContent:"center" }}>
-                <div style={{ animation:"gvFloat 5.5s ease-in-out infinite", width:"260px" }}>
+                <div style={{ animation:"gvFloat 5.5s ease-in-out infinite", width:"300px" }}>
                   <div style={{
                     background:"rgba(8,10,16,.98)",
                     border:"2.5px solid rgba(201,155,77,.40)",
@@ -1630,48 +1639,89 @@ export default function GuardianV2() {
             {/* Copy */}
             <div>
               <FadeUp>
-                <Tag t="Get Results on LINE" c={C.emFg}/>
-                <SH2 sx={{ marginBottom:"22px", wordBreak:"keep-all" }}>
-                  LINEで受け取ると、<br/>守護神社がもっと深く活きる。
+                <Tag t="Keep Your Results" c={C.emFg}/>
+                <SH2 sx={{ marginBottom:"18px" }}>
+                  LINEで受け取ると、<br/>守護神社が日常に根づく。
                 </SH2>
               </FadeUp>
-              <FadeUp delay={0.08}>
-                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"28px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all" }}>
-                  守護神社は「知る」だけでは、もったいないのです。<br/><br/>
-                  いつ参拝すべきか。何を願えばいいか。今月の運気の傾向は何か——それらは時期によって変わります。LINEで受け取ることで、あなたに合った情報を、ちょうど必要なタイミングで届けます。
+              <FadeUp delay={0.06}>
+                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"24px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all" }}>
+                  「診断しただけ」で終わらせないために。<br/>
+                  LINEで受け取ることで、あなたの守護神社が日常の中に生き続けます。
                 </p>
               </FadeUp>
-              <FadeUp delay={0.14}>
-                <div style={{ display:"flex", flexDirection:"column", gap:"14px", marginBottom:"32px" }}>
-                  {[
-                    "3つの守護神社の詳細と参拝ガイドを保存できる",
-                    "最適な参拝タイミング・時間帯・作法がわかる",
-                    "毎月の開運アクションとご縁の傾向が届く",
-                    "いつでも診断結果を見返せる",
-                    "不要になればいつでもブロック・解除OK",
-                  ].map((b,i)=>(
-                    <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:"12px" }}>
-                      <Check color={C.emFg}/>
-                      <span style={{ color:C.crDim, fontSize:"clamp(0.98rem,2vw,1.05rem)", lineHeight:1.8 }}>{b}</span>
-                    </div>
+
+              {/* 6-benefit visual card grid */}
+              <FadeUp delay={0.1}>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"12px", marginBottom:"26px" }}>
+                  {([
+                    { icon:"📋", t:"診断結果を保存", d:"あとから何度でも見返せます" },
+                    { icon:"⛩", t:"参拝タイミング", d:"最適な日時・作法がわかります" },
+                    { icon:"🙏", t:"願いの向き合い方", d:"祈りに合った方向性がわかります" },
+                    { icon:"✨", t:"毎月の開運アクション", d:"具体的な行動が毎月届きます" },
+                    { icon:"🌿", t:"縁の変化を追う", d:"季節ごとの守護神社との向き合い方がわかります" },
+                    { icon:"🔓", t:"いつでも解除OK", d:"1タップでブロック・解除できます" },
+                  ] as {icon:string;t:string;d:string}[]).map((b,i)=>(
+                    <FadeUp key={i} delay={0.1 + i * 0.06}>
+                      <div style={{
+                        padding:"16px 14px",
+                        background:"linear-gradient(145deg,rgba(6,12,22,.90),rgba(3,7,14,.95))",
+                        border:`1px solid rgba(74,138,104,.22)`,
+                        borderTop:`2px solid rgba(74,138,104,.55)`,
+                        borderRadius:"12px",
+                        boxShadow:"0 4px 20px rgba(0,0,0,.5)",
+                        height:"100%", boxSizing:"border-box" as const,
+                      }}>
+                        <div style={{ fontSize:"1.25rem", marginBottom:"7px" }}>{b.icon}</div>
+                        <div style={{ fontFamily:Fs, fontSize:"0.92rem", fontWeight:800, color:C.cream, marginBottom:"5px", lineHeight:1.45 }}>{b.t}</div>
+                        <p style={{ color:C.crMut, fontSize:"0.8rem", lineHeight:1.75, wordBreak:"keep-all" as const }}>{b.d}</p>
+                      </div>
+                    </FadeUp>
                   ))}
                 </div>
               </FadeUp>
-              <FadeUp delay={0.2}>
-                <a href="https://lin.ee/placeholder" className="g-line" style={{
-                  display:"flex", alignItems:"center", justifyContent:"center", gap:"10px",
-                  padding:"18px 28px", border:`1px solid ${C.emBd}`, borderRadius:"12px",
-                  color:"#fff", fontSize:"clamp(1rem,2.3vw,1.06rem)", fontWeight:800,
-                  letterSpacing:"0.08em", textDecoration:"none", fontFamily:Fs,
-                  boxShadow:"0 6px 40px rgba(0,0,0,.65)", maxWidth:"380px",
+
+              <FadeUp delay={0.48}>
+                <div style={{
+                  padding:"18px 22px",
+                  background:"rgba(6,199,85,.06)",
+                  border:`1px solid rgba(6,199,85,.24)`,
+                  borderLeft:`3px solid rgba(6,199,85,.60)`,
+                  borderRadius:"0 12px 12px 0", marginBottom:"26px",
                 }}>
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="#06C755">
+                  <p style={{ color:C.crDim, fontSize:"clamp(1rem,2vw,1.06rem)", lineHeight:2.0, wordBreak:"keep-all" }}>
+                    「せっかく調べた縁をなくさないために」——<br/>
+                    LINEで受け取るだけで、あなたの守護神社がずっと手元に残ります。
+                  </p>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.56}>
+                <a href="https://lin.ee/placeholder" style={{
+                  display:"flex", alignItems:"center", justifyContent:"center", gap:"12px",
+                  padding:"22px 32px",
+                  background:"linear-gradient(135deg,rgba(3,42,26,.97),rgba(2,34,20,.97))",
+                  border:`1px solid rgba(6,199,85,.45)`,
+                  borderRadius:"14px",
+                  color:"#fff", fontSize:"clamp(1.02rem,2.3vw,1.1rem)", fontWeight:800,
+                  letterSpacing:"0.08em", textDecoration:"none", fontFamily:Fs,
+                  boxShadow:"0 10px 48px rgba(0,0,0,.72),0 0 32px rgba(6,199,85,.16)",
+                  maxWidth:"420px", position:"relative", overflow:"hidden",
+                }}>
+                  <div style={{
+                    position:"absolute", inset:0,
+                    background:"linear-gradient(90deg,transparent,rgba(6,199,85,.08),transparent)",
+                    backgroundSize:"200% 100%",
+                    animation:"gvShimmer 2.8s ease-in-out infinite",
+                    pointerEvents:"none",
+                  }}/>
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="#06C755" style={{flexShrink:0}}>
                     <path d="M10 2C5.58 2 2 5.13 2 9c0 2.38 1.27 4.5 3.24 5.84l-.52 1.94c-.08.3.22.56.5.41L8.06 16c.62.1 1.27.15 1.94.15C14.42 16.15 18 13.02 18 9c0-3.87-3.58-7-8-7z"/>
                   </svg>
-                  LINEで診断結果を受け取る
+                  <span style={{ position:"relative" }}>LINEで診断結果を受け取る（無料）</span>
                 </a>
-                <p style={{ marginTop:"10px", color:C.crMut, fontSize:"0.74rem", letterSpacing:"0.06em" }}>
-                  無料・いつでも解除OK・診断結果を保存できます
+                <p style={{ marginTop:"12px", color:C.crMut, fontSize:"0.78rem", letterSpacing:"0.06em" }}>
+                  完全無料 ・ いつでも解除OK ・ 診断結果を保存できます
                 </p>
               </FadeUp>
             </div>
@@ -1691,7 +1741,7 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.finalCtaBg}')`,
           backgroundSize:"cover", backgroundPosition:"center 28%",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.76)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.62)" }}/>
 
         {/* decorative watermark */}
         <div style={{
@@ -1739,14 +1789,18 @@ export default function GuardianV2() {
           </FadeUp>
           <FadeUp delay={0.18}>
             <button onClick={toForm} className="g-gold" style={{
-              display:"inline-flex", alignItems:"center", gap:"10px",
-              padding:"24px 56px", borderRadius:"12px",
-              color:"#fff", fontSize:"clamp(1.05rem,2.5vw,1.15rem)",
-              fontWeight:800, letterSpacing:"0.14em", fontFamily:Fs,
-              boxShadow:"0 10px 60px rgba(0,0,0,.85),0 0 48px rgba(201,155,77,.32)",
-              marginBottom:"16px",
+              display:"inline-flex", alignItems:"center", gap:"12px",
+              padding:"28px 60px", borderRadius:"16px",
+              color:"#fff", fontSize:"clamp(1.1rem,2.7vw,1.22rem)",
+              fontWeight:800, letterSpacing:"0.12em", fontFamily:Fs,
+              boxShadow:"0 12px 64px rgba(0,0,0,.88),0 0 60px rgba(201,155,77,.36)",
+              marginBottom:"20px",
             }}><Torii/>自分の守護神社を、今すぐ確かめる</button>
-            <p style={{ color:C.crMut, fontSize:"0.82rem", letterSpacing:"0.04em" }}>完全無料・登録不要・約30秒</p>
+            <div style={{ display:"flex", justifyContent:"center", gap:"20px", flexWrap:"wrap", marginBottom:"6px" }}>
+              {["完全無料","登録不要","生年月日だけ","約30秒で完了"].map(t=>(
+                <span key={t} style={{ color:C.crMut, fontSize:"0.84rem", letterSpacing:"0.05em" }}>✓ {t}</span>
+              ))}
+            </div>
           </FadeUp>
 
           {/* P.S. */}
