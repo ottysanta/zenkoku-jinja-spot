@@ -1316,7 +1316,7 @@ export default function GuardianV2() {
             </p>
           </FadeUp>
 
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(440px,1fr))", gap:"24px" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(min(440px,100%),1fr))", gap:"24px" }}>
             {VOICES.map((v,i)=>(
               <FadeUp key={i} delay={i*.1}>
                 <div className="g-hover" style={{
