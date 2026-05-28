@@ -66,54 +66,61 @@ const PX = "clamp(20px,5.5vw,72px)";
 
 /* ── Static data ─────────────────────────────────────────────────────────── */
 const WORRIES = [
-  { n:"一", c:"#7a94c0", t:"何となく運気が滞っている気がする", sub:"初詣くらいしか神社に行かないが、「自分に縁の深い神社」というものをよく知らないまま何十年も過ごしてきた。" },
-  { n:"二", c:"#C99B4D", t:"自分の進むべき道に迷いを感じる", sub:"転職・結婚・引越しなど大切な決断の前に、どこかに手を合わせたいと思いながら、どこへ行けばいいか分からなかった。" },
-  { n:"三", c:"#6aab8a", t:"神社に行ってもピンとこないことが多い", sub:"産土神・氏神という言葉は聞いたことがあるが、自分とどんな関係があるのか、よく知らないままにしてきた。" },
-  { n:"四", c:"#c07840", t:"なかなか決断のときに自信が持てない", sub:"信心深いわけではないが、もし自分と縁の深い場所があるなら、一度は知ってみたいと思っている。" },
-  { n:"五", c:"#9870b0", t:"大切な決断のときに背中を押してほしい", sub:"有名なパワースポットや話題の神社に行くが、それが本当に自分に合うかどうか分からないまま参拝している。" },
-  { n:"六", c:"#a08840", t:"家族や気の縁のつながりを感じたい", sub:"神社で手を合わせるとき、自分が誰に何を届けているのか、なんとなく分からないまま帰ることがある。" },
+  { n:"一", c:"#7a94c0", t:"何となく運気が滞っている気がする",
+    sub:"仕事も人間関係も、どこかかみ合わない時期がある。原因が分からないから対処もできない。「守護神社を知らないこと」が関係しているかもと気づいたのは、ずっと後のことだった。" },
+  { n:"二", c:"#C99B4D", t:"大切な決断の前に、どこかに手を合わせたい",
+    sub:"転職か、このまま続けるか。結婚か、まだ待つか。迷うとき、どこかに足を向けたい気持ちはあった。でも「自分にとっての神社はどこか」が、まったく分からなかった。" },
+  { n:"三", c:"#6aab8a", t:"有名な神社に行くが、ピンとこないことが多い",
+    sub:"パワースポットにも行った。話題の神社にも行った。でも手を合わせながら、「本当にここでいいのかな」という疑問が消えないことがあった。" },
+  { n:"四", c:"#c07840", t:"自分のルーツや家族の縁を、もっと知りたい",
+    sub:"親や祖父母が守られてきた場所。家族が何代もお参りしてきた神社。そういうものを、知らないまま生きてきたことが、ふと気になるようになった。" },
+  { n:"五", c:"#9870b0", t:"なんとなく「護られている感覚」が薄い",
+    sub:"信心深いわけではない。でも、「自分は誰かに守られているのかどうか」が、不安になるときがある。根拠のある安心感を、どこかに求めていた。" },
+  { n:"六", c:"#a08840", t:"手を合わせても、何かが届いている気がしない",
+    sub:"神社に行くたびに、「ここが自分の場所なのか」という確信が持てなかった。縁のある神社を知ってからは、初めて「届いている」という感覚が生まれた。" },
 ];
 
 const SHRINES = [
   { name:"産土神社", rd:"うぶすなじんじゃ", icon:"産", ac:"#6aab8a", img: IMG.raw03,
     tag:"魂の根と、生まれた縁を守る",
-    desc:"あなたが生まれた土地と深く結びつく神社。どれだけ遠く離れても、この縁は一生続くとされています。" },
+    desc:"あなたが生まれた瞬間から続く縁の神社。どれだけ遠くへ引っ越しても、この結びつきは一生続くとされています。体調・精神・本質的な気力を守る「魂の故郷」です。産土神社を知ることで、自分の根っこがわかります。" },
   { name:"氏神神社", rd:"うじがみじんじゃ", icon:"氏", ac:"#C99B4D", img: IMG.raw05,
     tag:"家系と家族の縁を守る",
-    desc:"家系や地域のつながりを見守る神社。先祖から受け継いできた流れを象徴します。" },
+    desc:"あなたの家系と地域を代々見守ってきた神社。先祖が受け継いできた流れと、家族全員の縁をつなぐ場所です。家族関係・結婚・子育てにまつわる迷いがある方に、特に縁が深いとされています。" },
   { name:"鎮守神社", rd:"ちんじゅじんじゃ", icon:"鎮", ac:"#7090c0", img: IMG.raw09,
     tag:"今の暮らしと場所の縁を守る",
-    desc:"今いる土地での日々の暮らしを見守る神社。仕事・健康・現在の環境との相性を象徴します。" },
+    desc:"今あなたが暮らす土地の神社。仕事・健康・人間関係など、現在の日々を見守ります。引っ越しや転職のタイミングで変わることもあり、「今の自分の状況」に最も強く影響する神社です。" },
 ];
 
 const WHY_UNKNOWN = {
   body: [
-    "現代では、生まれた場所と家系のつながりが薄れ、「自分を主に見守る神様がいる」という感覚を持ちにくい時代になっています。",
-    "また、情報が多すぎて、本質的なことに向き合う余裕が少なくなっていることも、その理由のひとつです。",
-    "守護神社が分からないでいる人が多いのは、正しく教えてくれる機会がないからです。本来、「自分を主に見守る神様のいる場所」を知ることが、人生の根拠になるはずです。その「縁」を知ることで、人生の見え方が静かに変わります。",
+    "核家族化と都市への移住が進んだことで、「生まれた土地の神社」「家系を守る神社」という感覚は、いつの間にか日常から遠のきました。正月に有名な神社に行くことはあっても、「自分に縁の深い神社はどこか」を知る人は、今やほとんどいません。",
+    "守護神社を知らないままでも、生きていけます。でも知ることで、何かが変わります。「自分はここに守られてきた」という感覚が生まれると、迷いや不安の質が変わります。根拠のある安心感が、静かに生まれるのです。",
+    "「占いではないか」「スピリチュアルは苦手」という方でも大丈夫です。守護神社は、日本古来の産土信仰と実際の神社データをもとにした、文化・歴史的な観点からの診断です。自分の縁を知ることは、自分を知ることへの、静かな入口です。",
   ],
-  quote: "守護神社は、あなたの人生を静かに見守り、導いてくれる最も身近な神様のいる場所です。",
+  quote: "縁のある神社を知った人は、迷ったとき「ここに帰れば大丈夫」という場所を持てる。それだけで、人生の向き合い方が静かに変わる。",
 };
 
 const WHY_HINT = {
-  lead: "守護神社を知ると、自分分析や幸運を呼び込む行動を具体的に取れるようになります。あなたに合った神社を知ることで、こんな変化が起きます",
+  lead: "「守護神社なんて、知らなくても困らない」そう思っていた人ほど、知った後に「もっと早く知りたかった」と言います。縁のある神社を知ることで、こんな変化が起きます。",
   benefits: [
-    "自分の性格や流れを客観的に知れるようになる",
-    "運気の流れを前もってつかめるようになる",
-    "人間関係や仕事がスムーズになる",
-    "毎日の生活に安心感と自信が生まれる",
+    "「迷ったときに帰る場所」が具体的にわかる",
+    "参拝先が決まることで、手を合わせる意味が初めて腑に落ちる",
+    "自分の生まれ・家系・今の暮らしがつながり、人生に根拠が生まれる",
+    "「護られている感覚」が、日々の安心感と自信に変わっていく",
+    "家族や大切な人を守る神社がわかり、縁のつながりを実感できる",
   ],
 };
 
 const DIAGNOSIS_ITEMS = [
-  { icon:"鳥", c:"#C99B4D", t:"縁の濃い神社",      d:"あなたに縁の深い守護神社がわかります" },
-  { icon:"地", c:"#6aab8a", t:"生まれた地の縁",    d:"出生地との縁と守護エネルギーを読みます" },
-  { icon:"風", c:"#7a94c0", t:"今の運気",          d:"現在の運気の流れとその傾向がわかります" },
-  { icon:"暦", c:"#c07840", t:"参拝のタイミング",  d:"運気が上がる最適な参拝タイミングを特定" },
-  { icon:"願", c:"#9870b0", t:"願いごとの方向性",  d:"叶えやすい願いごとの方向性がわかります" },
-  { icon:"開", c:"#C99B4D", t:"開運アクション",    d:"今日からできる具体的な開運アクション" },
-  { icon:"神", c:"#6aab8a", t:"相性の良い神様",    d:"あなたと縁が深い神様と神社がわかります" },
-  { icon:"！", c:"#c07840", t:"注意すべきポイント", d:"今の自分の弱みや注意点がわかります" },
+  { icon:"産", c:"#C99B4D", t:"産土神社の特定",    d:"生まれた土地との縁から、あなたの魂の根となる神社を導き出します。" },
+  { icon:"氏", c:"#6aab8a", t:"氏神神社の特定",    d:"家系と地域のつながりから、家族を守る神社を特定します。" },
+  { icon:"鎮", c:"#7a94c0", t:"鎮守神社の特定",    d:"今の住まいと暮らしから、現在の生活を見守る神社がわかります。" },
+  { icon:"縁", c:"#c07840", t:"ご縁の深さランキング", d:"3つの守護神社のうち、今のあなたに最も縁が深い神社がわかります。" },
+  { icon:"時", c:"#9870b0", t:"参拝の最適タイミング", d:"運気が高まる時期・曜日・時間帯など、参拝に適したタイミングを提案します。" },
+  { icon:"願", c:"#C99B4D", t:"願いの叶えやすい方向性", d:"どんな願いごとが、今のあなたに通りやすいかの傾向がわかります。" },
+  { icon:"行", c:"#6aab8a", t:"今月の開運アクション",  d:"守護神社と五行バランスをもとに、今日からできる具体的な行動を提示します。" },
+  { icon:"注", c:"#c07840", t:"今のあなたへの注意点", d:"運気の滞りや人間関係・健康面で気をつけたいポイントを読み取ります。" },
 ];
 
 const ELEMENTS = [
@@ -125,14 +132,18 @@ const ELEMENTS = [
 ];
 
 const VOICES = [
-  { label:"30代 女性", pull:"参拝してみると、気持ちが整理された",
-    text:"診断で出てきた神社が、昔から気になっていた場所で驚きました。参拝してみると気持ちが整理され、今やるべきことが少し見えた気がします。" },
-  { label:"40代 女性", pull:"何かが静かに腑に落ちた感覚",
-    text:"氏神神社という考え方を知り、自分の家系や土地とのつながりを改めて考えるきっかけになりました。大げさな変化ではないけれど、静かに腑に落ちた感覚があります。" },
-  { label:"40代 男性", pull:"こんな考え方があるんだと、素直に驚いた",
-    text:"占いは信じないタイプですが、文化・歴史的な話として読んだら面白かった。産土神社という考え方は知らなかったし、診断で出てきた場所は確かに地元の神社でした。" },
-  { label:"50代 男性", pull:"静かに背中を押してくれるような内容",
-    text:"大げさな占いではなく、静かに背中を押してくれるような内容で素直に受け取れました。地元の神社に改めて足を運ぶようになり、心が少し軽くなりました。" },
+  { label:"32歳 女性・会社員", initials:"K.M", ic:"#6aab8a",
+    pull:"「あの時の神社、偶然じゃなかったんだ」と思ったら、涙が出てきました",
+    text:"転職で迷っていた頃、ふと立ち寄った神社がありました。特に理由はないのにどうしても気になって。半信半疑で診断したら、その神社がちょうど産土神社の近くだったんです。「偶然じゃなかったのかも」と思ったら、涙が出てきました。今もその神社が、一番自分の「帰る場所」という感覚があります。" },
+  { label:"44歳 女性・主婦", initials:"A.T", ic:"#C99B4D",
+    pull:"氏神神社に参拝した日から、なぜか夫との会話が増えた",
+    text:"結婚後に引っ越してから、夫の地元の氏神神社をずっと知らないでいました。診断で初めてその神社を知り、思い切って家族で参拝したんです。その日を境に、なぜか夫との会話が増えて。気のせいかもしれないけど、「家族を守る神社がある」という感覚が、毎日の安心感に変わりました。" },
+  { label:"47歳 男性・自営業", initials:"H.N", ic:"#7a94c0",
+    pull:"スピリチュアルを信じない私でも、これは素直に受け取れた",
+    text:"占い系は一切信じないタイプです。でも、日本古来の産土信仰と実際の地元の神社がリンクした診断結果には、素直に驚きました。文化・歴史的な話として読んで、地元の神社に改めて行ってみたら、「ここが自分の場所なんだ」という感覚が初めて生まれた気がします。あれ以来、年に数回は欠かさず参拝するようになりました。" },
+  { label:"56歳 男性・会社員", initials:"Y.S", ic:"#9870b0",
+    pull:"55歳になって初めて、自分がどこに守られてきたか知った",
+    text:"若い頃は神社に興味もなかった。でも50代になって、「自分がどこに守られてきたのか」「これからの拠り所はどこか」が気になるようになりました。守護神社を知ることで、老後に向かう中でも「根っこがある」という感覚を初めて持てました。もっと早く知りたかったと、正直思っています。" },
 ];
 
 const FAQS = [
@@ -298,16 +309,16 @@ export default function GuardianV2() {
 
   const Tag = ({t, c=C.gold}: {t:string; c?:string}) => (
     <p style={{
-      fontFamily:Fd, fontSize:"0.57rem", letterSpacing:"0.55em", color:c,
-      textTransform:"uppercase", textAlign:"center", marginBottom:"16px",
-      borderBottom:`1px solid ${c}28`, display:"inline-block", paddingBottom:"6px",
+      fontFamily:Fd, fontSize:"0.72rem", letterSpacing:"0.45em", color:c,
+      textTransform:"uppercase", textAlign:"center", marginBottom:"18px",
+      borderBottom:`1px solid ${c}28`, display:"inline-block", paddingBottom:"7px",
       left:"50%", position:"relative", transform:"translateX(-50%)",
     }}>{t}</p>
   );
 
   const SH2 = ({children, sx={}}: {children:ReactNode; sx?:CSSProperties}) => (
     <h2 style={{
-      fontFamily:Fs, fontSize:"clamp(1.9rem,5vw,3rem)", fontWeight:800,
+      fontFamily:Fs, fontSize:"clamp(2.2rem,5.5vw,3.5rem)", fontWeight:800,
       lineHeight:1.5, wordBreak:"keep-all", ...sx,
     }}>{children}</h2>
   );
@@ -437,8 +448,8 @@ export default function GuardianV2() {
             <FadeUp delay={0.1}>
               <h1 style={{
                 fontFamily:Fs, fontWeight:800, wordBreak:"keep-all",
-                fontSize:"clamp(2.4rem,7.5vw,4.6rem)",
-                lineHeight:1.42, letterSpacing:"0.01em", marginBottom:"30px",
+                fontSize:"clamp(2.7rem,8vw,5.2rem)",
+                lineHeight:1.4, letterSpacing:"0.01em", marginBottom:"30px",
               }}>
                 あなたと最も縁の深い<br/>
                 <span style={{ color:C.goldL }}>「守護神社」</span>を<br/>知っていますか？
@@ -447,22 +458,23 @@ export default function GuardianV2() {
 
             <FadeUp delay={0.18}>
               <p style={{
-                color:C.crDim, lineHeight:2.1, marginBottom:"34px",
-                fontSize:"clamp(1rem,2.2vw,1.1rem)", maxWidth:"480px",
+                color:C.crDim, lineHeight:2.2, marginBottom:"34px",
+                fontSize:"clamp(1.08rem,2.4vw,1.22rem)", maxWidth:"480px",
               }}>
-                生まれた場所、家系、今の住まい。<br/>
-                あなたの生年月日をもとに、縁のある守護神社をお伝えします。
+                生まれた場所、家系、今の住まい——<br/>
+                あなたの生年月日をもとに、縁のある守護神社を<br/>
+                無料でお伝えします。
               </p>
             </FadeUp>
 
             <FadeUp delay={0.24}>
-              <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", marginBottom:"38px" }}>
-                {["完全無料","登録不要","生年月日だけ","約30秒で完了"].map(t=>(
+              <div style={{ display:"flex", gap:"10px", flexWrap:"wrap", marginBottom:"38px" }}>
+                {["✓ 完全無料","✓ 登録不要","✓ 生年月日だけ","✓ 約30秒で完了"].map(t=>(
                   <span key={t} style={{
-                    padding:"5px 14px", fontSize:"0.63rem", fontFamily:Fd,
-                    color:C.gold, letterSpacing:"0.04em",
-                    background:"rgba(3,5,10,.75)", border:`1px solid ${C.gBd}`,
-                    borderRadius:"6px", backdropFilter:"blur(10px)",
+                    padding:"8px 18px", fontSize:"0.92rem", fontFamily:Fs,
+                    color:C.goldL, letterSpacing:"0.04em", fontWeight:700,
+                    background:"rgba(201,155,77,.10)", border:`1px solid ${C.gBd2}`,
+                    borderRadius:"8px", backdropFilter:"blur(10px)",
                   }}>{t}</span>
                 ))}
               </div>
@@ -508,11 +520,11 @@ export default function GuardianV2() {
               こんなことを感じたことは<br/>ありませんか？
             </SH2>
             <p style={{
-              color:C.crDim, textAlign:"center", lineHeight:2, marginBottom:"60px",
-              fontSize:"clamp(1rem,2vw,1.05rem)",
+              color:C.crDim, textAlign:"center", lineHeight:2.1, marginBottom:"60px",
+              fontSize:"clamp(1.05rem,2.2vw,1.15rem)",
             }}>
               神社への関心の有無は関係ありません。<br/>
-              一つでも当てはまることがあれば、この先を読み進めてください。
+              <strong style={{color:C.cream}}>一つでも「あ、これ自分のことかも」と感じたなら</strong>、この先を読み進めてください。
             </p>
           </FadeUp>
 
@@ -544,19 +556,19 @@ export default function GuardianV2() {
                     display:"flex", alignItems:"center", gap:"12px", marginBottom:"14px",
                   }}>
                     <div style={{
-                      width:"40px", height:"40px", borderRadius:"50%",
-                      background:`${w.c}15`, border:`1.5px solid ${w.c}55`,
+                      width:"46px", height:"46px", borderRadius:"50%",
+                      background:`${w.c}18`, border:`2px solid ${w.c}66`,
                       display:"flex", alignItems:"center", justifyContent:"center",
-                      fontFamily:Fd, fontSize:"1.2rem", fontWeight:700, color:w.c,
+                      fontFamily:Fs, fontSize:"1.15rem", fontWeight:800, color:w.c,
                       flexShrink:0,
                     }}>{w.n}</div>
                     <p style={{
-                      fontFamily:Fs, fontSize:"clamp(0.95rem,2vw,1rem)", fontWeight:700,
+                      fontFamily:Fs, fontSize:"clamp(1.05rem,2.2vw,1.15rem)", fontWeight:800,
                       color:C.cream, lineHeight:1.5,
                     }}>{w.t}</p>
                   </div>
                   <p style={{
-                    color:C.crDim, fontSize:"clamp(0.88rem,1.8vw,0.94rem)", lineHeight:1.9,
+                    color:C.crDim, fontSize:"clamp(0.95rem,2vw,1.02rem)", lineHeight:2.05,
                   }}>{w.sub}</p>
                 </div>
               </FadeUp>
@@ -569,9 +581,9 @@ export default function GuardianV2() {
               background:C.gFaint, border:`1px solid ${C.gBd}`,
               borderRadius:"14px", textAlign:"center",
             }}>
-              <p style={{ fontSize:"clamp(1.05rem,2.4vw,1.18rem)", lineHeight:2.1, color:C.cream, wordBreak:"keep-all" }}>
-                その答えは、あなたに縁の深い<strong style={{ color:C.goldL }}>「守護神社」</strong>が<br/>
-                鍵かもしれません。
+              <p style={{ fontSize:"clamp(1.12rem,2.5vw,1.28rem)", lineHeight:2.1, color:C.cream, wordBreak:"keep-all" }}>
+                その答えの鍵のひとつが、あなたに縁の深い<strong style={{ color:C.goldL }}>「守護神社」</strong>にあるかもしれません。<br/>
+                <span style={{color:C.crDim, fontSize:"0.93em"}}>知っている人と知らない人では、人生の向き合い方が静かに変わります。</span>
               </p>
             </div>
           </FadeUp>
@@ -597,8 +609,8 @@ export default function GuardianV2() {
               {WHY_UNKNOWN.body.map((p,i)=>(
                 <FadeUp key={i} delay={i*.09}>
                   <p style={{
-                    color:C.crDim, lineHeight:2.15, marginBottom:"20px",
-                    fontSize:"clamp(1rem,2vw,1.06rem)",
+                    color:C.crDim, lineHeight:2.2, marginBottom:"24px",
+                    fontSize:"clamp(1.05rem,2.2vw,1.12rem)",
                   }}>{p}</p>
                 </FadeUp>
               ))}
@@ -629,7 +641,7 @@ export default function GuardianV2() {
               backdropFilter:"blur(12px)",
             }}>
               <p style={{
-                fontFamily:Fs, fontSize:"clamp(0.95rem,2vw,1.05rem)", lineHeight:1.9,
+                fontFamily:Fs, fontSize:"clamp(1rem,2.1vw,1.1rem)", lineHeight:2.0,
                 color:C.cream, wordBreak:"keep-all",
               }}>
                 「{WHY_UNKNOWN.quote}」
@@ -703,27 +715,28 @@ export default function GuardianV2() {
                 </SH2>
               </FadeUp>
               <FadeUp delay={0.08}>
-                <p style={{ color:C.crDim, lineHeight:2.1, marginBottom:"22px", fontSize:"clamp(1rem,2vw,1.06rem)" }}>
-                  守護神社とは、あなたの生まれ・家系・現在地に縁のある神社のことです。有名な神社や話題のパワースポットではなく、あなた自身と深くつながっているとされる場所です。
+                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"24px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all" }}>
+                  守護神社とは、あなたの生まれ・家系・現在地に縁のある神社のことです。有名な神社や話題のパワースポットではなく、<strong style={{color:C.cream}}>あなた自身と深くつながっているとされる場所</strong>です。
                 </p>
               </FadeUp>
               <FadeUp delay={0.14}>
-                <p style={{ color:C.crDim, lineHeight:2.1, marginBottom:"30px", fontSize:"clamp(1rem,2vw,1.06rem)" }}>
-                  産土・氏神・鎮守の3種の守護神社が、あなたの魂の根・家系・そして今の暮らしをそれぞれ守るとされています。
+                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"32px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all" }}>
+                  産土・氏神・鎮守の3種の守護神社が、あなたの魂の根・家系・そして今の暮らしをそれぞれ守るとされています。この3つを知ることが、自分の縁を知ることへの第一歩です。
                 </p>
               </FadeUp>
               <FadeUp delay={0.2}>
                 <div style={{
-                  padding:"22px 24px",
-                  borderLeft:`3px solid ${C.gBd2}`,
-                  background:C.gFaint, borderRadius:"0 10px 10px 0",
+                  padding:"24px 28px",
+                  borderLeft:`4px solid ${C.gBd2}`,
+                  background:C.gFaint, borderRadius:"0 12px 12px 0",
                 }}>
                   <p style={{
-                    fontFamily:Fs, fontSize:"clamp(1rem,2.2vw,1.1rem)", lineHeight:1.9,
+                    fontFamily:Fs, fontSize:"clamp(1.05rem,2.3vw,1.15rem)", lineHeight:2.0,
                     color:C.cream, wordBreak:"keep-all",
                   }}>
-                    「縁のある神社を知って参拝することで、<br/>
-                    日常の中に静かな根拠と安心感が生まれる。」
+                    「縁のある神社に気づいた人は、<br/>
+                    迷ったとき・疲れたとき・決断のときに、<br/>
+                    帰れる場所を持つことができる。」
                   </p>
                 </div>
               </FadeUp>
@@ -742,7 +755,7 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.threeShrineBg}')`,
           backgroundSize:"cover", backgroundPosition:"center",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.52)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.68)" }}/>
 
         <div style={{ ...W, position:"relative" }}>
           <FadeUp>
@@ -751,10 +764,11 @@ export default function GuardianV2() {
               あなたを見守る神社は、<br/>ひとつとは限りません。
             </SH2>
             <p style={{
-              color:C.crDim, textAlign:"center", lineHeight:2, marginBottom:"60px",
-              fontSize:"clamp(1rem,2vw,1.05rem)",
+              color:C.crDim, textAlign:"center", lineHeight:2.2, marginBottom:"60px",
+              fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all",
             }}>
-              守護神社には3種類あり、それぞれ異なる役割を持っています。
+              守護神社には3種類あり、それぞれ異なる役割を持っています。<br/>
+              3つすべてを知ることで、あなたの「過去・現在・これから」を守る神社がそろいます。
             </p>
           </FadeUp>
 
@@ -786,19 +800,19 @@ export default function GuardianV2() {
                     background:`linear-gradient(to right,transparent,${s.ac},transparent)`,
                   }}/>
                   {/* Content */}
-                  <div style={{ position:"relative", padding:"28px", flex:1, display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
+                  <div style={{ position:"relative", padding:"30px", flex:1, display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
                     <div style={{
-                      width:"56px", height:"56px", borderRadius:"50%",
+                      width:"60px", height:"60px", borderRadius:"50%",
                       background:`${s.ac}22`, border:`2px solid ${s.ac}66`,
                       display:"flex", alignItems:"center", justifyContent:"center",
-                      fontFamily:Fs, fontSize:"1.4rem", fontWeight:800, color:s.ac,
-                      marginBottom:"16px",
-                      boxShadow:`0 0 20px ${s.ac}33`,
+                      fontFamily:Fs, fontSize:"1.5rem", fontWeight:800, color:s.ac,
+                      marginBottom:"18px",
+                      boxShadow:`0 0 24px ${s.ac}44`,
                     }}>{s.icon}</div>
-                    <div style={{ fontFamily:Fs, fontSize:"clamp(1.25rem,3vw,1.6rem)", fontWeight:800, marginBottom:"4px" }}>{s.name}</div>
-                    <div style={{ fontSize:"0.7rem", color:C.crMut, letterSpacing:"0.14em", marginBottom:"10px" }}>{s.rd}</div>
-                    <p style={{ fontSize:"0.78rem", color:s.ac, letterSpacing:"0.06em", marginBottom:"16px", fontFamily:Fd }}>{s.tag}</p>
-                    <p style={{ color:C.crDim, fontSize:"clamp(0.92rem,1.9vw,1rem)", lineHeight:1.95 }}>{s.desc}</p>
+                    <div style={{ fontFamily:Fs, fontSize:"clamp(1.4rem,3.2vw,1.8rem)", fontWeight:800, marginBottom:"5px" }}>{s.name}</div>
+                    <div style={{ fontSize:"0.8rem", color:C.crMut, letterSpacing:"0.14em", marginBottom:"12px" }}>{s.rd}</div>
+                    <p style={{ fontSize:"0.88rem", color:s.ac, letterSpacing:"0.04em", marginBottom:"16px", fontFamily:Fs, fontWeight:700 }}>{s.tag}</p>
+                    <p style={{ color:C.crDim, fontSize:"clamp(0.95rem,2vw,1.05rem)", lineHeight:2.05 }}>{s.desc}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -828,7 +842,7 @@ export default function GuardianV2() {
                 </SH2>
               </FadeUp>
               <FadeUp delay={0.08}>
-                <p style={{ color:C.crDim, lineHeight:2.15, fontSize:"clamp(1rem,2vw,1.06rem)", marginBottom:"0" }}>
+                <p style={{ color:C.crDim, lineHeight:2.2, fontSize:"clamp(1.05rem,2.2vw,1.12rem)", marginBottom:"0" }}>
                   {WHY_HINT.lead}
                 </p>
               </FadeUp>
@@ -844,14 +858,14 @@ export default function GuardianV2() {
                 boxShadow:"0 8px 48px rgba(0,0,0,.55)",
               }}>
                 <p style={{
-                  fontFamily:Fd, fontSize:"0.6rem", letterSpacing:"0.4em",
-                  color:C.gold, textTransform:"uppercase", marginBottom:"24px",
-                }}>守護神社を知ると、こんな変化が起きます</p>
-                <div style={{ display:"flex", flexDirection:"column", gap:"18px" }}>
+                  fontFamily:Fs, fontSize:"0.82rem", letterSpacing:"0.12em",
+                  color:C.gold, marginBottom:"24px", fontWeight:700,
+                }}>守護神社を知ると起きる変化</p>
+                <div style={{ display:"flex", flexDirection:"column", gap:"20px" }}>
                   {WHY_HINT.benefits.map((b,i)=>(
                     <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:"14px" }}>
                       <Check color={C.gold}/>
-                      <span style={{ color:C.cream, fontSize:"clamp(0.95rem,2vw,1.03rem)", lineHeight:1.7, fontWeight:700 }}>{b}</span>
+                      <span style={{ color:C.cream, fontSize:"clamp(1rem,2.1vw,1.08rem)", lineHeight:1.8, fontWeight:700 }}>{b}</span>
                     </div>
                   ))}
                 </div>
@@ -880,10 +894,11 @@ export default function GuardianV2() {
               この診断でわかること
             </SH2>
             <p style={{
-              color:C.crDim, textAlign:"center", lineHeight:2, marginBottom:"56px",
-              fontSize:"clamp(1rem,2vw,1.05rem)",
+              color:C.crDim, textAlign:"center", lineHeight:2.2, marginBottom:"56px",
+              fontSize:"clamp(1.05rem,2.2vw,1.15rem)",
             }}>
-              生年月日と神社データをもとに、あなただけの守護神社を詳しく読み解きます。
+              生年月日を入れるだけで、下記の<strong style={{color:C.goldL}}>8つの診断結果</strong>が即座に確認できます。<br/>
+              全国31,247社のデータと五行・陰陽の観点を組み合わせた、あなただけの診断です。
             </p>
           </FadeUp>
 
@@ -916,10 +931,10 @@ export default function GuardianV2() {
                     marginBottom:"14px",
                   }}>{item.icon}</div>
                   <div style={{
-                    fontFamily:Fs, fontSize:"clamp(0.95rem,2vw,1rem)", fontWeight:800,
-                    color:C.cream, marginBottom:"8px",
+                    fontFamily:Fs, fontSize:"clamp(1rem,2.1vw,1.08rem)", fontWeight:800,
+                    color:C.cream, marginBottom:"10px",
                   }}>{item.t}</div>
-                  <p style={{ color:C.crDim, fontSize:"0.83rem", lineHeight:1.75 }}>{item.d}</p>
+                  <p style={{ color:C.crDim, fontSize:"0.92rem", lineHeight:1.85 }}>{item.d}</p>
                 </div>
               </FadeUp>
             ))}
@@ -941,7 +956,7 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.quotePanelBg}')`,
           backgroundSize:"cover", backgroundPosition:"center",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.55)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.68)" }}/>
         {/* gold shine bar */}
         <div style={{
           position:"absolute", top:0, left:0, right:0, height:"2px",
@@ -960,19 +975,21 @@ export default function GuardianV2() {
               opacity:.18, lineHeight:.8, marginBottom:"-0.2em", userSelect:"none",
             }}>"</div>
             <p style={{
-              fontFamily:Fd, fontSize:"clamp(1.3rem,3.8vw,2.2rem)",
-              letterSpacing:"0.06em", color:C.goldL, marginBottom:"30px",
-              fontStyle:"italic", lineHeight:1.65, maxWidth:"680px", margin:"0 auto 30px",
+              fontFamily:Fs, fontSize:"clamp(1.5rem,4vw,2.6rem)",
+              letterSpacing:"0.04em", color:C.goldL, marginBottom:"30px",
+              fontWeight:800, lineHeight:1.7, maxWidth:"700px", margin:"0 auto 30px",
+              wordBreak:"keep-all",
             }}>
               縁のある神社を知る人と、知らない人では<br/>
-              人生の向き合い方が、静かに変わってゆく
+              人生の向き合い方が、静かに変わってゆく。
             </p>
-            <div style={{ width:"80px", height:"1px", background:C.gBd2, margin:"0 auto 26px" }}/>
+            <div style={{ width:"80px", height:"1px", background:C.gBd2, margin:"0 auto 30px" }}/>
             <p style={{
-              color:C.crDim, fontSize:"clamp(0.95rem,2vw,1.05rem)", lineHeight:2.1,
+              color:C.crDim, fontSize:"clamp(1rem,2.2vw,1.12rem)", lineHeight:2.2,
               maxWidth:"540px", margin:"0 auto", wordBreak:"keep-all",
             }}>
-              あなたに縁の深い神社は、すでにそこに存在しています。あとは、知るか知らないか、その違いだけです。
+              あなたに縁の深い神社は、すでにそこに存在しています。<br/>
+              あとは、知るか知らないか。その違いだけです。
             </p>
           </FadeUp>
         </div>
@@ -988,19 +1005,19 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.logicBg}')`,
           backgroundSize:"cover", backgroundPosition:"center",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.55)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.70)" }}/>
 
         <div style={{ ...W, position:"relative" }}>
           <FadeUp>
             <Tag t="The Logic Behind It" c={C.goldL}/>
             <SH2 sx={{ textAlign:"center", marginBottom:"16px" }}>
-              生年月日と神社データをもとに、<br/>あなたのご縁を一挙に読み解きます。
+              なぜこの診断は、<br/>あなたに本当に合った神社がわかるのか？
             </SH2>
             <p style={{
-              color:C.crDim, textAlign:"center", lineHeight:2, marginBottom:"64px",
-              fontSize:"clamp(1rem,2vw,1.05rem)",
+              color:C.crDim, textAlign:"center", lineHeight:2.2, marginBottom:"64px",
+              fontSize:"clamp(1.05rem,2.2vw,1.12rem)",
             }}>
-              5つの要素を組み合わせて、あなただけの守護神社を導き出します。
+              単なる生年月日占いとは異なります。<strong style={{color:C.cream}}>5つの要素</strong>を組み合わせることで、<br/>あなただけの守護神社を科学的・文化的に導き出します。
             </p>
           </FadeUp>
 
@@ -1069,11 +1086,11 @@ export default function GuardianV2() {
                   border:`1px solid ${l.c}33`, borderLeft:`3px solid ${l.c}`,
                   borderRadius:"10px",
                 }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"10px" }}>
-                    <span style={{ fontFamily:Fs, fontSize:"1.1rem", fontWeight:800, color:l.c }}>{l.el}</span>
-                    <span style={{ fontFamily:Fs, fontSize:"clamp(0.95rem,2vw,1.03rem)", fontWeight:800, color:C.cream }}>{l.t}</span>
+                  <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"12px" }}>
+                    <span style={{ fontFamily:Fs, fontSize:"1.3rem", fontWeight:800, color:l.c }}>{l.el}</span>
+                    <span style={{ fontFamily:Fs, fontSize:"clamp(1rem,2.1vw,1.1rem)", fontWeight:800, color:C.cream }}>{l.t}</span>
                   </div>
-                  <p style={{ color:C.crDim, fontSize:"0.89rem", lineHeight:1.9 }}>{l.d}</p>
+                  <p style={{ color:C.crDim, fontSize:"0.95rem", lineHeight:1.95 }}>{l.d}</p>
                 </div>
               </FadeUp>
             ))}
@@ -1100,39 +1117,47 @@ export default function GuardianV2() {
         <div style={{ ...W, position:"relative" }}>
           <FadeUp>
             <Tag t="Voices"/>
-            <SH2 sx={{ textAlign:"center", marginBottom:"56px" }}>守護神社診断を使った方の声</SH2>
+            <SH2 sx={{ textAlign:"center", marginBottom:"18px" }}>守護神社診断を使った方の声</SH2>
+            <p style={{
+              color:C.crDim, textAlign:"center", lineHeight:2.1, marginBottom:"56px",
+              fontSize:"clamp(1.02rem,2.1vw,1.1rem)",
+            }}>
+              年齢や背景はさまざまです。それでも「知ってよかった」という共通点があります。
+            </p>
           </FadeUp>
 
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"22px" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))", gap:"24px" }}>
             {VOICES.map((v,i)=>(
               <FadeUp key={i} delay={i*.1}>
                 <div className="g-hover" style={{
-                  padding:"30px 26px",
-                  background:"rgba(3,5,10,.90)",
+                  padding:"32px 28px",
+                  background:"rgba(3,5,10,.92)",
                   border:`1px solid ${C.gBd}`,
-                  borderRadius:"16px",
-                  boxShadow:"0 8px 40px rgba(0,0,0,.6)",
+                  borderRadius:"18px",
+                  boxShadow:"0 8px 48px rgba(0,0,0,.65)",
+                  height:"100%", boxSizing:"border-box",
                 }}>
-                  {/* Avatar placeholder + label */}
-                  <div style={{ display:"flex", alignItems:"center", gap:"12px", marginBottom:"20px" }}>
+                  {/* Avatar + label */}
+                  <div style={{ display:"flex", alignItems:"center", gap:"14px", marginBottom:"22px" }}>
                     <div style={{
-                      width:"42px", height:"42px", borderRadius:"50%",
-                      background:C.gFaint, border:`1px solid ${C.gBd}`,
+                      width:"48px", height:"48px", borderRadius:"50%",
+                      background:`${v.ic}28`, border:`2px solid ${v.ic}77`,
                       display:"flex", alignItems:"center", justifyContent:"center",
-                      fontFamily:Fs, fontSize:"0.75rem", color:C.gold,
-                    }}>⛩</div>
-                    <span style={{ fontFamily:Fd, fontSize:"0.72rem", letterSpacing:"0.12em", color:C.gold }}>{v.label}</span>
+                      fontFamily:Fd, fontSize:"0.82rem", fontWeight:700, color:v.ic,
+                      flexShrink:0, letterSpacing:"0.02em",
+                    }}>{v.initials}</div>
+                    <span style={{ fontFamily:Fs, fontSize:"0.88rem", letterSpacing:"0.04em", color:C.crDim, fontWeight:700 }}>{v.label}</span>
                   </div>
                   <div style={{
-                    padding:"14px 18px",
-                    background:C.gFaint, borderLeft:`3px solid ${C.gBd2}`,
-                    borderRadius:"0 8px 8px 0", marginBottom:"18px",
+                    padding:"16px 20px",
+                    background:`${v.ic}0f`, borderLeft:`3px solid ${v.ic}88`,
+                    borderRadius:"0 10px 10px 0", marginBottom:"20px",
                   }}>
-                    <p style={{ color:C.goldL, fontFamily:Fs, fontSize:"clamp(0.95rem,2vw,1.02rem)", lineHeight:1.75, fontWeight:700 }}>
+                    <p style={{ color:C.cream, fontFamily:Fs, fontSize:"clamp(0.98rem,2.1vw,1.06rem)", lineHeight:1.8, fontWeight:800, wordBreak:"keep-all" }}>
                       「{v.pull}」
                     </p>
                   </div>
-                  <p style={{ color:C.crDim, fontSize:"clamp(0.92rem,1.9vw,0.98rem)", lineHeight:1.95 }}>{v.text}</p>
+                  <p style={{ color:C.crDim, fontSize:"clamp(0.95rem,2vw,1.02rem)", lineHeight:2.1, wordBreak:"keep-all" }}>{v.text}</p>
                 </div>
               </FadeUp>
             ))}
@@ -1178,19 +1203,18 @@ export default function GuardianV2() {
           <FadeUp>
             <Tag t="Start Your Diagnosis" c={C.goldL}/>
             <SH2 sx={{ textAlign:"center", marginBottom:"22px" }}>
-              あなたのご縁を、<br/>今すぐ無料で調べる
+              あなたのご縁を、<br/>今すぐ無料で調べましょう
             </SH2>
           </FadeUp>
           <FadeUp delay={0.08}>
             <p style={{
-              color:C.crDim, textAlign:"center", lineHeight:2.1,
-              fontSize:"clamp(1rem,2vw,1.06rem)", maxWidth:"520px", margin:"0 auto 52px",
+              color:C.crDim, textAlign:"center", lineHeight:2.3,
+              fontSize:"clamp(1.05rem,2.2vw,1.15rem)", maxWidth:"540px", margin:"0 auto 52px",
+              wordBreak:"keep-all",
             }}>
-              生年月日を入力するだけで、あなたに縁の深い守護神社を診断できます。<br/><br/>
-              それは未来を決めつけるものではありません。<br/>
-              自分がどんな土地に支えられてきたのか。<br/>
-              どんな場所に心を向けると、前に進みやすいのか。<br/><br/>
-              そのヒントを受け取るための、小さな入口です。
+              生年月日を入れるだけ。約30秒で、あなたに縁の深い守護神社が分かります。<br/><br/>
+              自分がどんな土地に支えられてきたのか。どの神社が今のあなたを見守っているのか。<br/><br/>
+              それを知るだけで、日々の迷いや不安の質が、静かに変わっていきます。
             </p>
           </FadeUp>
 
@@ -1204,35 +1228,35 @@ export default function GuardianV2() {
               boxShadow:"0 20px 72px rgba(0,0,0,.8),0 0 48px rgba(201,155,77,.10)",
             }}>
               <div style={{ marginBottom:"22px" }}>
-                <label style={{ display:"block", fontSize:"0.77rem", color:C.gold, letterSpacing:"0.12em", marginBottom:"8px", fontFamily:Fd }}>
+                <label style={{ display:"block", fontSize:"0.9rem", color:C.gold, letterSpacing:"0.06em", marginBottom:"10px", fontFamily:Fs, fontWeight:700 }}>
                   生年月日 *
                 </label>
                 <input
                   type="date" className="g-input" value={bday} onChange={e=>setBday(e.target.value)}
                   style={{
-                    width:"100%", padding:"14px 16px", boxSizing:"border-box",
-                    background:"rgba(255,255,255,.04)", border:`1px solid ${C.gBd}`,
-                    borderRadius:"8px", color:C.cream, fontSize:"1rem", fontFamily:Fs, colorScheme:"dark",
+                    width:"100%", padding:"15px 18px", boxSizing:"border-box",
+                    background:"rgba(255,255,255,.05)", border:`1px solid ${C.gBd}`,
+                    borderRadius:"10px", color:C.cream, fontSize:"1.05rem", fontFamily:Fs, colorScheme:"dark",
                   }}
                 />
               </div>
               <div style={{ marginBottom:"22px" }}>
-                <label style={{ display:"block", fontSize:"0.77rem", color:C.gold, letterSpacing:"0.12em", marginBottom:"8px", fontFamily:Fd }}>
+                <label style={{ display:"block", fontSize:"0.9rem", color:C.gold, letterSpacing:"0.06em", marginBottom:"10px", fontFamily:Fs, fontWeight:700 }}>
                   現在の都道府県（任意）
                 </label>
                 <select
                   className="g-input" value={pref} onChange={e=>setPref(e.target.value)}
                   style={{
-                    width:"100%", padding:"14px 16px", boxSizing:"border-box",
+                    width:"100%", padding:"15px 18px", boxSizing:"border-box",
                     background:"rgba(3,5,10,.92)", border:`1px solid ${C.gBd}`,
-                    borderRadius:"8px", color:C.cream, fontSize:"1rem", fontFamily:Fs,
+                    borderRadius:"10px", color:C.cream, fontSize:"1.05rem", fontFamily:Fs,
                   }}
                 >
                   {PREFS.map(p=><option key={p}>{p}</option>)}
                 </select>
               </div>
               <div style={{ marginBottom:"22px" }}>
-                <label style={{ display:"block", fontSize:"0.77rem", color:C.gold, letterSpacing:"0.12em", marginBottom:"12px", fontFamily:Fd }}>
+                <label style={{ display:"block", fontSize:"0.9rem", color:C.gold, letterSpacing:"0.06em", marginBottom:"12px", fontFamily:Fs, fontWeight:700 }}>
                   性別（任意）
                 </label>
                 <div style={{ display:"flex", gap:"16px" }}>
@@ -1240,13 +1264,13 @@ export default function GuardianV2() {
                     <label key={g} style={{ display:"flex", alignItems:"center", gap:"7px", cursor:"pointer" }}>
                       <input type="radio" name="gen" value={g} checked={gen===g} onChange={()=>setGen(g)}
                         style={{ accentColor:C.gold }}/>
-                      <span style={{ color:C.crDim, fontSize:"0.93rem" }}>{g}</span>
+                      <span style={{ color:C.crDim, fontSize:"1rem" }}>{g}</span>
                     </label>
                   ))}
                 </div>
               </div>
               <div style={{ marginBottom:"32px" }}>
-                <label style={{ display:"block", fontSize:"0.77rem", color:C.gold, letterSpacing:"0.12em", marginBottom:"12px", fontFamily:Fd }}>
+                <label style={{ display:"block", fontSize:"0.9rem", color:C.gold, letterSpacing:"0.06em", marginBottom:"12px", fontFamily:Fs, fontWeight:700 }}>
                   相談テーマ（任意・複数選択可）
                 </label>
                 <div style={{ display:"flex", gap:"8px", flexWrap:"wrap" }}>
@@ -1257,7 +1281,7 @@ export default function GuardianV2() {
                       border:`1px solid ${thm===t?C.gBd2:C.gBd}`,
                       borderRadius:"20px",
                       color:thm===t?C.goldL:C.crMut,
-                      fontSize:"0.82rem", fontFamily:Fs,
+                      fontSize:"0.92rem", fontFamily:Fs,
                       transition:"all .2s",
                     }}>{t}</button>
                   ))}
@@ -1287,38 +1311,44 @@ export default function GuardianV2() {
         <div style={W}>
           <FadeUp>
             <Tag t="FAQ"/>
-            <SH2 sx={{ textAlign:"center", marginBottom:"56px" }}>よくあるご質問</SH2>
+            <SH2 sx={{ textAlign:"center", marginBottom:"16px" }}>よくあるご質問</SH2>
+            <p style={{
+              color:C.crDim, textAlign:"center", lineHeight:2, marginBottom:"56px",
+              fontSize:"clamp(1rem,2vw,1.06rem)",
+            }}>
+              診断前に気になることがあれば、まずご確認ください。
+            </p>
           </FadeUp>
           <div style={{
-            display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",
-            gap:"12px", maxWidth:"860px", margin:"0 auto",
+            display:"flex", flexDirection:"column",
+            gap:"12px", maxWidth:"720px", margin:"0 auto",
           }}>
             {FAQS.map((f,i)=>(
-              <FadeUp key={i} delay={i*.05}>
+              <FadeUp key={i} delay={i*.04}>
                 <div style={{
-                  border:`1px solid ${faq===i?C.gBd:"rgba(201,155,77,.11)"}`,
-                  borderRadius:"12px", overflow:"hidden",
-                  background:"rgba(3,5,10,.60)",
+                  border:`1px solid ${faq===i?C.gBd2:"rgba(201,155,77,.15)"}`,
+                  borderRadius:"14px", overflow:"hidden",
+                  background:"rgba(3,5,10,.70)",
                   transition:"border-color .2s",
                 }}>
                   <button
                     onClick={()=>setFaq(faq===i?null:i)}
                     style={{
-                      width:"100%", padding:"18px 20px", background:"none", border:"none", cursor:"pointer",
-                      display:"flex", justifyContent:"space-between", alignItems:"center", gap:"12px", textAlign:"left",
+                      width:"100%", padding:"22px 24px", background:"none", border:"none", cursor:"pointer",
+                      display:"flex", justifyContent:"space-between", alignItems:"center", gap:"16px", textAlign:"left",
                     }}
                   >
-                    <span style={{ color:C.cream, fontSize:"clamp(0.88rem,1.9vw,0.96rem)", fontFamily:Fs, fontWeight:700, lineHeight:1.5 }}>{f.q}</span>
+                    <span style={{ color:C.cream, fontSize:"clamp(0.98rem,2vw,1.06rem)", fontFamily:Fs, fontWeight:700, lineHeight:1.6 }}>{f.q}</span>
                     <span style={{
-                      flexShrink:0, width:"24px", height:"24px", borderRadius:"50%",
+                      flexShrink:0, width:"28px", height:"28px", borderRadius:"50%",
                       background:C.gFaint, border:`1px solid ${C.gBd}`,
                       display:"flex", alignItems:"center", justifyContent:"center",
-                      color:C.gold, fontSize:"0.9rem",
+                      color:C.gold, fontSize:"1.1rem",
                       transition:"transform .3s", transform:faq===i?"rotate(45deg)":"none",
                     }}>+</span>
                   </button>
                   <div className={`g-faq-body${faq===i?" open":""}`}>
-                    <p style={{ padding:"0 20px 18px", color:C.crDim, fontSize:"clamp(0.87rem,1.8vw,0.93rem)", lineHeight:2 }}>{f.a}</p>
+                    <p style={{ padding:"0 24px 22px", color:C.crDim, fontSize:"clamp(0.95rem,1.95vw,1.02rem)", lineHeight:2.1 }}>{f.a}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -1340,38 +1370,53 @@ export default function GuardianV2() {
             {/* Phone mockup */}
             <FadeUp delay={0.05}>
               <div style={{ display:"flex", justifyContent:"center" }}>
-                <div style={{ animation:"gvFloat 5.5s ease-in-out infinite", width:"210px" }}>
+                <div style={{ animation:"gvFloat 5.5s ease-in-out infinite", width:"260px" }}>
                   <div style={{
                     background:"rgba(8,10,16,.98)",
-                    border:"2.5px solid rgba(201,155,77,.32)",
-                    borderRadius:"36px", overflow:"hidden",
-                    boxShadow:"0 28px 80px rgba(0,0,0,.85),0 0 52px rgba(201,155,77,.12)",
-                    padding:"10px 0",
+                    border:"2.5px solid rgba(201,155,77,.40)",
+                    borderRadius:"40px", overflow:"hidden",
+                    boxShadow:"0 32px 90px rgba(0,0,0,.9),0 0 60px rgba(201,155,77,.16)",
+                    padding:"12px 0",
                   }}>
-                    <div style={{ width:"64px", height:"14px", background:"#000", borderRadius:"8px", margin:"0 auto 10px" }}/>
-                    <div style={{ background:"#06C755", padding:"10px 14px", display:"flex", alignItems:"center", gap:"8px" }}>
-                      <div style={{
-                        width:"28px", height:"28px", borderRadius:"50%",
-                        background:"rgba(255,255,255,.2)",
-                        display:"flex", alignItems:"center", justifyContent:"center",
-                        fontSize:"0.7rem",
-                      }}>⛩</div>
-                      <span style={{ color:"#fff", fontSize:"0.7rem", fontWeight:700 }}>守護神社診断</span>
+                    {/* Status bar */}
+                    <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"0 18px 10px" }}>
+                      <span style={{ color:"rgba(255,255,255,.5)", fontSize:"0.6rem" }}>9:41</span>
+                      <div style={{ width:"70px", height:"16px", background:"#111", borderRadius:"10px" }}/>
+                      <span style={{ color:"rgba(255,255,255,.5)", fontSize:"0.6rem" }}>●●●</span>
                     </div>
-                    <div style={{ padding:"14px 10px", display:"flex", flexDirection:"column", gap:"8px" }}>
-                      {["診断結果が届きました","あなたの守護神社は\n3社特定できました✨","参拝ガイドも\n確認できます📋"].map((msg,i)=>(
+                    {/* LINE header */}
+                    <div style={{ background:"#06C755", padding:"12px 16px", display:"flex", alignItems:"center", gap:"10px" }}>
+                      <div style={{
+                        width:"34px", height:"34px", borderRadius:"50%",
+                        background:"rgba(255,255,255,.25)",
+                        display:"flex", alignItems:"center", justifyContent:"center",
+                        fontSize:"0.85rem", fontWeight:700,
+                      }}>⛩</div>
+                      <div>
+                        <div style={{ color:"#fff", fontSize:"0.8rem", fontWeight:800 }}>守護神社診断</div>
+                        <div style={{ color:"rgba(255,255,255,.7)", fontSize:"0.6rem" }}>公式アカウント</div>
+                      </div>
+                    </div>
+                    {/* Messages */}
+                    <div style={{ padding:"16px 12px", display:"flex", flexDirection:"column", gap:"10px", background:"#e9e9e9" }}>
+                      {[
+                        "診断結果が届きました🎋",
+                        "あなたの守護神社は\n3社特定できました✨",
+                        "産土神社・氏神神社・鎮守神社、それぞれの詳細を確認できます",
+                        "参拝ガイドと今月の開運アクションも確認できます📋",
+                      ].map((msg,i)=>(
                         <div key={i}>
                           <div style={{
                             background:"#fff", color:"#1a1a1a",
-                            padding:"7px 10px", borderRadius:"0 10px 10px 10px",
-                            fontSize:"0.62rem", lineHeight:1.6,
-                            maxWidth:"80%", whiteSpace:"pre-line",
-                            boxShadow:"0 2px 8px rgba(0,0,0,.15)",
+                            padding:"9px 12px", borderRadius:"0 12px 12px 12px",
+                            fontSize:"0.68rem", lineHeight:1.7,
+                            maxWidth:"84%", whiteSpace:"pre-line",
+                            boxShadow:"0 2px 8px rgba(0,0,0,.12)",
                           }}>{msg}</div>
                         </div>
                       ))}
                     </div>
-                    <div style={{ width:"52px", height:"4px", background:"rgba(255,255,255,.15)", borderRadius:"2px", margin:"8px auto 4px" }}/>
+                    <div style={{ width:"60px", height:"4px", background:"rgba(255,255,255,.15)", borderRadius:"2px", margin:"10px auto 6px" }}/>
                   </div>
                 </div>
               </div>
@@ -1382,25 +1427,28 @@ export default function GuardianV2() {
               <FadeUp>
                 <Tag t="Get Results on LINE" c={C.emFg}/>
                 <SH2 sx={{ marginBottom:"22px", wordBreak:"keep-all" }}>
-                  診断結果をLINEで受け取ると、<br/>
-                  さらに詳しく確認できます。
+                  LINEで受け取ると、<br/>
+                  より深く・長く活かせます。
                 </SH2>
               </FadeUp>
               <FadeUp delay={0.08}>
-                <p style={{ color:C.crDim, lineHeight:2.1, marginBottom:"28px", fontSize:"clamp(1rem,2vw,1.06rem)" }}>
-                  あなたに縁の深い守護神社は、一度見て終わりではありません。<br/><br/>
-                  参拝のタイミング。<br/>
-                  願いごとの向き合い方。<br/>
-                  今月意識したい開運アクション。<br/><br/>
-                  LINEで受け取ることで、診断結果を保存しながら、あなたの暮らしの中で少しずつ活かせます。
+                <p style={{ color:C.crDim, lineHeight:2.2, marginBottom:"28px", fontSize:"clamp(1.05rem,2.2vw,1.12rem)", wordBreak:"keep-all" }}>
+                  守護神社は「知る」だけでは、もったいないのです。<br/><br/>
+                  いつ参拝すべきか。何を願えばいいか。今月の運気の傾向は何か——それらは時期によって変わります。LINEで受け取ることで、あなたに合った情報を、ちょうど必要なタイミングで届けます。
                 </p>
               </FadeUp>
               <FadeUp delay={0.14}>
-                <div style={{ display:"flex", flexDirection:"column", gap:"12px", marginBottom:"32px" }}>
-                  {["診断結果をいつでも見返せる","参拝のタイミングと作法がわかる","今月の開運アクションが届く","必要なければいつでも解除できる"].map((b,i)=>(
-                    <div key={i} style={{ display:"flex", alignItems:"center", gap:"12px" }}>
+                <div style={{ display:"flex", flexDirection:"column", gap:"14px", marginBottom:"32px" }}>
+                  {[
+                    "3つの守護神社の詳細と参拝ガイドを保存できる",
+                    "最適な参拝タイミング・時間帯・作法がわかる",
+                    "毎月の開運アクションとご縁の傾向が届く",
+                    "いつでも診断結果を見返せる",
+                    "不要になればいつでもブロック・解除OK",
+                  ].map((b,i)=>(
+                    <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:"12px" }}>
                       <Check color={C.emFg}/>
-                      <span style={{ color:C.crDim, fontSize:"clamp(0.93rem,1.9vw,1rem)" }}>{b}</span>
+                      <span style={{ color:C.crDim, fontSize:"clamp(0.98rem,2vw,1.05rem)", lineHeight:1.8 }}>{b}</span>
                     </div>
                   ))}
                 </div>
@@ -1437,7 +1485,7 @@ export default function GuardianV2() {
           backgroundImage:`url('${IMG.finalCtaBg}')`,
           backgroundSize:"cover", backgroundPosition:"center 28%",
         }}/>
-        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.52)" }}/>
+        <div style={{ position:"absolute", inset:0, background:"rgba(3,5,10,.76)" }}/>
 
         {/* decorative watermark */}
         <div style={{
@@ -1458,25 +1506,24 @@ export default function GuardianV2() {
             <Tag t="Begin Here" c={C.goldL}/>
             <h2 style={{
               fontFamily:Fs, fontWeight:800, wordBreak:"keep-all",
-              fontSize:"clamp(2.2rem,6vw,3.9rem)",
+              fontSize:"clamp(2.4rem,6.5vw,4.2rem)",
               lineHeight:1.45, marginBottom:"26px",
+              textShadow:"0 4px 32px rgba(0,0,0,.7)",
             }}>
-              神社との縁は、<br/>気づいた瞬間から始まります。
+              守護神社との縁は、<br/>気づいた瞬間から始まります。
             </h2>
           </FadeUp>
           <FadeUp delay={0.1}>
             <p style={{
-              color:C.crDim, lineHeight:2.2,
-              fontSize:"clamp(1rem,2.2vw,1.1rem)",
-              maxWidth:"520px", margin:"0 auto 56px",
+              color:C.crDim, lineHeight:2.3,
+              fontSize:"clamp(1.08rem,2.3vw,1.18rem)",
+              maxWidth:"540px", margin:"0 auto 56px",
+              wordBreak:"keep-all",
             }}>
-              生まれた土地。<br/>
-              家族が受け継いできた土地。<br/>
-              今、あなたが暮らしている場所。<br/><br/>
-              そのすべてが、あなたの人生と<br/>
-              静かにつながっているかもしれません。<br/><br/>
-              まずは無料診断で、あなたと縁の深い<br/>
-              守護神社を知ることから始めてみませんか。
+              生まれた土地。家族が受け継いできた土地。今、あなたが暮らしている場所。<br/><br/>
+              そのすべてが、あなたの人生と静かにつながっています。<br/>
+              その縁に気づくだけで、日々の見え方が変わります。<br/><br/>
+              まずは生年月日を入れるだけ。<strong style={{color:C.goldL}}>約30秒</strong>で、あなたの守護神社がわかります。
             </p>
           </FadeUp>
           <FadeUp delay={0.18}>
@@ -1499,8 +1546,8 @@ export default function GuardianV2() {
               borderRadius:"14px", maxWidth:"560px", margin:"60px auto 0", textAlign:"left",
             }}>
               <p style={{ fontFamily:Fd, fontSize:"0.73rem", color:C.gold, letterSpacing:"0.2em", marginBottom:"12px" }}>P.S.</p>
-              <p style={{ color:C.crDim, fontSize:"clamp(0.93rem,1.9vw,1rem)", lineHeight:2.1 }}>
-                縁のある守護神社に気づかないまま、時間だけが過ぎていくことがあります。今日ここで生年月日を入力するだけで、その縁に気づくことができます。所要時間は約30秒です。
+              <p style={{ color:C.crDim, fontSize:"clamp(0.98rem,2vw,1.06rem)", lineHeight:2.2 }}>
+                守護神社を知らないまま何十年も過ごす人がいます。知った人は、「もっと早く知りたかった」と言います。今日、生年月日を入力するだけで、あなたの縁に気づくことができます。所要時間は約30秒です。
               </p>
             </div>
           </FadeUp>
