@@ -12,6 +12,9 @@ import {
   HelpCircle,
   BookOpen,
   Send,
+  Sparkles,
+  ShieldCheck,
+  Navigation,
 } from "lucide-react";
 import {
   searchSpots,
@@ -186,6 +189,33 @@ const CONTENT_CARDS = [
     cta: "悩みで探す",
     icon: <HelpCircle size={24} strokeWidth={1.4} />,
     iconColor: "#6aab8a",
+  },
+  {
+    href: "/diagnose/unmei" as const,
+    en: "AI FORTUNE READING",
+    ja: "運命鑑定（AI）",
+    desc: "生年月日を入力するだけ。AIが四柱推命・六星占術をもとに宿命・恋愛・仕事・今後の運気を容赦なく鑑定。",
+    cta: "運命を鑑定する",
+    icon: <Sparkles size={24} strokeWidth={1.4} />,
+    iconColor: "#c070c0",
+  },
+  {
+    href: "/yakudoshi" as const,
+    en: "YAKUDOSHI CHECK",
+    ja: "厄年チェック",
+    desc: "今年は厄年？数え年で即判定。本厄・前厄・後厄を確認して、近くの厄除け神社を探せます。",
+    cta: "厄年を確認する",
+    icon: <ShieldCheck size={24} strokeWidth={1.4} />,
+    iconColor: "#c09040",
+  },
+  {
+    href: "/diagnose/kihogaku" as const,
+    en: "LUCKY DIRECTION",
+    ja: "吉方位診断",
+    desc: "九星気学であなたの本命星を算出。今年の大吉方位・吉方位・凶方位をわかりやすく表示します。",
+    cta: "吉方位を調べる",
+    icon: <Navigation size={24} strokeWidth={1.4} />,
+    iconColor: "#5090c0",
   },
 ] as const;
 
