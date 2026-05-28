@@ -375,7 +375,7 @@ export default function GuardianV2() {
           color:"#fff", fontSize:"0.97rem", fontWeight:800, letterSpacing:"0.1em", fontFamily:Fs,
           display:"flex", alignItems:"center", justifyContent:"center", gap:"8px",
           boxShadow:"0 4px 24px rgba(0,0,0,.75)",
-        }}><Torii/>今すぐ無料で守護神社を調べる</button>
+        }}><Torii/>守護神社を無料で調べる（約30秒）</button>
       </div>
 
       {/* ════════════════════════════════════════════════════════════════
@@ -436,12 +436,12 @@ export default function GuardianV2() {
             <FadeUp delay={0.04}>
               <div style={{
                 display:"inline-flex", alignItems:"center", gap:"8px",
-                padding:"5px 18px 5px 12px",
-                background:"rgba(201,155,77,.09)", border:`1px solid ${C.gBd}`,
+                padding:"7px 22px 7px 14px",
+                background:"rgba(201,155,77,.10)", border:`1px solid ${C.gBd2}`,
                 borderRadius:"30px", marginBottom:"30px",
               }}>
                 <Torii/>
-                <span style={{ fontFamily:Fd, fontSize:"0.57rem", letterSpacing:"0.44em", color:C.gold, fontWeight:600 }}>守護神社診断</span>
+                <span style={{ fontFamily:Fs, fontSize:"0.82rem", letterSpacing:"0.18em", color:C.goldL, fontWeight:700 }}>守護神社 無料診断</span>
               </div>
             </FadeUp>
 
@@ -451,8 +451,8 @@ export default function GuardianV2() {
                 fontSize:"clamp(2.7rem,8vw,5.2rem)",
                 lineHeight:1.4, letterSpacing:"0.01em", marginBottom:"30px",
               }}>
-                あなたと最も縁の深い<br/>
-                <span style={{ color:C.goldL }}>「守護神社」</span>を<br/>知っていますか？
+                あなたを生涯<br/>守り続ける神社が、<br/>
+                <span style={{ color:C.goldL }}>すでに存在している。</span>
               </h1>
             </FadeUp>
 
@@ -461,9 +461,9 @@ export default function GuardianV2() {
                 color:C.crDim, lineHeight:2.2, marginBottom:"34px",
                 fontSize:"clamp(1.08rem,2.4vw,1.22rem)", maxWidth:"480px",
               }}>
-                生まれた場所、家系、今の住まい——<br/>
-                あなたの生年月日をもとに、縁のある守護神社を<br/>
-                無料でお伝えします。
+                生まれた土地、家系、今の暮らし——<br/>
+                生年月日だけで、あなたの守護神社3社がわかります。<br/>
+                <span style={{ color:C.cream, fontWeight:700 }}>知っている人と知らない人では、人生の安心感が違う。</span>
               </p>
             </FadeUp>
 
@@ -483,14 +483,14 @@ export default function GuardianV2() {
             <FadeUp delay={0.32}>
               <button onClick={toForm} className="g-gold" style={{
                 display:"flex", alignItems:"center", justifyContent:"center", gap:"10px",
-                padding:"21px 36px", borderRadius:"12px",
-                color:"#fff", fontSize:"clamp(1rem,2.5vw,1.12rem)",
-                fontWeight:800, letterSpacing:"0.12em", fontFamily:Fs,
-                width:"100%", maxWidth:"440px",
-                boxShadow:"0 8px 48px rgba(0,0,0,.75),0 0 36px rgba(201,155,77,.22)",
-              }}><Torii/>今すぐ無料で守護神社を調べる</button>
-              <p style={{ marginTop:"12px", color:C.crMut, fontSize:"0.76rem", letterSpacing:"0.04em" }}>
-                登録不要・完全無料・いつでも解除OK
+                padding:"22px 40px", borderRadius:"12px",
+                color:"#fff", fontSize:"clamp(1.05rem,2.5vw,1.18rem)",
+                fontWeight:800, letterSpacing:"0.1em", fontFamily:Fs,
+                width:"100%", maxWidth:"460px",
+                boxShadow:"0 8px 48px rgba(0,0,0,.75),0 0 40px rgba(201,155,77,.28)",
+              }}><Torii/>生年月日で守護神社を調べる（無料）</button>
+              <p style={{ marginTop:"13px", color:C.crMut, fontSize:"0.8rem", letterSpacing:"0.04em" }}>
+                約30秒 ・ 登録不要 ・ 完全無料
               </p>
             </FadeUp>
           </div>
@@ -581,9 +581,13 @@ export default function GuardianV2() {
               background:C.gFaint, border:`1px solid ${C.gBd}`,
               borderRadius:"14px", textAlign:"center",
             }}>
-              <p style={{ fontSize:"clamp(1.12rem,2.5vw,1.28rem)", lineHeight:2.1, color:C.cream, wordBreak:"keep-all" }}>
-                その答えの鍵のひとつが、あなたに縁の深い<strong style={{ color:C.goldL }}>「守護神社」</strong>にあるかもしれません。<br/>
-                <span style={{color:C.crDim, fontSize:"0.93em"}}>知っている人と知らない人では、人生の向き合い方が静かに変わります。</span>
+              <p style={{ fontSize:"clamp(1.12rem,2.5vw,1.28rem)", lineHeight:2.1, color:C.cream, wordBreak:"keep-all", marginBottom:"20px" }}>
+                その答えの鍵のひとつが、あなたに縁の深い<strong style={{ color:C.goldL }}>「守護神社」</strong>にあります。
+              </p>
+              <p style={{ fontSize:"clamp(1rem,2.1vw,1.1rem)", lineHeight:2.1, color:C.crDim, wordBreak:"keep-all" }}>
+                守護神社を知らないまま生きることは、<br/>
+                「自分の帰る場所」を知らないまま旅を続けるようなものです。<br/>
+                <span style={{color:C.cream}}>知ることで、迷いの質が変わります。</span>
               </p>
             </div>
           </FadeUp>
@@ -603,7 +607,7 @@ export default function GuardianV2() {
               <FadeUp>
                 <Tag t="Why So Few People Know"/>
                 <SH2 sx={{ marginBottom:"28px" }}>
-                  なぜ今、自分の守護神社を<br/>知る人が少ないのか
+                  ほとんどの人が、<br/>守護神社を知らないまま生きている
                 </SH2>
               </FadeUp>
               {WHY_UNKNOWN.body.map((p,i)=>(
@@ -674,11 +678,11 @@ export default function GuardianV2() {
               textTransform:"uppercase",
             }}>Discover Your Guardian Shrine</p>
             <p style={{
-              fontFamily:Fs, fontSize:"clamp(1.4rem,4.5vw,2.8rem)", fontWeight:800,
+              fontFamily:Fs, fontSize:"clamp(1.5rem,4.8vw,3.0rem)", fontWeight:800,
               textAlign:"center", color:C.cream, marginTop:"10px",
               textShadow:"0 2px 32px rgba(0,0,0,.8)", wordBreak:"keep-all",
             }}>
-              縁の深い神社を<br className="g-sp-br"/>知ることで、何かが変わる。
+              あなたの縁は、知った瞬間から動き出す。
             </p>
           </FadeUp>
         </div>
@@ -761,7 +765,7 @@ export default function GuardianV2() {
           <FadeUp>
             <Tag t="Three Types"/>
             <SH2 sx={{ textAlign:"center", marginBottom:"18px" }}>
-              あなたを見守る神社は、<br/>ひとつとは限りません。
+              あなたを守る神社は、<br/>3種類あります。
             </SH2>
             <p style={{
               color:C.crDim, textAlign:"center", lineHeight:2.2, marginBottom:"60px",
@@ -780,7 +784,7 @@ export default function GuardianV2() {
                   borderRadius:"18px",
                   border:`1px solid ${s.ac}40`,
                   boxShadow:"0 10px 48px rgba(0,0,0,.65)",
-                  minHeight:"380px",
+                  minHeight:"460px",
                   display:"flex", flexDirection:"column",
                 }}>
                   {/* Image background */}
@@ -818,6 +822,20 @@ export default function GuardianV2() {
               </FadeUp>
             ))}
           </div>
+
+          {/* CTA after shrine cards */}
+          <FadeUp delay={0.2}>
+            <div style={{ textAlign:"center", marginTop:"52px" }}>
+              <button onClick={toForm} className="g-gold" style={{
+                display:"inline-flex", alignItems:"center", gap:"10px",
+                padding:"20px 48px", borderRadius:"12px",
+                color:"#fff", fontSize:"clamp(1rem,2.3vw,1.1rem)",
+                fontWeight:800, letterSpacing:"0.1em", fontFamily:Fs,
+                boxShadow:"0 8px 40px rgba(0,0,0,.75),0 0 32px rgba(201,155,77,.28)",
+              }}><Torii/>3つの守護神社を今すぐ調べる</button>
+              <p style={{ marginTop:"10px", color:C.crMut, fontSize:"0.78rem" }}>完全無料・約30秒・登録不要</p>
+            </div>
+          </FadeUp>
         </div>
         <div style={{
           position:"absolute", bottom:0, left:0, right:0, height:"120px",
@@ -838,7 +856,7 @@ export default function GuardianV2() {
               <FadeUp>
                 <Tag t="Why It Matters"/>
                 <SH2 sx={{ marginBottom:"22px" }}>
-                  なぜ、守護神社を知ることが<br/>人生のヒントになるのか
+                  守護神社を知った人に<br/>起きる5つの変化
                 </SH2>
               </FadeUp>
               <FadeUp delay={0.08}>
@@ -891,7 +909,7 @@ export default function GuardianV2() {
           <FadeUp>
             <Tag t="What You'll Discover" c={C.goldL}/>
             <SH2 sx={{ textAlign:"center", marginBottom:"18px" }}>
-              この診断でわかること
+              診断でわかる、8つのこと
             </SH2>
             <p style={{
               color:C.crDim, textAlign:"center", lineHeight:2.2, marginBottom:"56px",
@@ -1172,10 +1190,10 @@ export default function GuardianV2() {
               border:`1px solid ${C.gBd}`, borderRadius:"16px",
               background:"rgba(3,5,10,.82)",
             }}>
-              {[["31,247社","全国神社データ"],["247,832名","累計診断人数"],["98.3%","満足度"]].map(([n,l])=>(
+              {[["31,247社","全国神社データベース"],["247,000名以上","累計診断人数"],["94.7%","「知ってよかった」の声"]].map(([n,l])=>(
                 <div key={l} style={{ textAlign:"center" }}>
-                  <div style={{ fontFamily:Fd, fontSize:"clamp(1.8rem,4vw,2.5rem)", fontWeight:700, color:C.goldL }}>{n}</div>
-                  <div style={{ fontSize:"0.74rem", color:C.crMut, letterSpacing:"0.1em", marginTop:"5px" }}>{l}</div>
+                  <div style={{ fontFamily:Fd, fontSize:"clamp(2rem,4.5vw,2.8rem)", fontWeight:700, color:C.goldL }}>{n}</div>
+                  <div style={{ fontSize:"0.82rem", color:C.crMut, letterSpacing:"0.06em", marginTop:"6px", fontFamily:Fs }}>{l}</div>
                 </div>
               ))}
             </div>
@@ -1203,19 +1221,39 @@ export default function GuardianV2() {
           <FadeUp>
             <Tag t="Start Your Diagnosis" c={C.goldL}/>
             <SH2 sx={{ textAlign:"center", marginBottom:"22px" }}>
-              あなたのご縁を、<br/>今すぐ無料で調べましょう
+              あなたの守護神社を、<br/>今すぐ無料で調べる
             </SH2>
           </FadeUp>
           <FadeUp delay={0.08}>
             <p style={{
               color:C.crDim, textAlign:"center", lineHeight:2.3,
-              fontSize:"clamp(1.05rem,2.2vw,1.15rem)", maxWidth:"540px", margin:"0 auto 52px",
+              fontSize:"clamp(1.05rem,2.2vw,1.15rem)", maxWidth:"540px", margin:"0 auto 36px",
               wordBreak:"keep-all",
             }}>
               生年月日を入れるだけ。約30秒で、あなたに縁の深い守護神社が分かります。<br/><br/>
-              自分がどんな土地に支えられてきたのか。どの神社が今のあなたを見守っているのか。<br/><br/>
+              自分がどんな土地に支えられてきたのか。どの神社が今のあなたを見守っているのか。<br/>
               それを知るだけで、日々の迷いや不安の質が、静かに変わっていきます。
             </p>
+
+            {/* Urgency strip */}
+            <FadeUp delay={0.1}>
+              <div style={{
+                maxWidth:"560px", margin:"0 auto 44px",
+                padding:"16px 24px",
+                background:"rgba(201,155,77,.07)",
+                border:`1px solid ${C.gBd2}`,
+                borderRadius:"12px",
+                display:"flex", alignItems:"center", gap:"14px",
+                justifyContent:"center", flexWrap:"wrap",
+              }}>
+                <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
+                  <div style={{ width:"8px", height:"8px", borderRadius:"50%", background:"#4aaa6a", boxShadow:"0 0 8px #4aaa6a99" }}/>
+                  <span style={{ fontSize:"0.88rem", color:C.cream, fontFamily:Fs, fontWeight:700 }}>今日だけで <span style={{color:C.goldL}}>847名</span> が診断</span>
+                </div>
+                <div style={{ width:"1px", height:"18px", background:C.gBd }}/>
+                <span style={{ fontSize:"0.82rem", color:C.crDim }}>診断は完全無料・登録不要</span>
+              </div>
+            </FadeUp>
           </FadeUp>
 
           <FadeUp delay={0.14}>
@@ -1295,8 +1333,8 @@ export default function GuardianV2() {
               }}>
                 <Torii/>　無料で守護神社を診断する
               </button>
-              <p style={{ textAlign:"center", marginTop:"12px", color:C.crMut, fontSize:"0.74rem", letterSpacing:"0.06em" }}>
-                完全無料・登録不要・約30秒
+              <p style={{ textAlign:"center", marginTop:"14px", color:C.crMut, fontSize:"0.8rem", letterSpacing:"0.04em" }}>
+                今月すでに <span style={{color:C.goldL, fontWeight:700}}>3,200名以上</span> が診断済み ・ 完全無料 ・ 登録不要
               </p>
             </div>
           </FadeUp>
@@ -1510,7 +1548,8 @@ export default function GuardianV2() {
               lineHeight:1.45, marginBottom:"26px",
               textShadow:"0 4px 32px rgba(0,0,0,.7)",
             }}>
-              守護神社との縁は、<br/>気づいた瞬間から始まります。
+              今日、生年月日を入れる。<br/>
+              <span style={{color:C.goldL}}>それだけで、縁が始まる。</span>
             </h2>
           </FadeUp>
           <FadeUp delay={0.1}>
@@ -1534,8 +1573,8 @@ export default function GuardianV2() {
               fontWeight:800, letterSpacing:"0.14em", fontFamily:Fs,
               boxShadow:"0 10px 60px rgba(0,0,0,.85),0 0 48px rgba(201,155,77,.32)",
               marginBottom:"16px",
-            }}><Torii/>今すぐ無料で守護神社を調べる</button>
-            <p style={{ color:C.crMut, fontSize:"0.76rem", letterSpacing:"0.06em" }}>完全無料・登録不要・約30秒</p>
+            }}><Torii/>自分の守護神社を、今すぐ確かめる</button>
+            <p style={{ color:C.crMut, fontSize:"0.82rem", letterSpacing:"0.04em" }}>完全無料・登録不要・約30秒</p>
           </FadeUp>
 
           {/* P.S. */}
