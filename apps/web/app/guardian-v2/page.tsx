@@ -604,8 +604,8 @@ export default function GuardianV2() {
             <FadeUp delay={0.1}>
               <h1 style={{
                 fontFamily:Fs, fontWeight:800,
-                fontSize:"clamp(2.4rem,6.5vw,4.6rem)",
-                lineHeight:1.45, letterSpacing:"0.01em", marginBottom:"16px",
+                fontSize:"clamp(2.2rem,4.5vw,3.2rem)",
+                lineHeight:1.5, letterSpacing:"0.01em", marginBottom:"16px",
               }}>
                 あなたを生涯守り続ける<br/>
                 神社が、すでに存在している。
