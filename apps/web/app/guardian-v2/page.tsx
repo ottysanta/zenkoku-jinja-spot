@@ -1791,7 +1791,6 @@ export default function GuardianV2() {
               color:C.crDim, lineHeight:2.3,
               fontSize:"clamp(1.08rem,2.3vw,1.18rem)",
               maxWidth:"540px", margin:"0 auto 56px",
-              ,
             }}>
               生まれた土地。家族が受け継いできた土地。今、あなたが暮らしている場所。<br/><br/>
               そのすべてが、あなたの人生と静かにつながっています。<br/>
