@@ -768,7 +768,7 @@ export default function GuardianV2() {
             <div style={{ maxWidth:"520px" }}>
               <FadeUp>
                 <Tag t="Why So Few People Know"/>
-                <SH2 sx={{ marginBottom:"28px" }}>
+                <SH2 sx={{ marginBottom:"28px", fontSize:"clamp(1.8rem,3.2vw,2.6rem)" }}>
                   ほとんどの人が、<br/>守護神社を知らないまま生きている
                 </SH2>
               </FadeUp>
@@ -794,7 +794,7 @@ export default function GuardianV2() {
             {/* left-edge fade */}
             <div style={{
               position:"absolute", inset:0,
-              background:"linear-gradient(to right,rgba(3,5,10,.92) 0%,rgba(3,5,10,.2) 40%,transparent 100%)",
+              background:"linear-gradient(to right,rgba(3,5,10,.75) 0%,rgba(3,5,10,.15) 45%,transparent 100%)",
             }}/>
             {/* Quote overlay card */}
             <div style={{
