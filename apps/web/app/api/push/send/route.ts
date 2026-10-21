@@ -1,3 +1,4 @@
+import { matchesSecret } from "@/lib/security/shared-secret";
 import { NextResponse } from "next/server";
 import webpush from "web-push";
 import { listPushSubscriptions, deletePushSubscription } from "@/lib/shrine-db";
@@ -15,8 +16,9 @@ if (VAPID_PUBLIC && VAPID_PRIVATE) {
  * secret は PUSH_SEND_SECRET 環境変数と照合（簡易保護）
  */
 export async function POST(req: Request) {
-  if (!VAPID_PUBLIC || !VAPID_PRIVATE) {
-    return NextResponse.json({ error: "VAPID keys not configured" }, { status: 503 });
+  const expectedSecret = process.env.PUSH_SEND_SECRET;
+  if (!expectedSecret || !VAPID_PUBLIC || !VAPID_PRIVATE) {
+    return NextResponse.json({ error: "Push sending is not configured" }, { status: 503 });
   }
 
   try {
@@ -28,11 +30,16 @@ export async function POST(req: Request) {
       secret: string;
     };
 
-    const expectedSecret = process.env.PUSH_SEND_SECRET;
-    if (expectedSecret && secret !== expectedSecret) {
+    if (!matchesSecret(secret, expectedSecret)) {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
     }
 
+    // Do not permit notification links to arbitrary external destinations.
+    if (typeof title !== "string" || !title.trim() || title.length > 100 ||
+        typeof msgBody !== "string" || msgBody.length > 500 ||
+        (url !== undefined && (typeof url !== "string" || !url.startsWith("/") || url.startsWith("//") || /[\\\r\n]/.test(url)))) {
+      return NextResponse.json({ error: "invalid notification" }, { status: 400 });
+    }
     const subs = listPushSubscriptions();
     const payload = JSON.stringify({ title, body: msgBody, url: url ?? "/omikuji" });
 
@@ -63,6 +70,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true, sent, failed, total: subs.length });
   } catch (e) {
-    return NextResponse.json({ error: String(e) }, { status: 500 });
+    return NextResponse.json({ error: "notification failed" }, { status: 500 });
   }
 }

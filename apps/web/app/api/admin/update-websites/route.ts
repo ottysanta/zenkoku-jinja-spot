@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse } from "next/server";
 // @ts-ignore experimental
 import { DatabaseSync } from "node:sqlite";
@@ -18,6 +19,8 @@ function resolveDbPath(): string {
 }
 
 export async function POST(req: Request) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   let body: { items?: Array<{ external_id: string; website: string }> };
   try { body = (await req.json()) as typeof body; } catch { return NextResponse.json({error:"invalid body"}, {status:400}); }
   const items = Array.isArray(body.items) ? body.items : [];

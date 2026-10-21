@@ -136,3 +136,10 @@ def require_bridge_secret(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid bridge secret",
         )
+
+
+def require_admin(user: User = Depends(get_current_user)) -> User:
+    """Require a current, non-suspended server-side administrator. Fail closed."""
+    if user.role != "admin":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Administrator required")
+    return user

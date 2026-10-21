@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse } from "next/server";
 // @ts-ignore experimental
 import { DatabaseSync } from "node:sqlite";
@@ -63,7 +64,9 @@ function ringBbox(ring: Ring): [number, number, number, number] {
 /** /api/admin/fix-prefectures-by-coords
  *  全 spot の (lat,lng) をポリゴンで判定し、正しい prefecture に更新。
  */
-export async function POST() {
+export async function POST(req: Request) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   const raw = await fs.promises.readFile(resolveGeoJsonPath(), "utf8");
   const fc = JSON.parse(raw) as { features: PolyFeature[] };
   // 県ごとの MultiPolygon 化 (bbox キャッシュ付き)

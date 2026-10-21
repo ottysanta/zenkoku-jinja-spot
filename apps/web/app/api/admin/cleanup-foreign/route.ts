@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse } from "next/server";
 // @ts-ignore experimental
 import { DatabaseSync } from "node:sqlite";
@@ -35,7 +36,9 @@ const JP_BBOX = { minLng: 122.0, maxLng: 154.0, minLat: 20.0, maxLat: 46.0 };
  *  2) prefecture が 47都道府県名と一致せず、かつ 日本のbbox外
  *  3) prefecture に台湾・韓国・パラオ等の既知地名を含むもの
  */
-export async function POST() {
+export async function POST(req: Request) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   const db = new DatabaseSync(resolveDbPath());
   try { db.exec("PRAGMA journal_mode=WAL"); } catch {}
 

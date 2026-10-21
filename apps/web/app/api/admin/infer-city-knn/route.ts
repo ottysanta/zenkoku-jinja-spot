@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse, type NextRequest } from "next/server";
 // @ts-ignore experimental
 import { DatabaseSync } from "node:sqlite";
@@ -25,6 +26,8 @@ function resolveDbPath(): string {
  * - O(n*m) 同県内。日本のどの県でも city-有 spot が数百以内なので問題なし
  */
 export async function POST(req: NextRequest) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   const url = new URL(req.url);
   const maxKm = Number(url.searchParams.get("max_km") ?? 15);
   const db = new DatabaseSync(resolveDbPath());

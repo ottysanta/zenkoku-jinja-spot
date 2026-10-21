@@ -26,6 +26,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import select, func, desc
 from sqlalchemy.orm import Session
 
+from auth import require_admin
 from database import get_db
 from models import (
     Spot,
@@ -41,7 +42,7 @@ from services.sources.sync_runner import run_import
 
 
 log = logging.getLogger("admin.sources")
-router = APIRouter(prefix="/admin", tags=["admin:sources"])
+router = APIRouter(prefix="/admin", tags=["admin:sources"], dependencies=[Depends(require_admin)])
 
 
 # ---------- Schemas ----------

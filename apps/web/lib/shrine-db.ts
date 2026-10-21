@@ -4,8 +4,7 @@
  * - FastAPI の再起動に依存せず spots テーブルの新カラムを即時返せる
  * - 書き込みは trusted な admin ルートからのみ呼ぶ
  */
-// @ts-ignore node:sqlite is experimental and not typed in older @types/node
-import { DatabaseSync } from "node:sqlite";
+import { DatabaseSync, type SupportedValueType } from "node:sqlite";
 import path from "node:path";
 import fs from "node:fs";
 import { execSync } from "node:child_process";
@@ -164,7 +163,7 @@ export function listSpots(opts: {
 }): ShrineRow[] {
   const db = getDb();
   const where: string[] = [];
-  const params: unknown[] = [];
+  const params: SupportedValueType[] = [];
   if (opts.bbox) {
     where.push("lng BETWEEN ? AND ? AND lat BETWEEN ? AND ?");
     params.push(opts.bbox[0], opts.bbox[2], opts.bbox[1], opts.bbox[3]);
@@ -299,9 +298,9 @@ function buildSearchWhere(opts: {
   city?: string;
   shrine_type?: string;
   accepts_offerings?: boolean;
-}): { sql: string; params: unknown[] } {
+}): { sql: string; params: SupportedValueType[] } {
   const where: string[] = [];
-  const params: unknown[] = [];
+  const params: SupportedValueType[] = [];
   if (opts.q) {
     // 異体字（旧字体/新字体）を展開して OR 検索
     const variants = kanjiVariants(opts.q);
@@ -319,7 +318,7 @@ function buildSearchWhere(opts: {
     // benefits 直接マッチ + ヒント語(祭神/神社名)
     const like = `%${opts.benefit}%`;
     const orParts = ["COALESCE(benefits,'') LIKE ?"];
-    const orParams: unknown[] = [like];
+    const orParams: SupportedValueType[] = [like];
     const hints = BENEFIT_HINTS[opts.benefit] ?? [];
     for (const h of hints) {
       orParts.push("COALESCE(deity,'') LIKE ?");
@@ -707,7 +706,7 @@ export function nearbySpots(
     "lat BETWEEN ? AND ?",
     "lng BETWEEN ? AND ?",
   ];
-  const params: unknown[] = [lat - latDelta, lat + latDelta, lng - lngDelta, lng + lngDelta];
+  const params: SupportedValueType[] = [lat - latDelta, lat + latDelta, lng - lngDelta, lng + lngDelta];
   if (excludeId != null) {
     where.push("id != ?");
     params.push(excludeId);
@@ -1021,7 +1020,7 @@ export function listSubmissions(opts: {
   ensureSubmissionTable();
   const db = getDb();
   const where: string[] = [];
-  const params: unknown[] = [];
+  const params: SupportedValueType[] = [];
   if (opts.status) {
     where.push("status = ?");
     params.push(opts.status);
@@ -1207,7 +1206,7 @@ export function listBookmarksForOwner(
 ): Array<ShrineRow & { bookmark_kind: BookmarkKind; bookmarked_at: string }> {
   ensureBookmarkTable();
   const db = getDb();
-  const params: unknown[] = [ownerKey];
+  const params: SupportedValueType[] = [ownerKey];
   let sql =
     `SELECT s.*, b.kind AS bookmark_kind, b.created_at AS bookmarked_at
        FROM bookmarks b JOIN spots s ON s.id = b.spot_id

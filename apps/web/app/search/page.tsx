@@ -68,7 +68,7 @@ function parseBenefits(json?: string | null): string[] {
 const PAGE_SIZE = 48;
 
 // SSR 用: FastAPI を介さず SQLite を直接読む
-function runSearchSSR(params: SearchParams & { accepts_offerings?: boolean; page: number }): {
+function runSearchSSR(params: Omit<SearchParams, "page"> & { accepts_offerings?: boolean; page: number }): {
   rows: Spot[];
   total: number;
 } {

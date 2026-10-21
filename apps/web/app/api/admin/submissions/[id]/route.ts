@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { approveSubmission, rejectSubmission } from "@/lib/shrine-db";
-import { auth } from "@/auth";
+import { requireSubmissionReviewer } from "@/lib/security/admin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,36 +11,16 @@ export const dynamic = "force-dynamic";
  * body: { action: "approve" | "reject" | "need_info", review_note?: string }
  *
  * 認可:
- *   - session.role が admin/moderator (FastAPI 由来) か
- *   - ADMIN_EMAILS env に email が含まれていること
- *   どちらかを満たす必要あり。
+ *   - 認証済み admin / moderator または既存 ADMIN_EMAILS の担当者であること。
  */
 type Body = { action?: "approve" | "reject" | "need_info"; review_note?: string };
-
-async function isAdmin(): Promise<{ ok: true; reviewer: string } | { ok: false }> {
-  const session = await auth().catch(() => null);
-  if (!session) return { ok: false };
-  const email = session.user?.email?.toLowerCase() ?? null;
-  const role = session.role;
-  if (role === "admin" || role === "moderator") {
-    return { ok: true, reviewer: email ?? `role:${role}` };
-  }
-  const adminEmails = (process.env.ADMIN_EMAILS ?? "")
-    .split(",")
-    .map((s) => s.trim().toLowerCase())
-    .filter(Boolean);
-  if (email && adminEmails.includes(email)) {
-    return { ok: true, reviewer: email };
-  }
-  return { ok: false };
-}
 
 export async function POST(
   req: NextRequest,
   ctx: { params: Promise<{ id: string }> },
 ) {
-  const guard = await isAdmin();
-  if (!guard.ok) return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  const guard = await requireSubmissionReviewer(req);
+  if ("response" in guard) return guard.response;
 
   const { id: idStr } = await ctx.params;
   const id = Number(idStr);

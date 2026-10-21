@@ -11,7 +11,7 @@ export type WorryKey =
   | "study"
   | "yakuyoke";
 
-export const WORRIES: Record<
+const WORRIES: Record<
   WorryKey,
   {
     label: string;
