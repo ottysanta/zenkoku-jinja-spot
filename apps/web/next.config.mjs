@@ -19,8 +19,8 @@ const nextConfig = {
     '/**/*': ['../api/data/**/*', '../../api/data/**/*'],
   },
   outputFileTracingRoot: undefined,
-  // Vercel build で型/lint エラーで弾かれるので、まずデプロイを通して後で潰す
-  typescript: { ignoreBuildErrors: true },
+  // Security candidates must pass the TypeScript build gate.
+  typescript: { ignoreBuildErrors: false },
   eslint: { ignoreDuringBuilds: true },
   experimental: {
     // typedRoutes: true, // Vercel build で dynamic href が弾かれるので一旦 OFF
@@ -52,7 +52,9 @@ const nextConfig = {
       // /legacy-map は旧 index.html をそのまま返す（移行期間限定）
       { source: '/legacy-map',             destination: `${API_BASE}/` },
       // 開発専用: ローカルデータ整備用の管理エンドポイント
-      { source: '/admin/:path*',           destination: `${API_BASE}/admin/:path*` },
+      ...(process.env.NODE_ENV === 'development' ? [
+        { source: '/admin/:path*', destination: `${API_BASE}/admin/:path*` },
+      ] : []),
     ];
   },
   images: {

@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse } from "next/server";
 import { readFile, writeFile, stat } from "node:fs/promises";
 import path from "node:path";
@@ -79,6 +80,8 @@ function simplifyGeometry(
 }
 
 export async function POST(req: Request) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   try {
     const url = new URL(req.url);
     const tol = Number(url.searchParams.get("tol") ?? 0.02);

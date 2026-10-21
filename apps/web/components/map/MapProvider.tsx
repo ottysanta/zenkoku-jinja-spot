@@ -59,7 +59,6 @@ export default function MapProvider({
       new maplibregl.GeolocateControl({
         positionOptions: { enableHighAccuracy: true },
         trackUserLocation: true,
-        showUserHeading: true,
       }),
       "bottom-right",
     );

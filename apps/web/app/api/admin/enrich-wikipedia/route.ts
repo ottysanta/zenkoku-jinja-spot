@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse } from "next/server";
 import { upsertEnrichment, type ShrineEnrichment } from "@/lib/shrine-db";
 
@@ -7,6 +8,8 @@ export const dynamic = "force-dynamic";
 /** POST body: { items: ShrineEnrichment[] }
  *  - external_id 必須。description/photo_url など一部だけでも可 */
 export async function POST(req: Request) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   let body: { items?: ShrineEnrichment[] };
   try {
     body = (await req.json()) as { items?: ShrineEnrichment[] };

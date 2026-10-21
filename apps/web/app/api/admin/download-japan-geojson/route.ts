@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse } from "next/server";
 import { writeFile, mkdir, stat } from "node:fs/promises";
 import path from "node:path";
@@ -24,6 +25,8 @@ const CANDIDATES = [
  * - 既にファイルがあって sizeHint 以上ならスキップ（force=true で再取得）
  */
 export async function POST(req: Request) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   const url = new URL(req.url);
   const force = url.searchParams.get("force") === "true";
   try {
@@ -83,7 +86,9 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   try {
     const st = await stat(TARGET);
     return NextResponse.json({ exists: true, size: st.size, path: TARGET });

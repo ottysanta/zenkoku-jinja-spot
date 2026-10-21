@@ -61,6 +61,7 @@ from auth import (
     get_current_user,
     get_current_user_optional,
     require_bridge_secret,
+    require_admin,
     revoke_session_by_token,
 )
 
@@ -210,11 +211,11 @@ class _BulkImportIn(_PydanticBaseModel):
     source_layer: str = "osm"
 
 
-@app.post("/admin/bulk-import-shrines")
+@app.post("/admin/bulk-import-shrines", dependencies=[Depends(require_admin)])
 def bulk_import_shrines(body: _BulkImportIn, db: Session = Depends(get_db)):
     """OSM など外部ソースから取得した神社を一括投入。
     既存 external_id は UPDATE、無ければ INSERT。
-    開発用ローカル運用前提で認証なし（本番デプロイ前に要ガード）。
+    有効な管理者セッションが必須。認証失敗時は更新しない。
     """
     inserted = 0
     updated = 0
@@ -280,7 +281,7 @@ def _fetch_wikipedia_summary(title: str, lang: str = "ja") -> Optional[dict]:
         return None
 
 
-@app.post("/admin/enrich-wikipedia")
+@app.post("/admin/enrich-wikipedia", dependencies=[Depends(require_admin)])
 def enrich_wikipedia(
     limit: int = Query(200, le=2000),
     only_missing: bool = Query(True, description="True: description が無い spot だけ対象"),
@@ -321,7 +322,7 @@ def enrich_wikipedia(
     return {"enriched": enriched, "skipped": skipped}
 
 
-@app.get("/admin/db-stats")
+@app.get("/admin/db-stats", dependencies=[Depends(require_admin)])
 def admin_db_stats(db: Session = Depends(get_db)):
     total = db.query(Spot).count()
     by_layer: dict[str, int] = {}

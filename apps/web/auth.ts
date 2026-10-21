@@ -135,10 +135,10 @@ export const authConfig: NextAuthConfig = {
       // クライアントから参照できるよう必要最小限だけ載せる（token 自体はサーバー経由で使う想定）
       if (token.apiToken) session.apiToken = token.apiToken as string;
       if (token.apiExpiresAt) session.apiExpiresAt = token.apiExpiresAt as string;
-      if (token.userId) session.userId = token.userId as number;
       if (token.role) session.role = token.role as string;
       if (token.providerKey) session.providerKey = token.providerKey as string;
-      return session;
+      // Return the numeric application user ID without assigning to AdapterSession.userId (string).
+      return { ...session, ...(typeof token.userId === "number" ? { userId: token.userId } : {}) };
     },
   },
 };

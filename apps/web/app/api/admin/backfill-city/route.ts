@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse } from "next/server";
 import { extractCity } from "@/lib/shrine-db";
 // @ts-ignore experimental
@@ -19,7 +20,9 @@ function resolveDbPath(): string {
 }
 
 /** /api/admin/backfill-city — 全 spot の address から city を抽出して UPDATE */
-export async function POST() {
+export async function POST(req: Request) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   const db = new DatabaseSync(resolveDbPath());
   try { db.exec("PRAGMA journal_mode=WAL"); } catch {}
   // city 列が無ければ追加

@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse } from "next/server";
 // @ts-ignore experimental
 import { DatabaseSync } from "node:sqlite";
@@ -22,7 +23,9 @@ function resolveDbPath(): string {
  * 実運用では宗教法人登録・口座確認・書面同意をもって個別に true にしていく想定。
  * ここはデモ用のシード。
  */
-export async function POST() {
+export async function POST(req: Request) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   const db = new DatabaseSync(resolveDbPath());
   try { db.exec("PRAGMA journal_mode=WAL"); } catch {}
   const cols = new Set(

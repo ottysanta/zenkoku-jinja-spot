@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse } from "next/server";
 import { bulkImport, type BulkShrineIn } from "@/lib/shrine-db";
 
@@ -6,6 +7,8 @@ export const dynamic = "force-dynamic";
 
 /** POST body: { shrines: BulkShrineIn[], source_layer?: string } */
 export async function POST(req: Request) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   let body: { shrines?: BulkShrineIn[]; source_layer?: string };
   try {
     body = (await req.json()) as { shrines?: BulkShrineIn[]; source_layer?: string };

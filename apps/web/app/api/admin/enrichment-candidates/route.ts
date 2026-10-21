@@ -1,3 +1,4 @@
+import { requireAdmin } from "@/lib/security/admin";
 import { NextResponse, type NextRequest } from "next/server";
 import { listEnrichmentCandidates } from "@/lib/shrine-db";
 
@@ -8,6 +9,8 @@ export const dynamic = "force-dynamic";
  * description 未充填 + wikipedia_title あり の spot リスト。
  */
 export async function GET(req: NextRequest) {
+  const guard = await requireAdmin(req);
+  if ("response" in guard) return guard.response;
   const limit = Math.min(
     Math.max(Number(req.nextUrl.searchParams.get("limit") ?? 300), 1),
     3000,
